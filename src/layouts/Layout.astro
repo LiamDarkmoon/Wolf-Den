@@ -1,3 +1,8 @@
+---
+import "../styles/global.css"; 
+import Main from '../layouts/Main.astro';
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -6,18 +11,23 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Wolf's Den</title>
 	</head>
 	<body>
-		<slot />
+		<Main>
+			<slot/>
+		</Main>
 	</body>
 </html>
 
 <style>
 	html,
 	body {
+		box-sizing: border-box;
+		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
 		margin: 0;
 		width: 100%;
-		height: 100%;
+		height: 50vh;
 	}
+	
 </style>
