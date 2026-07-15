@@ -18,18 +18,10 @@ body {
 }
 
 .bttn {
-    font-size: 1.25rem;
-    width: fit-content;
+    color: var(--color-primary);
     min-width: 100px;
     max-width: 250px;
     max-height: 75px;
     cursor: pointer;
-    padding-inline: 1.5rem;
-    padding-block: 0.5rem;
-}
-.bttn:hover {
-    transform: scale(1.05);
-}
-.bttn:active {
-    transform: scale(0.95);
+   
 }
