@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Button from '../../components/button.tsx';
+import Profile from '../../../public/profile.svg';
+---
+<Layout>
+    
+    <form class="relative flex flex-col justify-center items-center gap-3">
+        <h1 class="text-4xl text-primary font-bold text-center mt-12.5">Crea tu personaje</h1>
+        <p class="text-lg italic opacity-80 my-7.5">Comienza por elegir un nombre</p>
+        <input type="text" placeholder="Nombre de tu personaje" class="border-2 border-primary rounded-md p-2 w-80"/>
+        <div class="relative group grid place-items-center">
+            <Profile class="w-40 text-primary group-hover:text-primary-hover"/>
+            <img src="/avatar.jpg" alt="avatar" class="absolute w-25 rounded-full"/>
+        </div>
+        <div class="flex flex-col  justify-center items-center gap-3">
+            <Button client:load className="">Crea tu personaje</Button>
+        </div>
+    </form>
+</Layout>
+
+<style>
+    
+</style>

@@ -2,7 +2,7 @@
 
 ---
 
-<div id="container">
+<div id="container" class="text-main-text">
 	<main>
 		<slot/>
 	</main>
@@ -12,16 +12,26 @@
 	#container {
 		background: url('/den-bg.webp') no-repeat center center fixed;
 		background-color: #f2af23;
-		height: 100vh;
+		max-height: 100vh;
 		width: 100%;
 		max-width: 100%;
 		display: grid;
 		grid-template-columns: 150px, 1fr;
 		grid-template-rows: 100px, 1fr, 100px;
 	}
+	#container::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #10141ba7;
+		
+	}
 
 	main {
-		height: 100%;
+		height: 100vh;
 		display: flex;
 		justify-content: center;
 	}

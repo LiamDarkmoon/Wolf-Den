@@ -2,13 +2,12 @@
 import Button from './button.tsx';
 ---
 
-<div class="hero text-main-text">
-    <img src="/den-bg.webp" alt="Wolf's Den Background" class="absolute inset-0 w-full h-full object-cover opacity-90 -z-10"/>
+<div class="hero">
     <h1 class="text-3xl font-bold text-center mt-12.5">Bienvenidos a <br/> <span class="text-5xl text-primary">Wolf's Den</span></h1>
     <p class="text-lg italic opacity-80 my-7.5">Una forma rapida y sencilla de adentrarte en el mundo de D&D.</p>
     
     <div class="flex flex-col  justify-center items-center gap-3">
-        <Button className="">Crea tu personaje</Button>
+        <Button client:load  to="/characters/creation" className="">Crea tu personaje</Button>
         <!-- <Button className="">Crea un objeto</Button> -->
     </div>
 
@@ -23,7 +22,6 @@ import Button from './button.tsx';
         align-items: center;
         justify-content: center;
         gap: 1.5rem;
-        background-color: #10141ba7;
         text-align: center;
         padding: 1.5rem;
     }
