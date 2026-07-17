@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css"; 
 import Main from '../layouts/Main.astro';
-import CharacterProvider  from '../components/CharacterCreator/CharacterProvider.tsx'
 ---
 
 <!doctype html>
@@ -14,13 +13,11 @@ import CharacterProvider  from '../components/CharacterCreator/CharacterProvider
 		<meta name="generator" content={Astro.generator} />
 		<title>Wolf's Den</title>
 	</head>
-	<CharacterProvider>
-		<body>
-			<Main>
-				<slot/>
-			</Main>
-		</body>
-	</CharacterProvider>
+	<body>
+		<Main>
+			<slot/>
+		</Main>
+	</body>
 </html>
 
 <style>

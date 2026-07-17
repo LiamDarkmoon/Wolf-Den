@@ -1,9 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import CharacterForm from '../../components/CharacterCreator/CharacterForm.tsx';
+import CharacterCreator from '../../components/CharacterCreator/CharacterCreator.tsx';
 ---
 <Layout>
-    <CharacterForm />
+    <CharacterCreator client:load/>
 </Layout>
 
 <style>
