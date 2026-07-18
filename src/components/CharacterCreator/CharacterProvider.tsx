@@ -1,13 +1,13 @@
 import { createContext, useContext, useState } from 'react';
 import type { Species } from '../../lib/species';
-import type { Classes, Backgrounds } from '../../lib/types';
+import type { Classes, Backgrounds, Class } from '../../lib/types';
 
 export interface Character {
     name: string;
 
     species?: Species;
 
-    class?: Classes;
+    class?: Class;
 
     background?: Backgrounds;
 
@@ -52,7 +52,7 @@ export default function CharacterProvider({ children }: { children: React.ReactN
         const initialCharacter: Character = {
             name: "",
             species: "aasimar",
-            class: "fighter",
+            
             background: "soldier",
             abilities: {
                 str: 10,

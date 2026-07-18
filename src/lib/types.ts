@@ -1,18 +1,31 @@
+import barbarian from "../assets/barbarian.png";
+import bard from "../assets/bard.png";
+import cleric from "../assets/cleric.png";
+import druid from "../assets/druid.png";
+import fighter from "../assets/fighter.png";
+import monk from "../assets/monk.png";
+import paladin from "../assets/paladin.png";
+import ranger from "../assets/ranger.png";
+import rogue from "../assets/rogue.png";
+import sorcerer from "../assets/sorcerer.png";
+import warlock from "../assets/warlock.png";
+import wizard from "../assets/wizard.png";
+
 export const Classes = {
-  "barbarian" : "Barbarian",
-  "bard" : "Bard",
-  "cleric" : "Cleric",
-  "druid" : "Druid",
-  "fighter" : "Fighter",
-  "monk" : "Monk",
-  "paladin" : "Paladin",
-  "ranger" : "Ranger",
-  "rogue" : "Rogue",
-  "sorcerer" : "Sorcerer",
-  "warlock" : "Warlock",
-  "wizard" : "Wizard",
+  barbarian,
+  bard,
+  cleric,
+  druid,
+  fighter,
+  monk,
+  paladin,
+  ranger,
+  rogue,
+  sorcerer,
+  warlock,
+  wizard,
 } as const;
-export type Classes = keyof typeof Classes;
+export type Class = keyof typeof Classes;
 
 export const Backgrounds = {
   "acolyte" : "Acolyte",
