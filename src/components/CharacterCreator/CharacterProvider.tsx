@@ -1,6 +1,12 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState, type ComponentType } from 'react';
 import type { Species } from '../../lib/species';
-import type { Classes, Backgrounds, Class } from '../../lib/types';
+import type { Background, Class } from '../../lib/types';
+import NameStep from '../steps/NameStep';
+import ClassStep from '../steps/ClassStep'
+import OriginStep from '../steps/OriginStep';
+import SpecieStep from '../steps/SpecieStep';
+import AbilitiesStep from '../steps/AbilitiesStep';
+
 
 export interface Character {
     name: string;
@@ -9,7 +15,7 @@ export interface Character {
 
     class?: Class;
 
-    background?: Backgrounds;
+    background?: Background;
 
     abilities: {
         str: number;
@@ -25,7 +31,8 @@ export interface Character {
 interface CharacterContext {
     character: Character;
     
-    step: Step;
+    stepIndex: number;
+    CurrentStep: ComponentType | string;
     
     nextStep(): void;
     
@@ -39,14 +46,31 @@ interface CharacterContext {
 }
 
 export const steps = [
-            "name",
-            "species",
-            "class",
-            "background",
-            "summary",
-        ] as const;
-        
-        export type Step = typeof steps[number];
+    {
+        id: "Class",
+        component: ClassStep
+    }
+    ,
+    {
+        id: "Origin",
+        component: OriginStep
+    }
+    ,
+    {
+        id: "Specie",
+        component: SpecieStep
+    }
+    ,
+    {
+        id: "Abilities",
+        component: AbilitiesStep
+    },
+    {
+        id: "Name",
+        component: NameStep
+    }
+] as const;
+export type Step = typeof steps[number];
 
 export default function CharacterProvider({ children }: { children: React.ReactNode }) {
         const initialCharacter: Character = {
@@ -66,7 +90,9 @@ export default function CharacterProvider({ children }: { children: React.ReactN
         
         const [character, setCharacter] = useState<Character>(initialCharacter);
         
-        const [step, setStep] = useState<Step>(steps[0]);
+        const [stepIndex, setStepIndex] = useState(0);
+        const step = steps[stepIndex];
+        const CurrentStep = step.component;
         
         const updateCharacter = (values: Partial<Character>) => {
             setCharacter(prev => ({
@@ -76,20 +102,20 @@ export default function CharacterProvider({ children }: { children: React.ReactN
         };
         
         const nextStep = () => {
-            setStep(prev => steps[Math.min(steps.indexOf(prev) + 1, steps.length - 1)]);
+            setStepIndex(i => Math.min(i + 1, steps.length - 1));
         };
         
         const previousStep = () => {
-            setStep(prev => steps[Math.max(steps.indexOf(prev) - 1, 0)]);
+            setStepIndex(i => Math.max(i - 1, 0));
         };
 
         const resetCharacter = () => {
             setCharacter(initialCharacter);
-            setStep(steps[0]);
+            setStepIndex(0);
         }
 
     return (
-        <CharacterContext.Provider value={{ character, step, nextStep, previousStep, updateCharacter, resetCharacter}}>
+        <CharacterContext.Provider value={{ character, stepIndex, CurrentStep, nextStep, previousStep, updateCharacter, resetCharacter}}>
             {children}
         </CharacterContext.Provider>
     );
