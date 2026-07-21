@@ -18,12 +18,12 @@ export interface Character {
     background?: Background;
 
     abilities: {
-        str: number;
-        dex: number;
-        con: number;
-        int: number;
-        wis: number;
-        cha: number;
+        str: number | null,
+        dex: number | null,
+        con: number | null,
+        int: number | null,
+        wis: number | null,
+        cha: number | null
     };
 }
 
@@ -37,6 +37,8 @@ interface CharacterContext {
     nextStep(): void;
     
     previousStep(): void;
+
+    toStep(arg:number): void
     
     updateCharacter(
         values: Partial<Character>
@@ -79,12 +81,12 @@ export default function CharacterProvider({ children }: { children: React.ReactN
             
             background: "soldier",
             abilities: {
-                str: 10,
-                dex: 10,
-                con: 10,
-                int: 10,
-                wis: 10,
-                cha: 10
+                str: null,
+                dex: null,
+                con: null,
+                int: null,
+                wis: null,
+                cha: null
             }
         };
         
@@ -109,13 +111,17 @@ export default function CharacterProvider({ children }: { children: React.ReactN
             setStepIndex(i => Math.max(i - 1, 0));
         };
 
+        const toStep = (stepIndex: number) => {
+            setStepIndex(stepIndex)
+        }
+
         const resetCharacter = () => {
             setCharacter(initialCharacter);
             setStepIndex(0);
         }
 
     return (
-        <CharacterContext.Provider value={{ character, stepIndex, CurrentStep, nextStep, previousStep, updateCharacter, resetCharacter}}>
+        <CharacterContext.Provider value={{ character, stepIndex, toStep,CurrentStep, nextStep, previousStep, updateCharacter, resetCharacter}}>
             {children}
         </CharacterContext.Provider>
     );

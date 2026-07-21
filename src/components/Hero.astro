@@ -2,12 +2,12 @@
 import Button from './button.tsx';
 ---
 
-<div class="hero">
+<div class="hero max-h-162.5">
     <h1 class="text-3xl font-bold text-center mt-12.5">Bienvenidos a <br/> <span class="text-5xl text-primary">Wolf's Den</span></h1>
     <p class="text-lg italic opacity-80 my-7.5">Una forma rapida y sencilla de adentrarte en el mundo de D&D.</p>
     
     <div class="flex flex-col  justify-center items-center gap-3">
-        <Button client:load  to="/characters/creation" className="">Crea tu personaje</Button>
+        <Button client:load  to="/characters/creation">Crea tu personaje</Button>
         <!-- <Button className="">Crea un objeto</Button> -->
     </div>
 
