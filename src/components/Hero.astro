@@ -1,8 +1,30 @@
 ---
 import Button from './button.tsx';
+import { createClient } from "../db/supabase";
+
+const supabase = createClient({
+  request: Astro.request,
+  cookies: Astro.cookies,
+});
+
+const {
+  data: { user },
+} = await supabase.auth.getUser();
 ---
 
 <div class="hero max-h-162.5">
+    {
+        user ? (
+            <div class="w-full  flex gap-2 items-center justify-between text-xs text-primary">
+                <p class="">{user?.user_metadata?.full_name}</p>
+                <a href="/auth/logout" class="hover:text-primary-hover">Cerrar sesión</a>
+            </div>
+        ) : (
+            <a href="/auth/login" class="text-primary hover:text-primary-hover">
+                login con google
+            </a>
+        )
+    }
     <h1 class="text-3xl font-bold text-center mt-12.5">Bienvenidos a <br/> <span class="text-5xl text-primary">Wolf's Den</span></h1>
     <p class="text-lg italic opacity-80 my-7.5">Una forma rapida y sencilla de adentrarte en el mundo de D&D.</p>
     
@@ -11,6 +33,7 @@ import Button from './button.tsx';
         <!-- <Button className="">Crea un objeto</Button> -->
     </div>
 
+    <a href="/adventures/league" class="text-primary hover:text-primary mt-6 font-bold py-2 px-4"> Liga de aventureros </a>
     <a href="https://chat.whatsapp.com/C4VEVYjHtqI01Z9vVzj0g2" target="_blank" class="text-primary hover:text-primary-hover underline  mt-auto font-bold py-2 px-4 rounded"> - Unite a la comunidad manija -</a>
 </div>
 

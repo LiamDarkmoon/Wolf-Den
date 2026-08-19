@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Button from '../../components/button.tsx';
+---
+<Layout>
+    <div class="w-1/2 flex flex-col items-center justify-center gap-4 p-4">
+        <h1>Adventurers League</h1>
+        <p>Bienvenido a la liga de aventureros de los manijas del rol, elije tu mesa para sentarte y refrescarte antes de acercarte al tablon para elegir tu mision</p>
+        
+        <section class="w-full flex flex-col items-center justify-center gap-4 p-4">
+            <h2>Tablero de Misiones</h2>
+            <article class="board">
+                <h2 class="text-2xl font-bold text-center mb-4 text-primary-hover underline">Titulo de la mision</h2>
+                <img src="/last-sanctum.png" alt="Descripción de la mision" class="w-full object-cover mb-4 rounded">
+                <Button client:load to="/adventures/league/mission-details">Unirse a la mision</Button>
+            </article>
+        </section>
+    </div>
+</Layout>
+
+<style>
+    .board {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 60vh;
+        background-image: url('/wood-bg.jpg');
+        background-size: cover;
+        padding: 2rem;
+        border-radius: 0.5rem;
+
+    }
+</style>
