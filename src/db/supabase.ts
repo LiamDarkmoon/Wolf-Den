@@ -22,8 +22,8 @@ export function createClient({
           );
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookies.set(name, value, options)
+          cookiesToSet.forEach(({ name, value, options }) =>{
+            cookies.set(name, value, options)}
           );
         },
       },

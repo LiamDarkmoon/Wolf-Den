@@ -16,7 +16,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     cookies,
   });
 
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
     console.error(error);

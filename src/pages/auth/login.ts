@@ -14,7 +14,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
         access_type: "offline",
         prompt: "consent",
       },
-      redirectTo: "http://localhost:4321/auth/callback",
+      redirectTo: new URL("/auth/callback", request.url).toString(),
     },
   });
 
