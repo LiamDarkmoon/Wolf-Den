@@ -1,4 +1,5 @@
-import { createContext, useState, type ComponentType } from 'react';
+import { createContext, useState, useEffect, type ComponentType } from 'react';
+import { actions } from "astro:actions";
 import type { Species } from '../../lib/species';
 import type { Background, Class } from '../../lib/types';
 import NameStep from '../steps/NameStep';
@@ -7,6 +8,7 @@ import OriginStep from '../steps/OriginStep';
 import SpecieStep from '../steps/SpecieStep';
 import AbilitiesStep from '../steps/AbilitiesStep';
 
+const DRAFT_KEY = `wolf-den-character-draft`;
 
 export interface Character {
     name: string;
@@ -45,6 +47,8 @@ interface CharacterContext {
     ): void;
 
     resetCharacter(): void;
+
+    saveCharacter: () => Promise<void>;
 }
 
 export const steps = [
@@ -90,11 +94,40 @@ export default function CharacterProvider({ children }: { children: React.ReactN
             }
         };
         
+        const [hydrated, setHydrated] = useState(false);
         const [character, setCharacter] = useState<Character>(initialCharacter);
         
         const [stepIndex, setStepIndex] = useState(0);
         const step = steps[stepIndex];
         const CurrentStep = step.component;
+
+        useEffect(() => {
+            const stored = localStorage.getItem(DRAFT_KEY);
+
+            if (stored) {
+                try {
+                const draft = JSON.parse(stored);
+                setCharacter(draft);
+                } catch {
+                localStorage.removeItem(DRAFT_KEY);
+                }
+            }
+
+            setHydrated(true);
+        }, []);
+
+        useEffect(() => {
+            if (!hydrated) return;
+
+            localStorage.setItem(
+                DRAFT_KEY,
+                JSON.stringify(character)
+            );
+        }, [character, hydrated]);
+
+        if (!hydrated) {
+            return <p>Cargando personaje...</p>;
+        }
         
         const updateCharacter = (values: Partial<Character>) => {
             setCharacter(prev => ({
@@ -120,8 +153,19 @@ export default function CharacterProvider({ children }: { children: React.ReactN
             setStepIndex(0);
         }
 
+        const saveCharacter = async () => {
+            const result = await actions.createCharacter(character);
+
+            if (result.error) {
+                console.error(result.error);
+                return;
+            }
+
+            resetCharacter();
+        }
+
     return (
-        <CharacterContext.Provider value={{ character, stepIndex, toStep,CurrentStep, nextStep, previousStep, updateCharacter, resetCharacter}}>
+        <CharacterContext.Provider value={{ character, stepIndex, toStep,CurrentStep, nextStep, previousStep, updateCharacter, resetCharacter, saveCharacter }}>
             {children}
         </CharacterContext.Provider>
     );

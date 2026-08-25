@@ -2,21 +2,20 @@ import { useCharacter } from "../../lib/hooks/useCharacter";
 import { navigate } from "astro/virtual-modules/transitions-router.js";
 import Button from '../button';
 import Avatar from '../Avatar';
-import { species, type Species } from "../../lib/species.ts";
-import { Classes , type Class } from "../../lib/types"
 
 export default function CharacterForm() {
-  const { character, stepIndex, toStep ,CurrentStep, nextStep, previousStep } = useCharacter();
+  const { character, stepIndex, toStep ,CurrentStep, nextStep, previousStep, saveCharacter } = useCharacter();
 
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     if(stepIndex === 4){
-      toStep(0)
+      saveCharacter()
+      navigate(`/profile/characters/${character.name}`)
     } else {
       nextStep();
     }
   }
 
-  const handlePrevStep = () => {
+  const handlePrevStep = async () => {
     if(stepIndex === 0) {
       navigate("/")
     } else {

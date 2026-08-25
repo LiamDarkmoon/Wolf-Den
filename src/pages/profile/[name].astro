@@ -1,11 +1,26 @@
 ---
+import { createClient } from "../../db/supabase";
 import ProfileFrame from '../../components/ProfileFrame';
 import Layout from '../../layouts/Layout.astro';
 import avatar from '../../../public/avatar.jpg';
 
 const { name } = Astro.params;
 const user = Astro.locals.user;
-const profilePicture = user?.user_metadata?.profile_picture || null;
+
+const supabase = createClient({
+    request: Astro.request,
+    cookies: Astro.cookies,
+});
+
+const {
+    data: characters,
+    error,
+} = await supabase
+    .from("characters")
+    .select("*")
+    .order("created_at", {
+        ascending: false,
+    });
 ---
 <Layout>
     <div class="flex flex-col w-1/2 gap-4 py-4">
@@ -30,16 +45,14 @@ const profilePicture = user?.user_metadata?.profile_picture || null;
             <h2 class="flex gap-2 items-center text-xl font-bold underline text-center mb-4">
                 Personajes
             </h2>
-            <ul class="flex gap-5">
-                <li class="hover:text-primary">
-                    Personaje 1
-                </li>
-                <li class="hover:text-primary">
-                    Personaje 2
-                </li>
-                <li class="hover:text-primary">
-                    Personaje 3
-                </li>
+            <ul class="flex flex-col gap-5">
+                {
+                    characters?.map((character) => (
+                        <li class="hover:text-primary">
+                            <a href={`/profile/characters/${character.name}`}>-{character.name} : {character.class}</a>
+                        </li>
+                    ))
+                }
             </ul>
         </section>
     </div>

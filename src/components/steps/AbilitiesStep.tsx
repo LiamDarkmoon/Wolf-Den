@@ -24,6 +24,7 @@ export default function ClassStep() {
     });
 
     if (currentScoreIndex === standardArray.length - 1) {
+        console.log("All abilities have been assigned.");
         nextStep();
     } 
   }

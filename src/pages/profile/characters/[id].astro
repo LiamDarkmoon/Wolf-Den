@@ -1,0 +1,26 @@
+---
+import { createClient } from "../../../db/supabase";
+import Layout from "../../../layouts/Layout.astro";
+
+const { id } = Astro.params;
+
+const supabase = createClient({
+    request: Astro.request,
+    cookies: Astro.cookies,
+});
+
+const {
+    data: character,
+    error,
+} = await supabase
+    .from("characters")
+    .select("*")
+    .eq("name", id)
+    .single();
+
+console.log("🧙‍♂️ Character fetched:", character);
+---
+
+<Layout>
+    <h1 class="text-3xl font-bold">{id} {character?.species}</h1>
+</Layout>
