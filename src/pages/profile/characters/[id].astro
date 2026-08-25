@@ -3,6 +3,7 @@ import { createClient } from "../../../db/supabase";
 import Layout from "../../../layouts/Layout.astro";
 
 const { id } = Astro.params;
+const user = Astro.locals.user;
 
 const supabase = createClient({
     request: Astro.request,
@@ -15,12 +16,31 @@ const {
 } = await supabase
     .from("characters")
     .select("*")
-    .eq("name", id)
+    .eq("id", id)
     .single();
 
-console.log("🧙‍♂️ Character fetched:", character);
+if (!character) {
+    return Astro.redirect(`/profile/${user.name}`);
+}
+
+const abilityOrder = ["str", "dex", "con", "int", "wis", "cha"];
 ---
 
 <Layout>
-    <h1 class="text-3xl font-bold">{id} {character?.species}</h1>
+    <section class="flex flex-col w-full md:w-1/2 gap-3 p-2 border border-primary rounded-lg">
+        <h1 class="text-3xl text-center font-bold underline">{character?.name}</h1>
+        <h2 class="text-center text-secondary-text"> {character?.background} - {character?.species}(subsp) | {character?.class}(subclass)</h2>
+        <div class="flex flex-wrap items-center justify-center gap-2 p-3">
+        {abilityOrder.map((key) => {
+            const value = character.abilities[key];
+
+            return (
+                <div class="w-22.5 p-3 flex justify-between items-center gap-1 border border-primary rounded-md">
+                    <span>{key.toUpperCase()}:</span>
+                    <span>{value}</span>
+                </div>
+            );
+        })}
+        </div>
+    </section>
 </Layout>

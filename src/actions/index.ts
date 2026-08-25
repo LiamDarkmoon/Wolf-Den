@@ -89,7 +89,8 @@ export const server = {
         },
     }),
 
-    getCharacter: defineAction({
+    
+    deleteCharacter: defineAction({
         input: z.object({
             id: z.string().uuid(),
         }),
@@ -112,13 +113,13 @@ export const server = {
 
             const { data, error } = await supabase
                 .from("characters")
-                .select("*")
+                .delete()
                 .eq("id", id)
                 .eq("user_id", user.id)
                 .single();
 
             if (error) {
-                console.error("Error fetching character:", error);
+                console.error("Error deleting character:", error);
                 throw new Error("Character not found");
             }
 

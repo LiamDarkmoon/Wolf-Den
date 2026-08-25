@@ -8,8 +8,9 @@ export default function CharacterForm() {
 
   const handleNextStep = async () => {
     if(stepIndex === 4){
-      saveCharacter()
-      navigate(`/profile/characters/${character.name}`)
+      const char = await saveCharacter()
+      if (!char) return
+      navigate(`/profile/characters/${char.id}`)
     } else {
       nextStep();
     }

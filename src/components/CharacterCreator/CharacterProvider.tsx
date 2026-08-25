@@ -29,6 +29,12 @@ export interface Character {
     };
 }
 
+export interface CharacterRecord extends Character {
+    id: string;
+    user_id: string;
+    created_at: string;
+}
+
 
 interface CharacterContext {
     character: Character;
@@ -48,7 +54,7 @@ interface CharacterContext {
 
     resetCharacter(): void;
 
-    saveCharacter: () => Promise<void>;
+    saveCharacter: () => Promise<CharacterRecord | null>;
 }
 
 export const steps = [
@@ -117,6 +123,7 @@ export default function CharacterProvider({ children }: { children: React.ReactN
         }, []);
 
         useEffect(() => {
+            console.log("🧙‍♂️ Character updated:", character.name);
             if (!hydrated) return;
 
             localStorage.setItem(
@@ -153,15 +160,17 @@ export default function CharacterProvider({ children }: { children: React.ReactN
             setStepIndex(0);
         }
 
-        const saveCharacter = async () => {
+        const saveCharacter = async (): Promise<CharacterRecord | null> => {
             const result = await actions.createCharacter(character);
 
             if (result.error) {
                 console.error(result.error);
-                return;
+                return null;
             }
 
+            localStorage.removeItem(DRAFT_KEY);
             resetCharacter();
+            return result.data;
         }
 
     return (
