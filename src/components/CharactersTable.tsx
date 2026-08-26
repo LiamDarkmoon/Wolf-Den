@@ -18,7 +18,6 @@ export default function CharactersTable({
     return (
         <ul className="flex flex-col gap-5">
             {charactersList.map(character => {
-    console.log("➡️ PASSING TO ROW:", character.id);
 
     return (
         <CharacterRow

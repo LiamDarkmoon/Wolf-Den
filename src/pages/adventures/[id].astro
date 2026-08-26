@@ -1,0 +1,20 @@
+---
+import { createClient } from "../../db/supabase";
+
+const { id } = Astro.params;
+
+const supabase = createClient({
+    request: Astro.request,
+    cookies: Astro.cookies,
+});
+
+const { data: adventure } = await supabase
+    .from('adventures')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+console.log(adventure)
+---
+
+<h1>{adventure.title}</h1>

@@ -4,7 +4,7 @@ import Button from '../button';
 import Avatar from '../Avatar';
 
 export default function CharacterForm() {
-  const { character, stepIndex, toStep ,CurrentStep, nextStep, previousStep, saveCharacter } = useCharacter();
+  const { character, stepIndex,CurrentStep, nextStep, previousStep, saveCharacter } = useCharacter();
 
   const handleNextStep = async () => {
     if(stepIndex === 4){
@@ -29,11 +29,11 @@ export default function CharacterForm() {
       <Avatar avatar={ character?.class ? character?.class : 'druid'} />
       <CurrentStep />
       <div className="flex justify-center items-center gap-3">
-          <Button size="sm" onClick={handleNextStep}>
-            Siguiente
-          </Button>
           <Button secondary size="sm" onClick={handlePrevStep}>
             Anterior
+          </Button>
+          <Button size="sm" onClick={handleNextStep}>
+            Siguiente
           </Button>
       </div>
     </form>

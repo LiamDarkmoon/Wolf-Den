@@ -1,25 +1,91 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Button from '../../components/button.tsx';
+import Join from '../../components/Join.tsx';
+import { createClient } from "../../db/supabase";
+
+const supabase = createClient({
+    request: Astro.request,
+    cookies: Astro.cookies,
+});
+
+const { data: adventures } = await supabase
+    .from('adventures')
+    .select('*')
+    .order('adventure_date', { ascending: true });
+
+const adventuresWithStatus = await Promise.all(
+    (adventures ?? []).map(async (adventure) => {
+        const { data: status, error } = await supabase.rpc(
+            "get_adventure_status",
+            {
+                p_adventure_id: adventure.id,
+            }
+        );
+
+        if (error) {
+            console.error(
+                `Error getting status for ${adventure.title}:`,
+                error
+            );
+        }
+
+        return {
+            ...adventure,
+            currentPlayers: status?.current_players ?? 0,
+            currentSubstitutes: status?.current_substitutes ?? 0,
+            isRegistered: status?.is_registered ?? false,
+            role: status?.role ?? null,
+        };
+    })
+);
 ---
 <Layout>
-    <div class="w-full md:w-1/2 flex flex-col items-center justify-center gap-4 py-4">
-        <!-- <h1 class="text-3xl font-bold text-center mb-4">Liga de Aventureros -LMDR-</h1> -->
-        <p class="text-center text-secondary-text">Bienvenido a la liga de aventureros de LMDR, <br/> aca podes ver el tablon y elegir tu mision</p>
+    <div class="w-full flex flex-col items-center justify-center gap-4 py-4">
+
+        <p class="text-center ">Bienvenido a la liga de aventureros de LMDR, <br/> aca podes ver el tablon y elegir tu mision</p>
         
-        <section class="w-full flex flex-col items-center justify-center gap-4">
-            <h2 class="flex gap-2 items-center text-xl font-bold text-center mb-4">
-                TABLERO DE MISIONES
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                    <path fill-rule="evenodd" d="M11.47 13.28a.75.75 0 0 0 1.06 0l7.5-7.5a.75.75 0 0 0-1.06-1.06L12 11.69 5.03 4.72a.75.75 0 0 0-1.06 1.06l7.5 7.5Z" clip-rule="evenodd" />
-                    <path fill-rule="evenodd" d="M11.47 19.28a.75.75 0 0 0 1.06 0l7.5-7.5a.75.75 0 1 0-1.06-1.06L12 17.69l-6.97-6.97a.75.75 0 0 0-1.06 1.06l7.5 7.5Z" clip-rule="evenodd" />
-                </svg>
-            </h2>
-            <article class="board">
-                <h2 class="text-2xl font-bold text-center mb-4 underline capitalize">El ultimo santuario</h2>
-                <img src="/last-sanctum.png" alt="Descripción de la mision" class="w-full object-cover mb-4 rounded">
-                <Button client:load secondary>Unirse a la mision</Button> 
-            </article>
+        <h2 class="flex gap-2 items-center text-xl font-bold text-center mb-4">
+            TABLERO DE MISIONES
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                <path fill-rule="evenodd" d="M11.47 13.28a.75.75 0 0 0 1.06 0l7.5-7.5a.75.75 0 0 0-1.06-1.06L12 11.69 5.03 4.72a.75.75 0 0 0-1.06 1.06l7.5 7.5Z" clip-rule="evenodd" />
+                <path fill-rule="evenodd" d="M11.47 19.28a.75.75 0 0 0 1.06 0l7.5-7.5a.75.75 0 1 0-1.06-1.06L12 17.69l-6.97-6.97a.75.75 0 0 0-1.06 1.06l7.5 7.5Z" clip-rule="evenodd" />
+            </svg>
+        </h2>
+        <section class="w-full flex flex-col md:flex-row items-center justify-center gap-4">
+            {adventuresWithStatus.map(adventure => {
+
+                const isFull =
+                    adventure.currentPlayers >= adventure.max_players;
+
+                return (
+                    <a href=`/adventures/${adventure.id}`>
+
+                        <article class="board">
+
+                            <h2 class="text-2xl font-bold text-center mb-4 underline">
+                                {adventure.title}
+                            </h2> 
+
+                            <img
+                                src={adventure.poster_url ?? "/last-sanctum.png"}
+                                alt={adventure.title}
+                                class="mx-auto w-4/5 object-cover mb-4 rounded"
+                            />
+
+                            <Join
+                                client:load
+                                role={adventure.role}
+                                currentPlayers={adventure.currentPlayers}
+                                currentSubstitutes={adventure.currentSubstitutes}
+                                maxPlayers={adventure.max_players}
+                                isRegistered={adventure.isRegistered}
+                                adventureId={adventure.id}
+                            />
+
+                        </article>
+                    </a>
+                );
+            })}   
         </section>
     </div>
 </Layout>
@@ -30,11 +96,14 @@ import Button from '../../components/button.tsx';
         flex-direction: column;
         width: 100%;
         min-height: 60vh;
+        max-height: 100vh;
         background-image: url('/wood-bg.jpg');
         background-size: cover;
         padding: 2rem;
+        gap: 0.5    rem;
         border-radius: 0.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
 
     }
 </style>
