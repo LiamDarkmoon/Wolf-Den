@@ -38,6 +38,7 @@ const adventuresWithStatus = await Promise.all(
         };
     })
 );
+
 ---
 <Layout>
     <div class="w-full flex flex-col items-center justify-center gap-4 py-4">
@@ -58,12 +59,12 @@ const adventuresWithStatus = await Promise.all(
                     adventure.currentPlayers >= adventure.max_players;
 
                 return (
-                    <a href=`/adventures/${adventure.id}`>
-
                         <article class="board">
 
                             <h2 class="text-2xl font-bold text-center mb-4 underline">
-                                {adventure.title}
+                               <a href={`/adventures/league/${adventure.id}`}>
+                                    {adventure.title}
+                                </a> 
                             </h2> 
 
                             <img
@@ -83,7 +84,6 @@ const adventuresWithStatus = await Promise.all(
                             />
 
                         </article>
-                    </a>
                 );
             })}   
         </section>

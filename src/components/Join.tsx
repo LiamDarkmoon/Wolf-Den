@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Button  from "../components/button";
 import { supabase } from '../db/supabase-browser';
+import { navigate } from "astro:transitions/client";
 
 export default function Join({
     isRegistered,
@@ -102,6 +103,32 @@ export default function Join({
                 "Ocurrió un error inesperado."
             );
         }
+        navigate(`/adventures/league/${adventureId}`)
+    };
+
+    const handleCancellation = async () => {
+        try {
+            const { data, error } = await supabase.rpc(
+                "cancel_adventure_registration",
+                {
+                    p_adventure_id: adventureId,
+                }
+            );
+
+
+            if (error) {
+                console.error("RPC error:", error);
+                return;
+            }
+
+            if (data.success) {
+                console.log("Inscripción cancelada");
+                setRegistered(false);
+                setRole(null);
+            }
+        } catch (error) {
+            console.error("Error cancelling registration:", error);
+        }
     };
     
     return(
@@ -140,6 +167,9 @@ export default function Join({
                             : "Unirse a la misión"
                 }
             </Button>
+            <button onClick={handleCancellation}>
+                cancelar participacion
+            </button>
         </>
     )
 }
