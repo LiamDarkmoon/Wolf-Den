@@ -35,7 +35,7 @@ console.log('T', titulares,'S', suplentes)
 ---
 
 <Layout>
-    <section class="w-1/2 flex flex-col items-center gap-2 text-center">
+    <section class="w-full md:w-1/2 flex flex-col items-center gap-2 text-center">
         <h1 class="text-2xl text-primary font-extrabold underline">{adventure.title}</h1>
         <a href="/adventures/league" class="text-xs text-secondary">Back</a>
         <p class="">{adventure.description}</p>
@@ -44,7 +44,7 @@ console.log('T', titulares,'S', suplentes)
             alt={adventure.title}
             class="mx-auto w-full object-cover mb-4 rounded"
         />
-        <div class="flex w-full justify-between p-5">
+        <div class="flex flex-col md:flex-row w-full justify-between p-3 gap-3">
             <ul>
                 <h2 class="text-xl font-semibold underline text-primary">Titulares</h2>
                 {titulares.map((player) => (
