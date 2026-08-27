@@ -58,7 +58,6 @@ export default function Join({
 
             if (data.success) {
                 setRegistered(true);
-                setPlayerCount(prev => prev + 1);
                 setRole(data.role);
 
                 if (data.role === "titular") {
@@ -122,10 +121,11 @@ export default function Join({
             }
 
             if (data.success) {
-                console.log("Inscripción cancelada");
                 setRegistered(false);
                 setRole(null);
+                setSubstituteCount(prev => prev - 1);
             }
+
         } catch (error) {
             console.error("Error cancelling registration:", error);
         }
@@ -167,9 +167,17 @@ export default function Join({
                             : "Unirse a la misión"
                 }
             </Button>
-            <button onClick={handleCancellation}>
-                cancelar participacion
-            </button>
+            <div className="h-10">
+                {
+                    registered &&
+                    <button 
+                        onClick={handleCancellation}
+                        className="underline cursor-pointer"
+                    >
+                        cancelar participacion
+                    </button>
+                }
+            </div>
         </>
     )
 }

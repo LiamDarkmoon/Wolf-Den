@@ -9,23 +9,64 @@ const supabase = createClient({
     cookies: Astro.cookies,
 });
 
-const { data: adventure, error } = await supabase
+const { data: adventure } = await supabase
     .from('adventures')
     .select('*')
     .eq('id', id)
     .single()
 
+const { data: playersData, error: playersError } = await supabase.rpc(
+    "get_adventure_players",
+    {
+        p_adventure_id: adventure.id,
+    }
+);
+
+const players = playersData?.players ?? [];
+
+const titulares = players.filter(
+    (player) => player.role === "titular"
+);
+
+const suplentes = players.filter(
+    (player) => player.role === "suplente"
+);
+console.log('T', titulares,'S', suplentes)
 ---
 
 <Layout>
-    <section class="flex flex-col gap-2 text-center">
+    <section class="w-1/2 flex flex-col items-center gap-2 text-center">
         <h1 class="text-2xl text-primary font-extrabold underline">{adventure.title}</h1>
         <a href="/adventures/league" class="text-xs text-secondary">Back</a>
-        <p>{adventure.description}</p>
+        <p class="">{adventure.description}</p>
         <img
             src={adventure.poster_url ?? "/last-sanctum.png"}
             alt={adventure.title}
-            class="mx-auto w-4/5 object-cover mb-4 rounded"
+            class="mx-auto w-full object-cover mb-4 rounded"
         />
+        <div class="flex w-full justify-between p-5">
+            <ul>
+                <h2 class="text-xl font-semibold underline text-primary">Titulares</h2>
+                {titulares.map((player) => (
+                    <li class="italic ">
+                        {player.display_name}
+                        <span class="text-xs opacity-50">
+                            ({player.user_id.slice(0, 6)})
+                        </span>
+                    </li>
+                ))}
+            </ul>
+            <ul>
+                <h2 class="text-xl font-semibold underline text-primary">Suplentes</h2>
+                {suplentes.map((player) => (
+                    <li class="italic ">
+                        {player.display_name}
+                        <span class="text-xs opacity-50">
+                            ({player.user_id.slice(0, 6)})
+                        </span>
+                    </li>
+                ))}
+            </ul>
+        </div>
     </section>
 </Layout>
