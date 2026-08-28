@@ -26,7 +26,6 @@ export default function Avatar({ avatar }: AvatarProps) {
                     />
                 }
             </div>
-            <span className="text-primary-hover h-5">{character.name}</span>
         </div>
     );
 }

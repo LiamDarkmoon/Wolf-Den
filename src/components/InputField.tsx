@@ -1,6 +1,6 @@
 export default function InputField({ label, value, onChange, id }: { label: string; value: string; onChange: (value: string) => void; id: string }) {
   return (
-    <div className="flex flex-col justify-center items-center gap-1.5 mb-5">
+    <div className="w-full flex flex-col justify-center items-center gap-1.5 mb-5">
       <label htmlFor={id} className="font-semibold">
         {label}
       </label>
