@@ -1,6 +1,7 @@
 import { useCharacter } from "../../lib/hooks/useCharacter";
 import Under from "../Under";
 import StepBody from "./step/StepBody";
+import StepHead from "./step/StepHead";
 
 
 const standardArray = [15, 14, 13, 12, 10, 8] as const;
@@ -33,13 +34,9 @@ export default function ClassStep() {
 
   return (
     <div className="flex flex-col items-center">
-        <div className="flex flex-col justify-center text-center mb-4">
-          <h2 className="text-xl font-semibold">{!isCompleted ? 'Elije tus habiliades' : 'Tus puntuaciones'} </h2>
-          <span className="h-8 text-2xl text-primary font-bold mt-2">
-            {currentScore}
-          </span>
-          <Under/>
-        </div>
+        <StepHead title={!isCompleted ? 'Elije tus habiliades' : 'Tus puntuaciones'} >
+          {currentScore}
+        </StepHead>
         <StepBody>
             {
                 !isCompleted ?

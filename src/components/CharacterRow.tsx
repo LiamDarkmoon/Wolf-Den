@@ -27,7 +27,7 @@ export default function CharacterRow({
     return (
         <li className="hover:text-primary">
             <a href={`/profile/characters/${character.id}`}>
-                - {character.name} : {character.class}
+                {character.name}
             </a>
 
             <button

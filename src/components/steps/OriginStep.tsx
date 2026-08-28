@@ -2,6 +2,7 @@ import { useCharacter } from "../../lib/hooks/useCharacter";
 import { Backgrounds , type Background } from "../../lib/types"
 import Under from "../Under";
 import StepBody from "./step/StepBody";
+import StepHead from "./step/StepHead";
 
 
 export default function OriginStep() {
@@ -13,11 +14,9 @@ export default function OriginStep() {
 
   return (
     <div className="flex flex-col items-center">
-        <div className="flex flex-col justify-center text-center mb-4">
-          <h2 className="text-xl font-semibold">Elije un origen: </h2>
-          <span className="h-8 text-2xl text-primary font-bold mt-2">{character.background}</span>
-          <Under/>
-        </div>
+        <StepHead title="Elije el origen">
+          {character.background}
+        </StepHead>
         <StepBody>
             {
                 Object.entries(Backgrounds).map(([backgroundName, backgroundImage]) => (

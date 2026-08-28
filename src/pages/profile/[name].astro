@@ -22,31 +22,62 @@ const {
     .order("created_at", {
         ascending: false,
     });
+
+const { data, error: ad_error } = await supabase.rpc(
+    "get_user_adventures"
+);
+
+const adventures = data?.adventures ?? [];
 ---
 <Layout>
-    <div class="flex flex-col md:w-1/2 gap-4 py-4">
-        <div class="relative flex justify-center items-center">
-            <ProfileFrame className="relative size-25 mx-auto text-primary"/>
-                <img
-                    src={avatar.src}
-                    alt="Profile Picture"
-                    class="absolute w-15 rounded-full"
-                />
-        </div>
-        <div class="flex justify-center items-center gap-2">
-            <h1 class="text-2xl font-bold">{name}</h1>
-            <a href="/auth/logout" class="text-center text-secondary-text">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                    <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                </svg>
-            </a>
+    <div class="flex flex-col items-center gap-4 py-4 w-full">
+        <div>
+            <div class="relative flex justify-center items-center">
+                <ProfileFrame className="relative size-25 mx-auto text-primary"/>
+                    <img
+                        src={user ? user.user_metadata.picture : avatar.src}
+                        alt="Profile Picture"
+                        class="absolute w-15 rounded-full"
+                    />
+            </div>
+            <div class="flex justify-center items-center gap-2">
+                <h1 class="text-2xl font-bold">{name}</h1>
+                <a href="/auth/logout" class="text-center text-secondary-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
         </div>
         
-        <section class="w-full flex flex-col items-center justify-center gap-4">
-            <h2 class="flex gap-2 items-center text-xl font-bold underline text-center mb-4">
-                Personajes
-            </h2>
-            <CharactersTable characters={characters} client:only="react"/>
-        </section>
+        <div class="flex justify-center w-full gap-4 py-4">
+            <section class="w-2/5 flex flex-col md:items-center gap-4">
+                <h2 class="flex gap-2 items-center text-xl font-bold underline text-center mb-4">
+                    Personajes
+                </h2>
+                <CharactersTable characters={characters} client:only="react"/>
+            </section>
+            <section class="w-2/5 flex flex-col md:items-center gap-4">
+                <h2 class="flex gap-2 items-center text-xl font-bold underline text-center mb-4">
+                    Aventuras
+                </h2>
+                <ul class="flex flex-col gap-2">
+                    {adventures.map((adventure) => (
+                        <li class="flex flex-wrap gap-1 ">
+                            <a 
+                                href={`/adventures/league/${adventure.adventure_id}`}
+                                class="max-w-35 truncate"
+                            >- {adventure.title}</a>
+
+                            <p class={adventure.role === "titular" ? "text-primary" : "text-secondary"}>
+                                {adventure.role === "titular"
+                                    ? "✓ Titular"
+                                    : "◌ Suplente"}
+                            </p>
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        </div>
     </div>
 </Layout>

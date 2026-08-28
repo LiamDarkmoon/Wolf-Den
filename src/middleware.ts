@@ -1,15 +1,18 @@
 import { defineMiddleware } from "astro:middleware";
 import { createClient } from "./db/supabase";
 
-export const onRequest = defineMiddleware(
-  async ({ request, cookies, locals, url }, next) => {
+const publicRoutes = [
+  "/",
+  "/auth/login",
+  "/auth/callback",
+];
 
-    if (
-      url.pathname === "/auth/login" ||
-      url.pathname === "/auth/callback"
-    ) {
-      return next();
-    }
+export const onRequest = defineMiddleware(
+  async ({ request, cookies, locals, url, redirect }, next) => {
+
+    const isPublicRoute = publicRoutes.some(
+      (route) => url.pathname === route
+    );
 
     const supabase = createClient({
       request,
@@ -21,7 +24,13 @@ export const onRequest = defineMiddleware(
       error,
     } = await supabase.auth.getUser();
 
+    
+
     locals.user = user;
+
+    if (!user && !isPublicRoute) {
+      return redirect("/auth/login");
+    }
 
     return next();
   }

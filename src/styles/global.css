@@ -22,3 +22,7 @@ body {
     max-width: 250px;
     max-height: 75px;
 }
+
+.scroll {
+    background-image: url("/public/Scroll.jpg");
+}

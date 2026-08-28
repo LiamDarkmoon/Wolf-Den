@@ -16,7 +16,7 @@ export default function CharactersTable({
     };
 
     return (
-        <ul className="flex flex-col gap-5">
+        <ul className="flex flex-col gap-2">
             {charactersList.map(character => {
 
     return (

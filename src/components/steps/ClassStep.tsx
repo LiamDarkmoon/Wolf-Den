@@ -2,6 +2,7 @@ import { useCharacter } from "../../lib/hooks/useCharacter";
 import { Classes , type Class } from "../../lib/types"
 import Under from "../Under";
 import StepBody from "./step/StepBody";
+import StepHead from "./step/StepHead";
 
 
 export default function ClassStep() {
@@ -13,11 +14,9 @@ export default function ClassStep() {
 
   return (
     <div className="flex flex-col items-center">
-        <div className="flex flex-col justify-center text-center mb-4">
-          <h2 className="text-xl font-semibold">Elije una classe: </h2>
-          <span className="h-8 text-2xl text-primary font-bold mt-2">{character.class}</span>
-          <Under/>
-        </div>
+        <StepHead title="Elige tu clase:">
+          {character.class}
+        </StepHead>
         <StepBody>
             {
                 Object.entries(Classes).map(([className, classImage]) => (

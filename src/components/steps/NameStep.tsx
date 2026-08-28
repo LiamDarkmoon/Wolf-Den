@@ -1,27 +1,41 @@
+import { useEffect, useState } from 'react';
+
 import { useCharacter } from "../../lib/hooks/useCharacter";
+import { useDebounce } from "../../lib/hooks/useDebounce";
+
 import InputField from "../InputField";
 import StepBody from "./step/StepBody";
 import Avatar from "../Avatar";
-import Under from "../Under";
+import StepHead from "./step/StepHead";
 
 export default function NameStep() {
   const { character, updateCharacter } = useCharacter();
 
+  const [name, setName] = useState(character.name);
+
+  const debouncedName = useDebounce(name, 500);
+
+  useEffect(() => {
+    if (debouncedName === character.name) return;
+
+    updateCharacter({
+      name: debouncedName,
+    });
+  }, [debouncedName]);
+
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-col justify-center text-center mb-4">
-        <h2 className="text-xl font-semibold">Quien eres?: </h2>
-        <span className="max-w-50 h-8 text-2xl text-primary font-bold mt-2">
-          {character.name}
-        </span>
-        <Under/>
-      </div>
+      <StepHead title="¿Cuál es tu nombre?">
+        {character.name}
+      </StepHead>
+
       <StepBody>
-      <Avatar avatar={ character?.class ? character?.class : 'druid'} />
+        <Avatar avatar={character.class ?? "druid"} />
+
         <InputField
           label="Nombre"
-          value={character.name}
-          onChange={(value) => updateCharacter({ ...character, name: value })}
+          value={name}
+          onChange={setName}
           id="name"
         />
       </StepBody>

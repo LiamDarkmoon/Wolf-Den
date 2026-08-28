@@ -123,7 +123,7 @@ export default function CharacterProvider({ children }: { children: React.ReactN
         }, []);
 
         useEffect(() => {
-            console.log("🧙‍♂️ Character updated:", character.name);
+           
             if (!hydrated) return;
 
             localStorage.setItem(
