@@ -36,6 +36,74 @@ export default function Join({
         return () => clearTimeout(timer);
     }, [misionState]);
 
+    useEffect(() => {
+
+        const channel = supabase
+            .channel(`adventure-${adventureId}`)
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "adventure_registrations",
+                    filter: `adventure_id=eq.${adventureId}`,
+                },
+                async () => {
+
+                    try {
+
+                        const { data, error } =
+                            await supabase.rpc(
+                                "get_adventure_status",
+                                {
+                                    p_adventure_id: adventureId,
+                                }
+                            );
+
+                        if (error) {
+                            console.error(
+                                "Status error:",
+                                error
+                            );
+                            return;
+                        }
+
+                        // Acá actualizamos React
+                        setPlayerCount(
+                            data.current_players
+                        );
+
+                        setSubstituteCount(
+                            data.current_substitutes
+                        );
+
+                        setRegistered(
+                            data.is_registered
+                        );
+
+                        setRole(
+                            data.role ?? null
+                        );
+
+                    } catch (error) {
+
+                        console.error(
+                            "Realtime refresh error:",
+                            error
+                        );
+
+                    }
+
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+
+    }, [adventureId]);
+
     const handleRegistration = async () => {
         
         if (registered) {
@@ -57,14 +125,12 @@ export default function Join({
             }
 
             if (data.success) {
-                setRegistered(true);
-                setRole(data.role);
 
                 if (data.role === "titular") {
-                    setPlayerCount(prev => prev + 1);
                     setMisionState("Te has registrado como titular.");
+                    console.log('done... navigating')
+                    navigate(`/adventures/league/${adventureId}`)
                 } else {
-                    setSubstituteCount(prev => prev + 1);
                     setMisionState("Te has registrado como suplente.");
                 }
                 return;
@@ -102,6 +168,7 @@ export default function Join({
                 "Ocurrió un error inesperado."
             );
         }
+        console.log('done... navigating')
         navigate(`/adventures/league/${adventureId}`)
     };
 
@@ -114,16 +181,14 @@ export default function Join({
                 }
             );
 
+            if (!data.success) {
 
-            if (error) {
-                console.error("RPC error:", error);
+                if (data.error === "not_registered") {
+                    setRegistered(false);
+                    setRole(null);
+                }
+
                 return;
-            }
-
-            if (data.success) {
-                setRegistered(false);
-                setRole(null);
-                setSubstituteCount(prev => prev - 1);
             }
 
         } catch (error) {
