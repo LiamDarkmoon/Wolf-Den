@@ -67,6 +67,7 @@ export default function Join({
                             );
                             return;
                         }
+                        console.log(data)
 
                         // Acá actualizamos React
                         setPlayerCount(
