@@ -54,8 +54,11 @@ const suplentes = players.filter(
                 </ul>
                 <ul>
                     <h2 class="text-xl font-semibold border-b-2 border-primary text-primary">Suplentes</h2>
-                    {suplentes.map((player: any) => (
+                    {suplentes.map((player: any, index:number) => (
                         <li class="italic my-2">
+                            <span class="text-xs opacity-50">
+                                {index +1} - 
+                            </span>
                             {player.display_name}
                             <span class="text-xs opacity-50">
                                 ({player.user_id.slice(0, 6)})
