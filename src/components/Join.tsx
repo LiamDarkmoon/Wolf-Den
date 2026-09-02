@@ -25,7 +25,6 @@ export default function Join({
     const [substituteCount, setSubstituteCount] = useState(currentSubstitutes);
 
     const isFull = playerCount >= maxPlayers;
-    console.log('isFull', isFull, playerCount, maxPlayers)
 
     useEffect(() => {
         if (!misionState) return;

@@ -55,15 +55,13 @@ export const server = {
       return data;
     },
   }),
-   addAdventure: defineAction({
+    
+    deleteCharacter: defineAction({
         input: z.object({
-          title: z.string().min(1),
-          max_players: z.number().min(1).max(6),
-          description: z.string().nullable().optional(),
-
+            id: z.string().uuid(),
         }),
 
-        handler: async (adventure, context) => {
+        handler: async ({ id }, context) => {
 
             const supabase = createClient({
                 request: context.request,
@@ -80,24 +78,125 @@ export const server = {
             }
 
             const { data, error } = await supabase
-            .from("adventures")
-            .insert({
-              user_id: user.id,
-              title: adventure.title,
-              max_players: adventure.max_players,
-              description: adventure.description ?? null,
-            })
-            .select()
-            .single();
+                .from("characters")
+                .delete()
+                .eq("id", id)
+                .eq("user_id", user.id)
+                .single();
 
             if (error) {
-                console.error("Error adding adventure:", error);
-                throw new Error("Could not add adventure");
+                console.error("Error deleting character:", error);
+                throw new Error("Character not found");
             }
 
             return data;
         },
     }),
+
+    addAdventure: defineAction({
+
+        input: z.object({
+            title: z.string().min(1),
+            max_players: z.number().min(1),
+            description: z.string().nullable().optional(),
+        }),
+
+        handler: async (adventure, context) => {
+
+            const supabase = createClient({
+
+                request: context.request,
+
+                cookies: context.cookies,
+
+            });
+
+            const {
+
+                data: { user },
+
+                error: userError,
+
+            } = await supabase.auth.getUser();
+
+            if (userError || !user) {
+
+                throw new Error("Not authenticated");
+
+            }
+
+            const { data, error } = await supabase
+
+            .from("adventures")
+
+            .insert({
+
+              created_by: user.id,
+
+              title: adventure.title,
+
+              max_players: adventure.max_players,
+
+              description: adventure.description ?? null,
+
+              adventure_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+
+            })
+
+            .select()
+
+            .single();
+
+            if (error) {
+
+                console.error("Error adding adventure:", error);
+
+                throw new Error("Could not add adventure");
+
+            }
+
+            return data;
+
+        },
+
+    }),
+
+     deleteAdventure: defineAction({
+        input: z.object({
+            id: z.string().uuid(),
+        }),
+
+        handler: async ({ id }, context) => {
+
+            const supabase = createClient({
+                request: context.request,
+                cookies: context.cookies,
+            });
+
+            const {
+                data: { user },
+                error: userError,
+            } = await supabase.auth.getUser();
+
+            if (userError || !user) {
+                throw new Error("Not authenticated");
+            }
+
+            const { data, error } = await supabase
+                .from("adventures")
+                .delete()
+                .eq("id", id)
+                .single();
+
+            if (error) {
+                console.error("Error deleting adventure:", error);
+                throw new Error("Adventure not found");
+            }
+
+            return data;
+        },
+    }),
+
 };
 
 /* const { data, error } = await supabase

@@ -2,6 +2,10 @@
 import Layout from '../../layouts/Layout.astro';
 import Join from '../../components/Join.tsx';
 import { createClient } from "../../db/supabase";
+import Delete from '../../components/delete';
+
+
+const role = Astro.locals.userRole;
 
 const supabase = createClient({
     request: Astro.request,
@@ -57,11 +61,20 @@ const adventuresWithStatus = await Promise.all(
                 return (
                         <article class="board">
 
-                            <h2 class="text-2xl font-bold text-center mb-4 underline">
-                               <a href={`/adventures/league/${adventure.id}`}>
-                                    {adventure.title}
-                                </a> 
-                            </h2> 
+                            <div class="flex items-center justify-center gap-2 mb-4">
+                                <h2 class="text-2xl font-bold text-center underline">
+                                <a href={`/adventures/league/${adventure.id}`}>
+                                        {adventure.title}
+                                    </a>
+                                </h2>
+                                {
+                                    role === 'admin' || role === 'super_admin' && (
+                                        <Delete id={adventure.id} client:load/>
+                                    )
+                                }
+                                
+
+                            </div>
 
                             <img
                                 src={adventure.poster_url ?? "/last-sanctum.png"}

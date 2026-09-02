@@ -8,56 +8,57 @@ const publicRoutes = [
 ];
 
 export const onRequest = defineMiddleware(
-  async ({ request, cookies, locals, url, redirect }, next) => {
+    async ({ request, cookies, locals, url, redirect }, next) => {
 
-    const isPublicRoute = publicRoutes.some(
-      (route) => url.pathname === route
-    );
+        const isPublicRoute = publicRoutes.some(
+            (route) => url.pathname === route
+        );
 
-    const supabase = createClient({
-      request,
-      cookies,
-    });
+        const supabase = createClient({
+            request,
+            cookies,
+        });
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
 
-    locals.user = user;
 
-    // Si no hay usuario y la ruta es privada
-    if (!user && !isPublicRoute) {
-      return redirect("/auth/login");
+        locals.user = user;
+        locals.userRole = null;
+
+        // Usuario no autenticado
+        if (!user) {
+            if (!isPublicRoute) {
+                return redirect("/auth/login");
+            }
+
+            return next();
+        }
+
+        // Usuario autenticado → obtenemos su rol
+        const { data: profile, error: profileError } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+
+        if (!profileError && profile) {
+            locals.userRole = profile.role;
+        }
+
+        // Protección del panel admin
+        if (url.pathname.startsWith("/admin")) {
+
+            if (
+                profileError ||
+                !profile ||
+                !["admin", "super_admin"].includes(profile.role)
+            ) {
+                return redirect("/");
+            }
+        }
+
+        return next();
     }
-
-    const { data: profile, error } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user?.id)
-        .single();
-
-    
-    const userRole = profile?.role;
-    locals.userRole = userRole ?? null;
-
-    // Si intenta acceder al admin
-    if (url.pathname.startsWith("/admin")) {
-
-      if (!user) {
-        return redirect("/auth/login");
-      }
-
-      if (error || !profile) {
-        return redirect("/");
-      }
-
-      
-
-      if (!["admin", "super_admin"].includes(userRole)) {
-        return redirect("/");
-      }
-    }
-
-    return next();
-  }
 );
