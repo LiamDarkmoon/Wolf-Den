@@ -13,13 +13,13 @@ import NavBar from '../components/NavBar.astro';
 	#container {
 		position: relative;
 		background: url('/den-bg.webp') center/cover no-repeat;
-		background-color: #f2af23;
+		baground-color: #0f1115;
 		height: 100%;
 		width: 100%;
 		max-width: 100%;
 		display: grid;
-		/* grid-template-columns: 150px;
-		grid-template-rows: 100px 1fr; */
+		grid-template-columns: 1fr;
+		grid-template-rows: 48px 1fr;
 	}
 	#container::before {
 		content: "";
@@ -30,11 +30,11 @@ import NavBar from '../components/NavBar.astro';
 	}
 
 	main {
+		grid-column: 1 / -1;
+		grid-row: 2 / -1;
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
 		z-index: 1;
 		min-height: calc(100vh - 48px);
 		width: 100%;

@@ -25,13 +25,14 @@ export default function Join({
     const [substituteCount, setSubstituteCount] = useState(currentSubstitutes);
 
     const isFull = playerCount >= maxPlayers;
+    console.log('isFull', isFull, playerCount, maxPlayers)
 
     useEffect(() => {
         if (!misionState) return;
 
         const timer = setTimeout(() => {
             setMisionState("");
-        }, 10000);
+        }, 4000);
 
         return () => clearTimeout(timer);
     }, [misionState]);
@@ -169,8 +170,6 @@ export default function Join({
                 "Ocurrió un error inesperado."
             );
         }
-        console.log('done... navigating')
-        navigate(`/adventures/league/${adventureId}`)
     };
 
     const handleCancellation = async () => {
@@ -200,9 +199,10 @@ export default function Join({
     return(
         <>
             <p className="font-semibold underline">
+                <i className="fa-solid fa-users me-1 text-primary"></i>
                 Titulares: 
                 <span className={isFull ? "text-primary" : ""}>
-                    {playerCount}
+                    {" "}{playerCount}
                 </span>
                 {" "}de{" "}
                 <span className="text-primary">
@@ -211,15 +211,18 @@ export default function Join({
             </p>
 
             <p className="font-semibold underline">
+                <i className="fa-solid fa-hourglass-half me-1 text-primary"></i>
                 Suplentes: 
                 <span className="mb-2"> 
-                    {substituteCount}
+                    {" "}{substituteCount}
                 </span>
             </p>
 
-            {misionState && (
-                <p className="mb-4 text-center text-primary-hover">{misionState}</p>
-            )}
+            <div className="h-4">
+                {misionState && (
+                    <p className="mb-4 text-center text-primary-hover">{misionState}</p>
+                )}
+            </div>
             <Button
                 onClick={handleRegistration}
                 disabled={registered}

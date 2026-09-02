@@ -38,19 +38,21 @@ const suplentes = players.filter(
 
 <Layout>
     <section class="w-full flex flex-col items-center text-center">
-        <h1 class="text-2xl text-primary font-extrabold underline">{adventure.title}</h1>
-        <a href="/adventures/league" class="text-xs text-secondary mt-3">Back</a>
+        <h1 class="text-2xl text-primary font-extrabold underline">
+            <a href="/adventures/league" class="text-secondary me-3"><i class="fa-solid fa-arrow-left"></i></a>
+            {adventure.title}
+        </h1>
         <p class="my-4">{adventure.description}</p>
         <article class="w-full flex flex-col-reverse md:flex-row justify-around">
 
             <div class="flex flex-col md:w-1/3 p-4 gap-5 text-start   ">
                 <ul class="relative">
                     <h2 class="text-xl font-semibold border-b-2 border-primary text-primary">Titulares</h2>
+
                     {titulares.map((player: any) => (
-                        <li class="italic my-2">
-                            <CharacterSelector userId={user?.id} player={player} adventureId={adventure.id} client:only="react"/>
-                        </li>
+                        <CharacterSelector userId={user?.id} player={player} adventureId={adventure.id} client:only="react"/>
                     ))}
+
                 </ul>
                 <ul>
                     <h2 class="text-xl font-semibold border-b-2 border-primary text-primary">Suplentes</h2>

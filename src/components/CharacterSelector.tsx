@@ -89,59 +89,98 @@ export default function CharacterSelector({
         setVisible(false);
     };
 
+    const handleDelete = async () => {
+
+       try {
+            const { data, error } = await supabase.rpc(
+                "cancel_adventure_registration",
+                {
+                    p_adventure_id: adventureId,
+                }
+            );
+
+            if (!data.success) {
+                console.error("Error deleting registration:", data.error);
+            }
+
+        } catch (error) {
+            console.error("Error cancelling registration:", error);
+        }
+    }
+
 
     const isOwner = player.user_id === userId;
 
 
     return (
         <>
-            <li className="flex items-center italic my-3">
+            <li className={isOwner ? "max-w-100 flex items-center justify-around italic py-3 my-2 rounded-sm border-b border-primary/20 bg-primary/30" : "max-w-100 flex items-center justify-around italic py-3 my-2 border-b border-primary/20"}>
 
                 {isOwner ? (
                     <button
-                        className="size-8 grid place-items-center text-primary cursor-pointer me-1 hover:text-primary-hover"
-                        onClick={handleDropdown}
+                        className="size-8 text-2xl grid place-items-center text-primary cursor-pointer me-1 group"
+                        onClick={!selectedCharacter ? handleDropdown : undefined}
                     >
-                        <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            fill="none" viewBox="0 0 24 24" 
-                            strokeWidth={1.5} stroke="currentColor" 
-                            className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                        </svg>
+                        {
+                            !selectedCharacter ?
+                            <i className="fa-solid fa-square-plus group-hover:text-primary-hover"></i>
+                            :
+                            <i className="fa-solid fa-square-check"></i>
+                        }
 
                     </button>
                 ) :
                     <button
-                        className="size-8 grid place-items-center text-secondary cursor-pointer me-1"
+                        className="size-8 text-2xl grid place-items-center text-secondary cursor-pointer me-1"
                     >
-                        <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            fill="none" 
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5} 
-                            stroke="currentColor" 
-                            className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
-                        </svg>
+                        <i className="fa-solid fa-message"></i>
 
                     </button>
                 }
                 
-                <div className="flex flex-col">
+                {/* Name and character info */}
+                <div className="w-50 flex flex-col">
 
-                    <span className="flex items-center">
-                    {player.display_name}
+                    <span className="flex items-center cursor-pointer group">
+                        {player.display_name}
                         <span className="text-xs opacity-50">
                             ({player.user_id.slice(0, 6)})
-                        </span>:
+                        </span>
+                        <i className="fa-solid fa-user-plus text-sm ms-1 group-hover:text-primary-hover group-hover:scale-110"></i>
+                        :
                     </span>
 
-                    <span className="">
-                    Personaje: -&gt; {selectedCharacter ?? "Sin personaje"}
+                    <span className="truncate">
+                        <i className="fa-solid fa-masks-theater me-1 text-primary-hover"></i>
+                        
+                        {
+                            selectedCharacter ? (
+                                <>
+                                <span> {selectedCharacter}</span>
+                                <i className="fa-solid fa-check ms-1 text-emerald-600"></i>
+                                </>
+                            ) : isOwner ? (
+                                <span className="text-emerald-600 text-sm"> Elige tu personaje</span>
+                            ) :
+                            (
+                                <span className="text-rose-600 text-sm"> Sin personaje elegido</span>
+                            )
+                        }
                     </span>
 
                 </div>
+
+                <button
+                        className="size-8 text-2xl grid place-items-center text-rose-600 cursor-pointer me-1 hover:text-rose-500"
+                        onClick={handleDelete}
+                    >
+                            
+                    {
+                        isOwner &&
+                        <i className="fa-solid fa-trash"></i>
+                    }
+
+                </button>
 
 
             </li>

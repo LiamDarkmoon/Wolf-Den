@@ -55,47 +55,15 @@ export const server = {
       return data;
     },
   }),
-   getCharacters: defineAction({
-        handler: async (_, context) => {
-
-            const supabase = createClient({
-                request: context.request,
-                cookies: context.cookies,
-            });
-
-            const {
-                data: { user },
-                error: userError,
-            } = await supabase.auth.getUser();
-
-            if (userError || !user) {
-                throw new Error("Not authenticated");
-            }
-
-            const { data, error } = await supabase
-                .from("characters")
-                .select("*")
-                .eq("user_id", user.id)
-                .order("created_at", {
-                    ascending: false,
-                });
-
-            if (error) {
-                console.error("Error fetching characters:", error);
-                throw new Error("Could not fetch characters");
-            }
-
-            return data;
-        },
-    }),
-
-    
-    deleteCharacter: defineAction({
+   addAdventure: defineAction({
         input: z.object({
-            id: z.string().uuid(),
+          title: z.string().min(1),
+          max_players: z.number().min(1).max(6),
+          description: z.string().nullable().optional(),
+
         }),
 
-        handler: async ({ id }, context) => {
+        handler: async (adventure, context) => {
 
             const supabase = createClient({
                 request: context.request,
@@ -112,15 +80,19 @@ export const server = {
             }
 
             const { data, error } = await supabase
-                .from("characters")
-                .delete()
-                .eq("id", id)
-                .eq("user_id", user.id)
-                .single();
+            .from("adventures")
+            .insert({
+              user_id: user.id,
+              title: adventure.title,
+              max_players: adventure.max_players,
+              description: adventure.description ?? null,
+            })
+            .select()
+            .single();
 
             if (error) {
-                console.error("Error deleting character:", error);
-                throw new Error("Character not found");
+                console.error("Error adding adventure:", error);
+                throw new Error("Could not add adventure");
             }
 
             return data;

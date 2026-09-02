@@ -1,0 +1,71 @@
+---
+import Layout from './Layout.astro';
+import { createClient } from "../db/supabase";
+
+const supabase = createClient({
+    request: Astro.request,
+    cookies: Astro.cookies,
+});
+
+const { data: adventures } = await supabase
+    .from('adventures')
+    .select('*')
+    .order('adventure_date', { ascending: true });
+
+const adventuresWithStatus = await Promise.all(
+    (adventures ?? []).map(async (adventure) => {
+        const { data: status, error } = await supabase.rpc(
+            "get_adventure_status",
+            {
+                p_adventure_id: adventure.id,
+            }
+        );
+
+        if (error) {
+            console.error(
+                `Error getting status for ${adventure.title}:`,
+                error
+            );
+        }
+
+        return {
+            ...adventure,
+            currentPlayers: status?.current_players ?? 0,
+            currentSubstitutes: status?.current_substitutes ?? 0,
+            isRegistered: status?.is_registered ?? false,
+            role: status?.role ?? null,
+        };
+    })
+);
+---
+<Layout>
+    <h1 class="text-2xl text-center font-bold border-b-2 border-primary text-primary mb-4 pb-4">
+        <i class="fa-solid fa-layer-group me-1"></i>
+        Panel de administracion
+    </h1>
+    <section class="h-full flex flex-col md:flex-row gap-4">
+       
+        <div class="md:w-1/4 flex md:flex-col gap-4 py-4 md:border-e-2 border-primary ">
+            <a 
+                class="w-full text-center md:text-start mb-2 pb-2 border-b border-primary/40"
+                href="/admin/advetures"
+            >
+                Aventuras
+                <i class="fa-solid fa-gear ms-2 text-primary"></i>
+            </a>
+            <a 
+                class="w-full text-center md:text-start mb-2 pb-2 border-b border-primary/40"
+                href="/admin/players"
+            >
+                Jugadores
+                <i class="fa-solid fa-gear ms-2 text-primary"></i>
+            </a>
+        </div>
+        <slot/>
+
+    </section>
+</Layout>
+
+<style>
+
+</style>

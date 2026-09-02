@@ -30,6 +30,16 @@ export const onRequest = defineMiddleware(
       return redirect("/auth/login");
     }
 
+    const { data: profile, error } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user?.id)
+        .single();
+
+    
+    const userRole = profile?.role;
+    locals.userRole = userRole ?? null;
+
     // Si intenta acceder al admin
     if (url.pathname.startsWith("/admin")) {
 
@@ -37,19 +47,11 @@ export const onRequest = defineMiddleware(
         return redirect("/auth/login");
       }
 
-      const { data: profile, error } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-
-      locals.userRole = profile?.role ?? null;
-
       if (error || !profile) {
         return redirect("/");
       }
 
-      const userRole = profile.role;
+      
 
       if (!["admin", "super_admin"].includes(userRole)) {
         return redirect("/");
