@@ -6,7 +6,6 @@ export default function AddAdventureForm() {
     const handleAdd = async (event: React.FormEvent<HTMLFormElement>) =>{
         const formData = new FormData(event.currentTarget);
 
-        console.log('data', formData)
         const { data, error } = await actions.addAdventure({
             title: formData.get("title") as string,
             max_players: Number(formData.get("max_players")),
@@ -18,7 +17,7 @@ export default function AddAdventureForm() {
     return(
         <form className="w-full flex flex-col items-center p-2 gap-4" onSubmit={handleAdd}>
 
-            <h2 className="text-2xl font-semibold text-center underline">Agrega una Aventura</h2>
+            <h2 className="text-2xl font-semibold text-center border-b border-main-text">Agrega una Aventura</h2>
 
             <div className="w-full md:w-1/2 flex flex-col gap-2">
                 <label htmlFor="title">Título:</label>
@@ -36,7 +35,7 @@ export default function AddAdventureForm() {
             </div>
 
 
-            <Button type="submit" onClick={()=> console.log('submit')}>
+            <Button type="submit">
                 Agregar Aventura
             </Button>
         </form>
