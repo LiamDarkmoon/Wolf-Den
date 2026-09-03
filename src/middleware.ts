@@ -5,6 +5,7 @@ const publicRoutes = [
   "/",
   "/auth/login",
   "/auth/callback",
+  "/404",
 ];
 
 export const onRequest = defineMiddleware(
@@ -30,6 +31,7 @@ export const onRequest = defineMiddleware(
         // Usuario no autenticado
         if (!user) {
             if (!isPublicRoute) {
+                console.log("Usuario no autenticado", url.pathname);
                 return redirect("/auth/login");
             }
 
