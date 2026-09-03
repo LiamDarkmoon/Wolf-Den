@@ -28,12 +28,18 @@ export default function PlayersList({players}:{players:any}) {
                     <span>
                         {
                             selectedPlayer === player.id ? 
-                            <div className="flex  gap-4 w-15">
-                                <i className="fa-solid fa-user-plus text-emerald-500"></i>
-                                <i className="fa-solid fa-user-minus text-rose-500"></i> 
+                            <div className="flex  gap-4 w-5">
+                                {
+                                    player.role === "user" ?
+                                    <i className="fa-solid fa-user-plus text-emerald-500" onClick={() => handlePromotePlayer(player)}></i>
+                                    : player.role === "admin" ?
+                                    <i className="fa-solid fa-user-minus text-rose-500" onClick={() => handleDemotePlayer(player)}></i>
+                                    : 
+                                    <i className="fa-solid fa-shield-heart text-secondary"></i>
+                                }
                             </div>
                             : 
-                            <div className="flex  gap-4 w-15">
+                            <div className="flex  gap-4 w-5">
                                 
                             </div>
                         }
