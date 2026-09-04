@@ -42,6 +42,7 @@ const adventuresWithStatus = await Promise.all(
         };
     })
 );
+
 ---
 <Layout>
     <div class="w-full flex flex-col items-center justify-center gap-4 py-4">
@@ -63,17 +64,15 @@ const adventuresWithStatus = await Promise.all(
 
                             <div class="flex items-center justify-center gap-2 mb-4">
                                 <h2 class="text-2xl font-bold text-center underline">
-                                <a href={`/adventures/league/${adventure.id}`}>
+                                <a href={`/adventures/league/${adventure.id}`} class="truncate">
                                         {adventure.title}
                                     </a>
                                 </h2>
                                 {
                                     role === 'admin' || role === 'super_admin' && (
-                                        <Delete id={adventure.id} client:load/>
+                                        <Delete id={adventure.id} client:only="react"/>
                                     )
                                 }
-                                
-
                             </div>
 
                             <img
@@ -83,7 +82,7 @@ const adventuresWithStatus = await Promise.all(
                             />
 
                             <Join
-                                client:load
+                                client:only="react"
                                 role={adventure.role}
                                 currentPlayers={adventure.currentPlayers}
                                 currentSubstitutes={adventure.currentSubstitutes}

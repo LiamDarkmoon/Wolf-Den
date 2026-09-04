@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Button  from "../components/button";
 import { supabase } from '../db/supabase-browser';
 import { navigate } from "astro:transitions/client";
+import { getGoogleCalendarUrl } from "../lib/utils/getCalendarUrl";
 
 export default function Join({
     isRegistered,
@@ -19,12 +20,39 @@ export default function Join({
     adventureId: string;
 }){
     const [misionState, setMisionState] = useState("");
+    const [adventureUrl, setAdventureUrl] = useState<string | null>(null);
     const [role, setRole] = useState(initialRole);
     const [registered, setRegistered] = useState(isRegistered);
     const [playerCount, setPlayerCount] = useState(currentPlayers);
     const [substituteCount, setSubstituteCount] = useState(currentSubstitutes);
 
     const isFull = playerCount >= maxPlayers;
+
+    useEffect(() => {
+        const loadAdventure = async () => {
+            const { data: adventure, error } = await supabase
+                .from("adventures")
+                .select("*")
+                .eq("id", adventureId)
+                .single();
+
+            if (error || !adventure) {
+                console.error("Error loading adventure:", error);
+                return;
+            }
+
+            const calendarUrl = getGoogleCalendarUrl({
+                adventure_date: adventure.adventure_date,
+                title: adventure.title,
+                description: adventure.description,
+                url: `https://wolf-den.vercel.app/adventures/${adventure.id}`,
+            });
+
+            setAdventureUrl(calendarUrl);
+        };
+
+        loadAdventure();
+    }, [adventureId]);
 
     useEffect(() => {
         if (!misionState) return;
@@ -67,7 +95,6 @@ export default function Join({
                             );
                             return;
                         }
-                        console.log(data)
 
                         // Acá actualizamos React
                         setPlayerCount(
@@ -112,12 +139,17 @@ export default function Join({
         }
 
         try {
-            const { data, error } = await supabase.rpc(
-                "register_for_adventure",
-                {
-                    p_adventure_id: adventureId,
-                }
+            const { data, error } = await supabase.functions.invoke(
+            "register-for-adventure",
+            {
+                body: {
+                adventureId,
+                },
+            }
             );
+
+            console.log("REGISTER:", data);
+            console.error("FUNCTION ERROR:", error);
 
             if (error) {
                 console.error("RPC error:", error);
@@ -195,8 +227,10 @@ export default function Join({
         }
     };
     
+    
     return(
-        <>
+        <div className="flex flex-col gap-2">
+            
             <p className="font-semibold underline">
                 <i className="fa-solid fa-users me-1 text-primary"></i>
                 Titulares: 
@@ -216,6 +250,16 @@ export default function Join({
                     {" "}{substituteCount}
                 </span>
             </p>
+
+            {
+                role === "titular" ? (
+                    <a href={adventureUrl ? adventureUrl : "#"} target="_blank" rel="noopener noreferrer" className="underline cursor-pointer">
+                        Agregar a Google Calendar
+                        <i className="fa-solid fa-calendar ms-2"></i>
+                    </a>)
+                :
+                <a href={adventureUrl ? adventureUrl : "#"} target="_blank" rel="noopener noreferrer" className="h-6"></a>
+            }
 
             <div className="h-4">
                 {misionState && (
@@ -246,6 +290,6 @@ export default function Join({
                     </button>
                 }
             </div>
-        </>
+        </div>
     )
 }

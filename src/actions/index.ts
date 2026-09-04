@@ -1,6 +1,7 @@
 import { defineAction } from "astro:actions";
 import { z } from "astro/zod";
 import { createClient } from "../db/supabase";
+import { getNextAdventureDate } from "../lib/utils/getAdventureDate";
 
 export const server = {
   createCharacter: defineAction({
@@ -139,7 +140,7 @@ export const server = {
 
               description: adventure.description ?? null,
 
-              adventure_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+              adventure_date: getNextAdventureDate(),
 
             })
 
