@@ -147,12 +147,9 @@ export default function Join({
                 },
             }
             );
-
-            console.log("REGISTER:", data);
-            console.error("FUNCTION ERROR:", error);
-
+            
             if (error) {
-                console.error("RPC error:", error);
+                console.error("EDGE FUNCTION ERROR:", error);
                 setMisionState("No se pudo realizar la inscripción.");
                 return;
             }
@@ -161,7 +158,6 @@ export default function Join({
 
                 if (data.role === "titular") {
                     setMisionState("Te has registrado como titular.");
-                    console.log('done... navigating')
                     navigate(`/adventures/league/${adventureId}`)
                 } else {
                     setMisionState("Te has registrado como suplente.");
@@ -258,7 +254,7 @@ export default function Join({
                         <i className="fa-solid fa-calendar ms-2"></i>
                     </a>)
                 :
-                <a href={adventureUrl ? adventureUrl : "#"} target="_blank" rel="noopener noreferrer" className="h-6"></a>
+                <a target="_blank" rel="noopener noreferrer" className="h-6"></a>
             }
 
             <div className="h-4">

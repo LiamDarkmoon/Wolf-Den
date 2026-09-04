@@ -69,8 +69,8 @@ const adventuresWithStatus = await Promise.all(
                                     </a>
                                 </h2>
                                 {
-                                    role === 'admin' || role === 'super_admin' && (
-                                        <Delete id={adventure.id} client:only="react"/>
+                                    (role === "admin" || role === "super_admin") && (
+                                        <Delete id={adventure.id} client:only="react" />
                                     )
                                 }
                             </div>
