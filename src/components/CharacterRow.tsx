@@ -25,16 +25,19 @@ export default function CharacterRow({
     };
 
     return (
-        <li className="hover:text-primary">
+        <li className="flex justify-between items-center hover:text-primary hover:bg-primary/30 p-2 rounded-sm">
+            
+            <i className="fa-solid fa-square-check text-primary"></i>
+            
             <a href={`/profile/characters/${character.id}`}>
                 {character.name}
             </a>
 
             <button
-                className="ml-2 text-red-500 hover:text-red-700 cursor-pointer"
+                className="text-rose-500 hover:text-rose-600 cursor-pointer"
                 onClick={handleDelete}
             >
-                x
+                <i className="fa-solid fa-trash"></i>
             </button>
         </li>
     );

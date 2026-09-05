@@ -64,3 +64,28 @@ export const Backgrounds = {
   wayfarer,
 } as const;
 export type Background = keyof typeof Backgrounds;
+
+export interface Adventure {
+  id: string;
+  title: string;
+  description: string;
+  poster_url: string;
+  adventure_date: Date;
+  max_players: number;
+  created_by: string;
+}
+
+export interface registeredAdventure {
+  adventure_id: string,
+  title: string;
+  description: string;
+  poster_url: string;
+  adventure_date: Date;
+  max_players: number;
+  role: 'titular' | 'suplente',
+  registered_at: Date
+}
+
+export interface Player {
+
+}

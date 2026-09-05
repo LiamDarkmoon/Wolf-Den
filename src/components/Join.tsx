@@ -225,7 +225,7 @@ export default function Join({
     
     
     return(
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col items-center gap-2">
             
             <p className="font-semibold underline">
                 <i className="fa-solid fa-users me-1 text-primary"></i>
@@ -265,11 +265,12 @@ export default function Join({
             <Button
                 onClick={handleRegistration}
                 disabled={registered}
+                size="md"
             >
                 {role === "titular"
-                    ? "✓ Registrado titular"
+                    ? "✓ Titular"
                     : role === "suplente"
-                        ? "✓ Registrado suplente"
+                        ? "✓ Suplente"
                         : isFull
                             ? "Anotarse como suplente"
                             : "Unirse a la misión"
@@ -278,12 +279,13 @@ export default function Join({
             <div className="h-10">
                 {
                     registered &&
-                    <button 
+                    <Button 
                         onClick={handleCancellation}
-                        className="underline cursor-pointer"
+                        size="md"
+                        secondary
                     >
-                        cancelar participacion
-                    </button>
+                        Cancelar inscripción
+                    </Button>
                 }
             </div>
         </div>

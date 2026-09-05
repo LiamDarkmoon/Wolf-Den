@@ -2,26 +2,32 @@
 import Button from './button.tsx';
 ---
 
-<div class="hero max-h-162.5">
-    <h1 class="text-3xl font-bold text-center mt-12.5">Bienvenidos a <br/> <span class="text-5xl text-primary">Wolf's Den</span></h1>
-    <p class="text-lg italic opacity-80 my-7.5">Una forma rapida y sencilla de adentrarte en el mundo de D&D.</p>
+<div class="hero">
+    <div class="flex flex-col">
+        <span class="text-3xl  text-center">Bienvenidos a</span>
+        <h1 class="text-5xl text-primary font-bold">Wolf's Den</h1>
+        <span class="font-extralight itelic text-xs text-secondary-text">Powered by Los Manijas del Rol</span>
+    </div>
+    <p class="text-lg italic opacity-80">Una forma rapida y sencilla de adentrarte en el mundo de D&D.</p>
     
-    <div class="flex flex-col  justify-center items-center gap-3">
+    <div class="flex flex-col  justify-center items-center gap-4">
         <Button client:load  to="/characters/creation">Crea tu personaje</Button>
-        <!-- <Button className="">Crea un objeto</Button> -->
+        <Button secondary client:load  to="/adventures/league">Liga de Aventureros</Button>
+        <a href="https://chat.whatsapp.com/C4VEVYjHtqI01Z9vVzj0g2" target="_blank" class="underline">Unite a la comunidad</a>
     </div>
 
-    <a href="/adventures/league" class="text-primary hover:text-primary font-bold py-2 px-4"> Liga de aventureros </a>
 </div>
 
 <style>
     .hero {
         position: relative;
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-items: center;
         justify-content: center;
-        gap: 1.5rem;
+        gap: 3rem;
         text-align: center;
     }
 </style>

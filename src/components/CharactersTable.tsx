@@ -3,30 +3,29 @@ import CharacterRow from "./CharacterRow";
 import type { CharacterRecord } from "./CharacterCreator/CharacterProvider";
 
 export default function CharactersTable({
-    characters,
+  characters,
 }: {
-    characters: CharacterRecord[] | null;
+  characters: CharacterRecord[] | null;
 }) {
-    const [charactersList, setCharactersList] = useState(characters ?? []);
+  const [charactersList, setCharactersList] = useState(characters ?? []);
 
-    const handleDelete = (id: string) => {
-        setCharactersList(prev =>
-            prev.filter(character => character.id !== id)
-        );
-    };
+  const handleDelete = (id: string) => {
+    setCharactersList((prev) =>
+      prev.filter((character) => character.id !== id),
+    );
+  };
 
-    return (
-        <ul className="flex flex-col gap-2">
-            {charactersList.map(character => {
-
-    return (
-        <CharacterRow
+  return (
+    <ul className="flex flex-col gap-2 min-w-50 md:max-w-fit">
+      {charactersList.map((character) => {
+        return (
+          <CharacterRow
             key={character.id}
             character={character}
             onDelete={handleDelete}
-        />
-    );
-})}
-        </ul>
-    );
+          />
+        );
+      })}
+    </ul>
+  );
 }
