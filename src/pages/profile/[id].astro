@@ -32,6 +32,7 @@ const { data, error: ad_error } = await supabase.rpc(
 );
 
 const adventures = data?.adventures ?? [];
+
 ---
 <Layout>
     <div class="flex flex-col items-center gap-4 py-4 w-full">

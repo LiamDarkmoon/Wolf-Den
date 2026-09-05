@@ -161,6 +161,7 @@ export default function Join({
                     navigate(`/adventures/league/${adventureId}`)
                 } else {
                     setMisionState("Te has registrado como suplente.");
+                    navigate(`/adventures/league/${adventureId}`)
                 }
                 return;
             }
@@ -197,6 +198,7 @@ export default function Join({
                 "Ocurrió un error inesperado."
             );
         }
+
     };
 
     const handleCancellation = async () => {
@@ -272,8 +274,8 @@ export default function Join({
                     : role === "suplente"
                         ? "✓ Suplente"
                         : isFull
-                            ? "Anotarse como suplente"
-                            : "Unirse a la misión"
+                            ? "Anotarse suplente"
+                            : "Acepto la misión"
                 }
             </Button>
             <div className="h-10">

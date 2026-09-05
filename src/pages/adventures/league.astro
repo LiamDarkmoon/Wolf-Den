@@ -4,7 +4,6 @@ import Join from '../../components/Join.tsx';
 import { createClient } from "../../db/supabase";
 import Delete from '../../components/delete';
 
-
 const role = Astro.locals.userRole;
 
 const supabase = createClient({
@@ -42,7 +41,6 @@ const adventuresWithStatus = await Promise.all(
         };
     })
 );
-
 ---
 <Layout>
     <div class="w-full flex flex-col items-center justify-center gap-4 py-4">
@@ -100,6 +98,7 @@ const adventuresWithStatus = await Promise.all(
 
 <style>
     .board {
+        position: relative;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -110,6 +109,5 @@ const adventuresWithStatus = await Promise.all(
         gap: 0.5rem;
         border-radius: 0.5rem;
         text-align: center;
-
     }
 </style>

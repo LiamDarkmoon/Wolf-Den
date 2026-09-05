@@ -24,11 +24,6 @@ export default function Button({
       navigate(to);
     }
   };
-  console.log("Button component rendered with props:", {
-    secondary,
-    disabled,
-    size,
-  });
 
   return (
     <button

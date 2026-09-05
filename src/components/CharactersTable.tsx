@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CharacterRow from "./CharacterRow";
+import { supabase } from "../db/supabase-browser";
 import type { CharacterRecord } from "./CharacterCreator/CharacterProvider";
+import type { registeredAdventure } from "../lib/types";
 
 export default function CharactersTable({
   characters,
@@ -8,6 +10,7 @@ export default function CharactersTable({
   characters: CharacterRecord[] | null;
 }) {
   const [charactersList, setCharactersList] = useState(characters ?? []);
+  const [status, setStatus] = useState<any>()
 
   const handleDelete = (id: string) => {
     setCharactersList((prev) =>
@@ -23,6 +26,7 @@ export default function CharactersTable({
             key={character.id}
             character={character}
             onDelete={handleDelete}
+            
           />
         );
       })}

@@ -87,5 +87,9 @@ export interface registeredAdventure {
 }
 
 export interface Player {
-
+  user_id: string,
+  display_name: string,
+  role: string,
+  character_id: string,
+  character_name: string
 }

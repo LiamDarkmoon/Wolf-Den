@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../db/supabase-browser";
+import { navigate } from "astro:transitions/client";
 
 export default function CharacterSelector({
     adventureId,
     player,
-    userId
+    userId,
+    substitute,
+    index
 }: {
     adventureId: string;
     player: any;
     userId: string | undefined;
+    substitute?: boolean,
+    index?: number
 }) {
 
     const [characters, setCharacters] = useState<any[]>([]);
@@ -106,6 +111,8 @@ export default function CharacterSelector({
         } catch (error) {
             console.error("Error cancelling registration:", error);
         }
+
+        navigate('/adventures/league')
     }
 
 
@@ -116,9 +123,10 @@ export default function CharacterSelector({
         <>
             <li className={isOwner ? "max-w-100 flex items-center justify-around italic py-3 my-2 rounded-sm border-b border-primary/20 bg-primary/30" : "max-w-100 flex items-center justify-around italic py-3 my-2 border-b border-primary/20"}>
 
-                {isOwner ? (
+                {
+                    isOwner ? (
                     <button
-                        className="size-8 text-2xl grid place-items-center text-primary cursor-pointer me-1 group"
+                        className="size-8 text-2xl grid place-items-center text-primary cursor-pointer group"
                         onClick={!selectedCharacter ? handleDropdown : undefined}
                     >
                         {
@@ -131,9 +139,14 @@ export default function CharacterSelector({
                     </button>
                 ) :
                     <button
-                        className="size-8 text-2xl grid place-items-center text-secondary cursor-pointer me-1"
+                        className="size-8 text-2xl grid place-items-center text-secondary cursor-pointer"
                     >
-                        <i className="fa-solid fa-message"></i>
+                        {
+                            substitute ?
+                            <i className={`fa-solid fa-${index}`}></i>
+                            :
+                            <i className="fa-solid fa-message"></i>
+                        }
 
                     </button>
                 }
@@ -141,16 +154,12 @@ export default function CharacterSelector({
                 {/* Name and character info */}
                 <div className="w-50 flex flex-col">
 
-                    <span className="flex items-center cursor-pointer group">
-                        {player.display_name}
-                        <span className="text-xs opacity-50">
-                            ({player.user_id.slice(0, 6)})
-                        </span>
+                    <span className="flex items-center gap-2 cursor-pointer group truncate">
+                        {player.display_name}:
                         <i className="fa-solid fa-user-plus text-sm ms-1 group-hover:text-primary-hover group-hover:scale-110"></i>
-                        :
                     </span>
 
-                    <span className="truncate">
+                    <span className="flex items-center gap-2 cursor-pointer group truncate">
                         <i className="fa-solid fa-masks-theater me-1 text-primary-hover"></i>
                         
                         {
@@ -189,14 +198,14 @@ export default function CharacterSelector({
             {/* Dropdown */}
             {isOwner && visible && characters.length > 0 && (
 
-                <ul className="p-4 w-full -mt-2 absolute z-10 bg-main-bg rounded-b-md">
+                <ul className="w-full max-w-100 -mt-2 absolute z-10 bg-main-bg rounded-b-md">
 
                     {characters.map(character => (
 
                         <li
                             key={character.id}
                             onClick={() => handleSelection(character.id)}
-                            className="cursor-pointer hover:text-primary"
+                            className="cursor-pointer p-2 rounded-b-sm hover:text-primary hover:bg-secondary-bg"
                         >
                             {character.name}
                         </li>

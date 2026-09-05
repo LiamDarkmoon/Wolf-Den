@@ -16,7 +16,7 @@ export default function AdventuresList({
     };
  */
   return (
-    <ul className="flex flex-col gap-2 min-w-50 md:max-w-fit">
+    <ul className="flex flex-col gap-2 min-w-75 md:max-w-fit">
       {adventuresList.map((adventure: registeredAdventure) => {
         return <AdventureRow key={adventure.adventure_id} adventure={adventure} />;
       })}

@@ -1,7 +1,12 @@
 import { actions } from "astro:actions";
 import type { registeredAdventure } from "../lib/types";
 
-export default function AdventureRow({ adventure } : { adventure: registeredAdventure }) {
+export default function AdventureRow({
+  adventure,
+}: {
+  adventure: registeredAdventure;
+}) {
+
   /*    const handleDelete = async () => {
         const result = await actions.deleteCharacter({
             id: character.id,
@@ -19,7 +24,10 @@ export default function AdventureRow({ adventure } : { adventure: registeredAdve
     <li className=" flex justify-between items-center hover:text-primary hover:bg-primary/30 p-2 rounded-sm">
       <i className="fa-solid fa-dice-d20 text-primary"></i>
 
-      <a href={`/adventures/league/${adventure.adventure_id}`} className="truncate">
+      <a
+        href={`/adventures/league/${adventure.adventure_id}`}
+        className="truncate"
+      >
         {adventure.title}
       </a>
 
