@@ -11,6 +11,7 @@ import AbilitiesStep from '../steps/AbilitiesStep';
 const DRAFT_KEY = `wolf-den-character-draft`;
 
 export interface Character {
+    id?: string;
     name: string;
 
     species?: Species;

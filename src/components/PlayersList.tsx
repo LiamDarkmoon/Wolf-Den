@@ -2,16 +2,45 @@ import { useState } from "react";
 import { supabase } from "../db/supabase-browser";
 import type { User } from "../lib/types";
 import type { Character } from "./CharacterCreator/CharacterProvider";
+import { navigate } from "astro:transitions/client";
 
 export default function PlayersList({ players, role }:{ players:User[], role: string | null }) {
 
     const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
-    const [playerCharacters, setPlayerCharacters] = useState<Character[] | null>(null);
+    const [playerCharacters, setPlayerCharacters] = useState<Character[]>([]);
+    const [charactersLoading, setCharactersLoading] = useState(false);
+    const [visible, setVisible] = useState<boolean>(false);
 
-    const handleSelectPlayer = (player:User) => {
-        setSelectedPlayer(player.id);
-        getCharacters(player.id)
+    const handleSelectPlayer = (player: User) => {
+    if (selectedPlayer === player.id) {
+        setVisible(!visible);
+        return;
     }
+
+    setSelectedPlayer(player.id);
+    setPlayerCharacters([]);
+    setVisible(true);
+
+    getCharacters(player.id);
+};
+
+    const getCharacters = async (id: string) => {
+        setCharactersLoading(true);
+
+        const { data, error } = await supabase.rpc(
+            "get_user_characters",
+            { p_user_id: id }
+        );
+
+        if (error) {
+            console.error("Error loading characters:", error);
+            setPlayerCharacters([]);
+        } else {
+            setPlayerCharacters(data ?? []);
+        }
+
+        setCharactersLoading(false);
+    };
 
     const handlePromotePlayer = async (player:User) => {
         const { data, error } = await supabase.rpc("set_user_role", { p_user_id: player.id, p_role: "admin" });
@@ -21,17 +50,18 @@ export default function PlayersList({ players, role }:{ players:User[], role: st
         const { data, error } = await supabase.rpc("set_user_role", { p_user_id: player.id, p_role: "user" });
     }
 
-    const getCharacters = async (id: string) => {
-        const { data: characters, error } = await supabase.rpc("get_user_characters", { p_user_id: id })
-        setPlayerCharacters(characters)
+    const handleSelectCharacter = (id: string | undefined) => {
+        if(id) {
+            navigate(`/profile/characters/${id}`)
+        } else {
+            console.log('error, no hay id')
+        }
     }
-
-
 
     return(
         <ul className="flex flex-col gap-2 p-2">
             { players?.map((player: any) => (
-                <li key={player.id} className="flex items-center justify-between text-lg font-semibold cursor-pointer" onClick={() => handleSelectPlayer(player)}>
+                <li key={player.id} className="relative flex items-center justify-between text-lg font-semibold cursor-pointer" onClick={() => handleSelectPlayer(player)}>
                     <i className={selectedPlayer === player.id ? "fa-solid fa-address-card me-2 text-primary" : "fa-solid fa-address-card me-2"}></i>
                     {player.display_name}
                     <span>
@@ -39,22 +69,43 @@ export default function PlayersList({ players, role }:{ players:User[], role: st
                             selectedPlayer === player.id ? 
                             <div className="flex  gap-4 w-5">
                                 {
-                                    role === "super_admin" ?
-                                        player.role === "user" ?
-                                        <i className="fa-solid fa-user-plus text-emerald-500" onClick={() => handlePromotePlayer(player)}></i>
-                                        : player.role === "admin" ?
-                                        <i className="fa-solid fa-user-minus text-rose-500" onClick={() => handleDemotePlayer(player)}></i>
-                                        : 
-                                        <i className="fa-solid fa-shield-heart text-secondary"></i>
+                                    player.role === "user" ?
+                                    <i className="fa-solid fa-user-plus text-emerald-500" onClick={() => handlePromotePlayer(player)}></i>
+                                    : player.role === "admin" ?
+                                    <i className="fa-solid fa-user-minus text-rose-500" onClick={() => handleDemotePlayer(player)}></i>
                                     : 
-                                    <div className="bg-secondary-bg ">
-                                        {
-                                            playerCharacters?.map((character: Character) =>
-                                                <span>{character.name}</span>
-                                            )
-                                        }
-                                    </div>
+                                    <i className="fa-solid fa-shield-heart text-secondary"></i>
+                                    
                                 }
+                                {visible && (
+                                    <div className="bg-main-bg absolute top-6 left-0 z-2 w-full rounded-b-sm">
+
+                                        {charactersLoading ? (
+                                            <div className="p-3 font-normal opacity-60">
+                                                Cargando personajes...
+                                            </div>
+                                        ) : playerCharacters.length > 0 ? (
+                                            playerCharacters.map((character: Character) => (
+                                                <div
+                                                    key={character.id}
+                                                    className="flex gap-2 p-3 capitalize font-normal border-y border-main-bg hover:border-border hover:bg-secondary-bg hover:text-primary-hover"
+                                                    onClick={() => handleSelectCharacter(character.id)}
+                                                >
+                                                    <span>{character.name}</span>
+                                                    <span className="italic">
+                                                        ({character.species}):
+                                                    </span>
+                                                    <span>{character.class}</span>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="p-3 font-normal opacity-60">
+                                                No se encontraron personajes.
+                                            </div>
+                                        )}
+
+                                    </div>
+                                )}
                             </div>
                             : 
                             <div className="flex  gap-4 w-5">
@@ -63,8 +114,7 @@ export default function PlayersList({ players, role }:{ players:User[], role: st
                         }
                     </span>
                 </li>
-            ))
-            }
+            ))}
         </ul>
     )
 }

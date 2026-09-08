@@ -1,28 +1,19 @@
 ---
-import { createClient } from "../../../db/supabase";
 import Layout from "../../../layouts/Layout.astro";
-import Avatar from "../../../components/Avatar";
 import Under from "../../../components/Under";
+import { getCharacter } from '../../../lib/utils/getCharacter'
 
 const { id } = Astro.params;
 const user = Astro.locals.user;
 
-const supabase = createClient({
+const character = await getCharacter({
     request: Astro.request,
     cookies: Astro.cookies,
-});
+    id
+})
 
-const {
-    data: character,
-    error,
-} = await supabase
-    .from("characters")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-if (!character) {
-    return Astro.redirect(`/profile/${user.name}`);
+if (!character && user) {
+    return Astro.redirect(`/profile/${user.id}`);
 }
 
 const abilityOrder = ["str", "dex", "con", "int", "wis", "cha"];
@@ -42,6 +33,7 @@ const abilityOrder = ["str", "dex", "con", "int", "wis", "cha"];
                 
                     abilityOrder.map((key) => {
                         const value = character.abilities[key];
+                        
                         return (<div class={`flex items-center justify-between w-35 md:w-1/4 h-12.5 p-2 border-y-4 border-secondary-bg`}>
                             <span class="w-10 text-2xl font-semibold">{key.toUpperCase()}:</span>
                             <span class="text-2xl font-semibold"> {value}</span>
