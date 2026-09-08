@@ -2,9 +2,9 @@
 import NavBar from '../components/NavBar.astro';
 ---
 
-<div id="container" class="text-main-text">
+<div id="container" class="text-main-text ">
 	<NavBar />
-	<main>
+	<main class="scrollbar-none">
 		<slot/>
 	</main>
 </div>
@@ -12,7 +12,7 @@ import NavBar from '../components/NavBar.astro';
 <style>
 	#container {
 		position: relative;
-		background: url('/den-bg.webp') center/cover no-repeat;
+		background: url('/cave-bg.jpg') center/cover no-repeat;
 		baground-color: #0f1115;
 		height: 100%;
 		width: 100%;
@@ -36,9 +36,11 @@ import NavBar from '../components/NavBar.astro';
 		display: flex;
 		flex-direction: column;
 		z-index: 1;
-		min-height: calc(100vh - 48px);
+		height: calc(100vh - 48px);
 		width: 100%;
+		max-width: 100%;
 		padding: 1.25rem;
+		overflow: scroll;
 	}
 
 </style>

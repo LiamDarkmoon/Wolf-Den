@@ -5,6 +5,7 @@ import { createClient } from "../../db/supabase";
 import Delete from '../../components/delete';
 import { getAdventuresWithStatus } from '../../lib/utils/getAdventuresWithStatus';
 import type { adventureWithStatus } from '../../lib/types';
+import Frame from '../../components/Frame';
 
 const role = Astro.locals.userRole;
 
@@ -18,7 +19,6 @@ const adventures:adventureWithStatus[] = await getAdventuresWithStatus({
     cookies: Astro.cookies
 })
 
-console.log('adventures ok', adventures[0])
 ---
 <Layout>
     <div class="w-full flex flex-col items-center justify-center gap-4 py-4">    
@@ -26,18 +26,19 @@ console.log('adventures ok', adventures[0])
             TABLERO DE MISIONES
             <i class="fa-solid fa-arrow-down-short-wide"></i>
         </h1>
-        <section class="w-full flex flex-col md:flex-row items-center justify-center gap-4">
+        <section class="w-full flex flex-col md:flex-row items-center justify-around gap-10">
             {adventures.map((adventure: adventureWithStatus) => {
 
                 const isFull =
                     adventure.currentPlayers >= adventure.max_players;
 
                 return (
-                        <article class="board shadow shadow-border">
+                        <article class="relative w-full md:w-[30%] board border-4 border-primary shadow-border">
+                            <Frame/>
 
                             <div class="flex items-center justify-center gap-2 mb-4">
                                 <h2 class="text-2xl font-bold text-center underline">
-                                <a href={`/adventures/league/${adventure.id}`} class="truncate">
+                                <a href={`/adventures/league/${adventure.id}`} class="w-2/3 truncate">
                                         {adventure.title}
                                     </a>
                                 </h2>
@@ -48,11 +49,13 @@ console.log('adventures ok', adventures[0])
                                 }
                             </div>
 
-                            <img
-                                src={adventure.poster_url ?? "/last-sanctum.png"}
-                                alt={adventure.title}
-                                class="mx-auto w-4/5 object-cover mb-4 rounded"
-                            />
+                            <div class="w-1/3">
+                                <img
+                                    src={adventure.poster_url ?? "/last-sanctum.png"}
+                                    alt={adventure.title}
+                                    class="object-cover rounded"
+                                />
+                            </div>
 
                             <Join
                                 client:only="react"
@@ -76,10 +79,13 @@ console.log('adventures ok', adventures[0])
         position: relative;
         display: flex;
         flex-direction: column;
-        width: 100%;
+        justify-content: space-between;
+        align-items: center;
         min-height: 60vh;
-        background-image: url('/wood-bg.jpg');
-        background-size: cover;
+        background: rgba(26, 30, 36, 0.40);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(3.5px);
+        -webkit-backdrop-filter: blur(3.5px);
         padding: 2rem;
         gap: 0.5rem;
         border-radius: 0.5rem;

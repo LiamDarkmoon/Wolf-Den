@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { supabase } from "../db/supabase-browser";
 import type { User } from "../lib/types";
+import type { Character } from "./CharacterCreator/CharacterProvider";
 
-export default function PlayersList({players}:{players:User[]}) {
+export default function PlayersList({ players, role }:{ players:User[], role: string | null }) {
 
     const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
+    const [playerCharacters, setPlayerCharacters] = useState<Character[] | null>(null);
 
     const handleSelectPlayer = (player:User) => {
         setSelectedPlayer(player.id);
@@ -21,7 +23,7 @@ export default function PlayersList({players}:{players:User[]}) {
 
     const getCharacters = async (id: string) => {
         const { data: characters, error } = await supabase.rpc("get_user_characters", { p_user_id: id })
-        
+        setPlayerCharacters(characters)
     }
 
 
@@ -37,12 +39,21 @@ export default function PlayersList({players}:{players:User[]}) {
                             selectedPlayer === player.id ? 
                             <div className="flex  gap-4 w-5">
                                 {
-                                    player.role === "user" ?
-                                    <i className="fa-solid fa-user-plus text-emerald-500" onClick={() => handlePromotePlayer(player)}></i>
-                                    : player.role === "admin" ?
-                                    <i className="fa-solid fa-user-minus text-rose-500" onClick={() => handleDemotePlayer(player)}></i>
+                                    role === "super_admin" ?
+                                        player.role === "user" ?
+                                        <i className="fa-solid fa-user-plus text-emerald-500" onClick={() => handlePromotePlayer(player)}></i>
+                                        : player.role === "admin" ?
+                                        <i className="fa-solid fa-user-minus text-rose-500" onClick={() => handleDemotePlayer(player)}></i>
+                                        : 
+                                        <i className="fa-solid fa-shield-heart text-secondary"></i>
                                     : 
-                                    <i className="fa-solid fa-shield-heart text-secondary"></i>
+                                    <div className="bg-secondary-bg ">
+                                        {
+                                            playerCharacters?.map((character: Character) =>
+                                                <span>{character.name}</span>
+                                            )
+                                        }
+                                    </div>
                                 }
                             </div>
                             : 
