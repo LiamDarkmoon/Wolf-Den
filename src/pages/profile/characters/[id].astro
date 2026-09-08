@@ -1,6 +1,8 @@
 ---
 import { createClient } from "../../../db/supabase";
 import Layout from "../../../layouts/Layout.astro";
+import Avatar from "../../../components/Avatar";
+import Under from "../../../components/Under";
 
 const { id } = Astro.params;
 const user = Astro.locals.user;
@@ -27,20 +29,25 @@ const abilityOrder = ["str", "dex", "con", "int", "wis", "cha"];
 ---
 
 <Layout>
-    <section class="flex flex-col w-full md:w-1/2 gap-3 p-2 border border-primary rounded-lg">
-        <h1 class="text-3xl text-center font-bold underline">{character?.name}</h1>
-        <h2 class="text-center text-secondary-text"> {character?.background} - {character?.species}(subsp) | {character?.class}(subclass)</h2>
-        <div class="flex flex-wrap items-center justify-center gap-2 p-3">
-        {abilityOrder.map((key) => {
-            const value = character.abilities[key];
-
-            return (
-                <div class="w-22.5 p-3 flex justify-between items-center gap-1 border border-primary rounded-md">
-                    <span>{key.toUpperCase()}:</span>
-                    <span>{value}</span>
-                </div>
-            );
-        })}
-        </div>
+    <section class="flex flex-col items-center w-full gap-3 p-2 ">
+        <article class='flex flex-col items-center justify-center md:w-1/2 p-5 gap-3 rounded-md scroll text-secondary-bg'>
+            <h1 class="h-8 text-3xl font-black uppercase">{character.name}</h1>
+            <div class="md:w-1/2 flex flex-col text-center gap-1">
+                <span class=""> {character.background}</span>
+                <span class="italic">{character.species}(sub spc) - {character.class}(sub class) </span>
+                <Under/>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                {
+                
+                    abilityOrder.map((key) => {
+                        const value = character.abilities[key];
+                        return (<div class={`flex items-center justify-between w-35 md:w-1/4 h-12.5 p-2 border-y-4 border-secondary-bg`}>
+                            <span class="w-10 text-2xl font-semibold">{key.toUpperCase()}:</span>
+                            <span class="text-2xl font-semibold"> {value}</span>
+                        </div>)
+                })}
+            </div>
+        </article>
     </section>
 </Layout>

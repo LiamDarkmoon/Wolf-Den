@@ -7,13 +7,15 @@ export default function CharacterSelector({
     player,
     userId,
     substitute,
-    index
+    index,
+    role,
 }: {
     adventureId: string;
     player: any;
     userId: string | undefined;
     substitute?: boolean,
     index?: number
+    role: string | null
 }) {
 
     const [characters, setCharacters] = useState<any[]>([]);
@@ -21,6 +23,7 @@ export default function CharacterSelector({
         player.character_name ?? null
     );
     const [visible, setVisible] = useState(false);
+    const isOwner = player.user_id === userId;
 
     // Solo cargamos los personajes del usuario actual
     useEffect(() => {
@@ -53,7 +56,7 @@ export default function CharacterSelector({
     const handleDropdown = () => {
 
         // Solo el dueño del registro puede abrirlo
-        if (player.user_id !== userId) {
+        if (!isOwner) {
             return;
         }
 
@@ -94,7 +97,27 @@ export default function CharacterSelector({
         setVisible(false);
     };
 
-    const handleDelete = async () => {
+    const handleDelete = async (id:string) => {
+
+        if(role !== "user"){
+            try {
+            const { data, error } = await supabase.rpc(
+                "admin_remove_registration",
+                {
+                    p_adventure_id: adventureId,
+                    p_user_id: id
+                }
+            );
+
+            if (!data.success) {
+                console.error("Error deleting registration:", data.error);
+            }
+
+            return
+
+        } catch (error) {
+            console.error("Error cancelling registration:", error);
+        }}
 
        try {
             const { data, error } = await supabase.rpc(
@@ -104,6 +127,8 @@ export default function CharacterSelector({
                 }
             );
 
+            navigate('/adventures/league')
+
             if (!data.success) {
                 console.error("Error deleting registration:", data.error);
             }
@@ -112,16 +137,13 @@ export default function CharacterSelector({
             console.error("Error cancelling registration:", error);
         }
 
-        navigate('/adventures/league')
+        
     }
-
-
-    const isOwner = player.user_id === userId;
 
 
     return (
         <>
-            <li className={isOwner ? "max-w-100 flex items-center justify-around italic py-3 my-2 rounded-sm border-b border-primary/20 bg-primary/30" : "max-w-100 flex items-center justify-around italic py-3 my-2 border-b border-primary/20"}>
+            <li className={isOwner ? "max-w-100 max-h-17.5 flex items-center justify-around italic py-3 my-2 rounded-sm border-b border-primary/20 bg-primary/30" : "max-w-100 flex items-center justify-around italic py-3 my-2 border-b border-primary/20"}>
 
                 {
                     isOwner ? (
@@ -181,12 +203,14 @@ export default function CharacterSelector({
 
                 <button
                         className="size-8 text-2xl grid place-items-center text-rose-600 cursor-pointer me-1 hover:text-rose-500"
-                        onClick={handleDelete}
+                        onClick={()=>handleDelete(player.user_id)}
                     >
                             
                     {
-                        isOwner &&
-                        <i className="fa-solid fa-trash"></i>
+                        isOwner || role !== "user" ?
+                        <i className="fa-solid fa-circle-xmark"></i>
+                        :
+                        null
                     }
 
                 </button>

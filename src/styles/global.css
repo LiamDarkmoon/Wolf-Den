@@ -24,5 +24,7 @@ body {
 }
 
 .scroll {
-    background-image: url("/public/Scroll.jpg");
+    background-image: url("/Scroll.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
 }

@@ -2,6 +2,7 @@
 import Admin from '../../layouts/Admin.astro';
 import PlayersList from '../../components/PlayersList';
 import { createClient } from "../../db/supabase";
+import { superRefine } from 'astro:schema';
 
 const supabase = createClient({
     request: Astro.request,
@@ -11,44 +12,13 @@ const supabase = createClient({
 
 const { data: players, error } = await supabase.rpc("get_all_players");
 
-const { data: adventures } = await supabase
-    .from('adventures')
-    .select('*')
-    .order('adventure_date', { ascending: true });
-
-const adventuresWithStatus = await Promise.all(
-    (adventures ?? []).map(async (adventure) => {
-        const { data: status, error } = await supabase.rpc(
-            "get_adventure_status",
-            {
-                p_adventure_id: adventure.id,
-            }
-        );
-
-        if (error) {
-            console.error(
-                `Error getting status for ${adventure.title}:`,
-                error
-            );
-        }
-
-        return {
-            ...adventure,
-            currentPlayers: status?.current_players ?? 0,
-            currentSubstitutes: status?.current_substitutes ?? 0,
-            isRegistered: status?.is_registered ?? false,
-            role: status?.role ?? null,
-        };
-    })
-);
-
 ---
 <Admin>
     <section class="flex flex-col md:flex-row justify-center gap-5 py-4 w-full">
         
         <div class="md:w-2/5 flex flex-col  gap-4">
             <h2 class="text-3xl font-bold text-center border-b border-main-text">Administrar Jugadores</h2>
-            <PlayersList players={players} client:load/>
+            <PlayersList players={players} client:only="react"/>
         </div>
        <!--  <div class="md:w-2/5 flex flex-col  gap-4">
             <h2 class="text-3xl font-bold text-center border-b border-main-text">Datos del jugador</h2>

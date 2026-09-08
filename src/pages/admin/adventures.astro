@@ -1,8 +1,18 @@
 ---
 import Admin from '../../layouts/Admin.astro';
 import AddAdventureForm from '../../components/forms/AddAdventureForm.tsx';
+import { getAdventuresWithStatus } from '../../lib/utils/getAdventuresWithStatus';
+import type { adventureWithStatus } from '../../lib/types';
+import AdventuresTable from '../../components/AdventuresTable'
 
+const adventures: adventureWithStatus[] = await getAdventuresWithStatus({
+    request: Astro.request,
+    cookies: Astro.cookies,
+});
 ---
 <Admin>
-    <AddAdventureForm client:load/>
+    <article class="w-full flex flex-col items-center gap-5">
+        <AdventuresTable adventures={adventures}/>
+        <AddAdventureForm client:load/>
+    </article>
 </Admin>

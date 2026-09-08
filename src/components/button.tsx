@@ -1,6 +1,4 @@
 import { navigate } from "astro:transitions/client";
-import ButtonFilled from "../../public/button-filled";
-import ButtonEmpty from "../../public/button";
 
 export default function Button({
   onClick,

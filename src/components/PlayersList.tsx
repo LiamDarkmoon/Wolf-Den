@@ -1,20 +1,27 @@
 import { useState } from "react";
 import { supabase } from "../db/supabase-browser";
+import type { User } from "../lib/types";
 
-export default function PlayersList({players}:{players:any}) {
+export default function PlayersList({players}:{players:User[]}) {
 
     const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
 
-    const handleSelectPlayer = (player:any) => {
+    const handleSelectPlayer = (player:User) => {
         setSelectedPlayer(player.id);
+        getCharacters(player.id)
     }
 
-    const handlePromotePlayer = async (player:any) => {
+    const handlePromotePlayer = async (player:User) => {
         const { data, error } = await supabase.rpc("set_user_role", { p_user_id: player.id, p_role: "admin" });
     }
 
-    const handleDemotePlayer = async (player:any) => {
+    const handleDemotePlayer = async (player:User) => {
         const { data, error } = await supabase.rpc("set_user_role", { p_user_id: player.id, p_role: "user" });
+    }
+
+    const getCharacters = async (id: string) => {
+        const { data: characters, error } = await supabase.rpc("get_user_characters", { p_user_id: id })
+        
     }
 
 

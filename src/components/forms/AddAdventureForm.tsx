@@ -1,18 +1,29 @@
 import { actions } from "astro:actions"
 import Button from "../button";
+import { navigate } from "astro:transitions/client";
 
 export default function AddAdventureForm() {
 
-    const handleAdd = async (event: React.FormEvent<HTMLFormElement>) =>{
+    const handleAdd = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
         const formData = new FormData(event.currentTarget);
 
         const { data, error } = await actions.addAdventure({
-            title: formData.get("title") as string,
-            max_players: Number(formData.get("max_players")),
-            description: formData.get("description") as string,
+                title: formData.get("title") as string,
+                max_players: Number(formData.get("max_players")),
+                description: formData.get("description") as string,
         });
 
-    }
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        if (!data) return;
+
+        navigate(`/adventures/league/${data.id}`);
+    };
 
     return(
         <form className="w-full flex flex-col items-center p-2 gap-4" onSubmit={handleAdd}>

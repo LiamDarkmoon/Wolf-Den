@@ -127,9 +127,7 @@ export const server = {
             }
 
             const { data, error } = await supabase
-
             .from("adventures")
-
             .insert({
 
               created_by: user.id,
@@ -143,9 +141,7 @@ export const server = {
               adventure_date: getNextAdventureDate(),
 
             })
-
             .select()
-
             .single();
 
             if (error) {

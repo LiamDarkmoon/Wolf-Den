@@ -85,6 +85,20 @@ export interface registeredAdventure {
   role: 'titular' | 'suplente',
   registered_at: Date
 }
+export interface adventureWithStatus {
+  id: string,
+  title: string;
+  description: string;
+  poster_url: string;
+  adventure_date: string;
+  max_players: number;
+  created_by: string;
+  registered_at: string,
+  currentPlayers: number,
+  currentSubstitutes: number,
+  isRegistered: boolean,
+  role: 'titular' | 'suplente',
+}
 
 export interface Player {
   user_id: string,
@@ -92,4 +106,9 @@ export interface Player {
   role: string,
   character_id: string,
   character_name: string
+}
+export interface User {
+  id: string,
+  display_name: string,
+  role: string,
 }

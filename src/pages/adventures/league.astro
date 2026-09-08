@@ -3,6 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import Join from '../../components/Join.tsx';
 import { createClient } from "../../db/supabase";
 import Delete from '../../components/delete';
+import { getAdventuresWithStatus } from '../../lib/utils/getAdventuresWithStatus';
+import type { adventureWithStatus } from '../../lib/types';
 
 const role = Astro.locals.userRole;
 
@@ -11,48 +13,21 @@ const supabase = createClient({
     cookies: Astro.cookies,
 });
 
-const { data: adventures } = await supabase
-    .from('adventures')
-    .select('*')
-    .order('adventure_date', { ascending: true });
+const adventures:adventureWithStatus[] = await getAdventuresWithStatus({
+    request: Astro.request,
+    cookies: Astro.cookies
+})
 
-const adventuresWithStatus = await Promise.all(
-    (adventures ?? []).map(async (adventure) => {
-        const { data: status, error } = await supabase.rpc(
-            "get_adventure_status",
-            {
-                p_adventure_id: adventure.id,
-            }
-        );
-
-        if (error) {
-            console.error(
-                `Error getting status for ${adventure.title}:`,
-                error
-            );
-        }
-
-        return {
-            ...adventure,
-            currentPlayers: status?.current_players ?? 0,
-            currentSubstitutes: status?.current_substitutes ?? 0,
-            isRegistered: status?.is_registered ?? false,
-            role: status?.role ?? null,
-        };
-    })
-);
+console.log('adventures ok', adventures[0])
 ---
 <Layout>
-    <div class="w-full flex flex-col items-center justify-center gap-4 py-4">
-
-        <p class="text-center ">Bienvenido a la liga de aventureros de LMDR, <br/> aca podes ver el tablon y elegir tu mision</p>
-        
-        <h2 class="flex gap-2 items-center text-xl font-bold text-center mb-4">
+    <div class="w-full flex flex-col items-center justify-center gap-4 py-4">    
+        <h1 class="flex gap-2 items-center text-2xl font-bold text-center mb-4">
             TABLERO DE MISIONES
             <i class="fa-solid fa-arrow-down-short-wide"></i>
-        </h2>
+        </h1>
         <section class="w-full flex flex-col md:flex-row items-center justify-center gap-4">
-            {adventuresWithStatus.map(adventure => {
+            {adventures.map((adventure: adventureWithStatus) => {
 
                 const isFull =
                     adventure.currentPlayers >= adventure.max_players;

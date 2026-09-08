@@ -13,8 +13,6 @@ export default function CharacterRow({
     onDelete,
 }: CharacterRowProps) {
 
-    console.log('selected?',selected)
-
     const handleDelete = async () => {
         const result = await actions.deleteCharacter({
             id: character.id,

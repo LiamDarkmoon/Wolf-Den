@@ -133,7 +133,7 @@ export default function CharacterProvider({ children }: { children: React.ReactN
         }, [character, hydrated]);
 
         if (!hydrated) {
-            return <p>Cargando personaje...</p>;
+            return <p className='w-full text-center p-5 text-primary-hover animate-pulse'>Cargando personaje...</p>;
         }
         
         const updateCharacter = (values: Partial<Character>) => {
