@@ -54,7 +54,7 @@ export default function PlayersList({ players, role }:{ players:User[], role: st
         if(id) {
             navigate(`/profile/characters/${id}`)
         } else {
-            console.log('error, no hay id')
+        
         }
     }
 

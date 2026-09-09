@@ -12,7 +12,7 @@ const adventures: adventureWithStatus[] = await getAdventuresWithStatus({
 ---
 <Admin>
     <article class="w-full flex flex-col items-center gap-5">
-        <AdventuresTable adventures={adventures}/>
-        <AddAdventureForm client:load/>
+        <AdventuresTable adventures={adventures} client:only="react"/>
+        <AddAdventureForm client:only="react"/>
     </article>
 </Admin>

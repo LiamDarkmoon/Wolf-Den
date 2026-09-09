@@ -82,6 +82,8 @@ export interface registeredAdventure {
   poster_url: string;
   adventure_date: Date;
   max_players: number;
+  min_lvl: number;
+  max_lvl:number;
   role: 'titular' | 'suplente',
   registered_at: Date
 }
@@ -92,6 +94,8 @@ export interface adventureWithStatus {
   poster_url: string;
   adventure_date: string;
   max_players: number;
+  min_lvl: number;
+  max_lvl:number;
   created_by: string;
   registered_at: string,
   currentPlayers: number,
