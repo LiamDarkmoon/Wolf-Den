@@ -1,30 +1,49 @@
 @import "tailwindcss";
 
 @theme {
-    --color-main-bg: #0f1115;
-    --color-secondary-bg: #1a1e24;
-    --color-main-text: #f5f1e8;
-    --color-secondary-text: #b6b1a8;
-    --color-primary: #d97706;
-    --color-primary-hover: #f59e0b;
-    --color-secondary: #3b82f6;
-    --color-border: #2a2f38 
+  --color-main-bg: #0f1115;
+  --color-secondary-bg: #1a1e24;
+  --color-main-text: #f5f1e8;
+  --color-secondary-text: #b6b1a8;
+  --color-primary: #d97706;
+  --color-primary-hover: #f59e0b;
+  --color-secondary: #3b82f6;
+  --color-border: #2a2f38;
 }
 
 body {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .bttn {
-    min-width: 100px;
-    max-width: 250px;
-    max-height: 75px;
+  min-width: 100px;
+  max-width: 250px;
+  max-height: 75px;
 }
 
 .scroll {
-    background-image: url("/Scroll.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
+  background-image: url("/Scroll.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-img {
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.bg-img::before {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "";
+  background: linear-gradient(to bottom, #1a1e246c, #1a1e24);
+  width: 100%;
+  height: 100%;
 }

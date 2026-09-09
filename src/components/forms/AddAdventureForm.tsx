@@ -6,9 +6,11 @@ import { supabase } from "../../db/supabase-browser";
 export default function AddAdventureForm() {
   const [minLevel, setMinLevel] = useState("1");
   const [maxLevel, setMaxLevel] = useState("2");
+  const [loading, setLoading] = useState(false);
 
   const handleAdd = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true)
 
     const formData = new FormData(event.currentTarget);
 
@@ -33,19 +35,20 @@ export default function AddAdventureForm() {
       return;
     }
 
-    console.log("Aventura creada:", adventure);
-
     // Ahora sí: archivo directamente a Supabase
     const extension = poster.name.split(".").pop()?.toLowerCase() || "webp";
 
     const filePath = `${adventure.id}/poster.${extension}`;
 
+    const uploadStart = performance.now();
     const { error: uploadError } = await supabase.storage
-      .from("adventure-posters")
-      .upload(filePath, poster, {
-        contentType: poster.type,
-        upsert: true,
-      });
+    .from("adventure-posters")
+    .upload(filePath, poster, {
+      contentType: poster.type,
+      cacheControl: "31536000",
+      upsert: false,
+    });
+
 
     if (uploadError) {
       console.error("Error subiendo poster:", uploadError);
@@ -67,7 +70,8 @@ export default function AddAdventureForm() {
       return;
     }
 
-    console.log("Aventura creada correctamente");
+    
+    setLoading(false)
   };
 
   return (
@@ -178,7 +182,13 @@ export default function AddAdventureForm() {
         />
       </div>
 
-      <Button type="submit">Agregar Aventura</Button>
+      {
+        loading ?
+        <Button disabled>Cargando Aventura</Button>
+        :
+        <Button type="submit">Agregar Aventura</Button>
+
+      }
     </form>
   );
 }
