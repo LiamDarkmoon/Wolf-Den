@@ -34,6 +34,10 @@ export interface CharacterRecord extends Character {
     id: string;
     user_id: string;
     created_at: string;
+    class_id: string;
+    species_id: string;
+    baground_id: string;
+    level: number;
 }
 
 

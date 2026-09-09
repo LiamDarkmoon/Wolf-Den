@@ -16,11 +16,6 @@ export default function AddAdventureForm() {
 
     const poster = formData.get("poster");
 
-    if (!(poster instanceof File) || poster.size === 0) {
-      console.error("Debe seleccionarse un poster");
-      return;
-    }
-
     // Crear aventura SIN mandar el archivo
     const { data: adventure, error } = await actions.addAdventure({
       title: formData.get("title")?.toString() ?? "",
@@ -35,12 +30,16 @@ export default function AddAdventureForm() {
       return;
     }
 
+    if (!(poster instanceof File) || poster.size === 0) {
+      setLoading(false)
+      return;
+    }
+
     // Ahora sí: archivo directamente a Supabase
     const extension = poster.name.split(".").pop()?.toLowerCase() || "webp";
 
     const filePath = `${adventure.id}/poster.${extension}`;
 
-    const uploadStart = performance.now();
     const { error: uploadError } = await supabase.storage
     .from("adventure-posters")
     .upload(filePath, poster, {
