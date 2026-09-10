@@ -43,7 +43,6 @@ export default function AbilitiesStep() {
         <StepBody>
           {abilities.map((ability) => {
             const score = character.abilities[ability.code];
-            console.log('score', score, character.abilities, ability.code)
 
             if (!isCompleted && score !== null) {
               return null;

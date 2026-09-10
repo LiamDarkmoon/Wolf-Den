@@ -18,7 +18,7 @@ const DRAFT_KEY = `wolf-den-character-draft`;
 
 export interface Character {
   id?: string;
-  name: string;
+  name?: string;
 
   classId?: string;
   speciesId?: string;
@@ -211,6 +211,19 @@ export default function CharacterProvider({
   };
 
   const saveCharacter = async (): Promise<CharacterRecord | null> => {
+
+    if (
+        !character.speciesId ||
+        !character.classId ||
+        !character.backgroundId ||
+        Object.values(character.abilities).some(
+        (score) => score === null,
+        )
+    ) {
+        console.error("Character is incomplete");
+        return null;
+    }
+
     const result = await actions.createCharacter(character);
 
     if (result.error) {

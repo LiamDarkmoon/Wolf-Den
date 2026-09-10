@@ -7,17 +7,17 @@ export const server = {
   createCharacter: defineAction({
     input: z.object({
       name: z.string().min(1),
-      species: z.string().nullable().optional(),
-      class: z.string().nullable().optional(),
-      background: z.string().nullable().optional(),
+      speciesId: z.string(),
+      classId: z.string(),
+      backgroundId: z.string(),
 
       abilities: z.object({
-        STR: z.number().nullable(),
-        DEX: z.number().nullable(),
-        CON: z.number().nullable(),
-        INT: z.number().nullable(),
-        WIS: z.number().nullable(),
-        CHA: z.number().nullable(),
+        STR: z.number().min(8).max(15),
+        DEX: z.number().min(8).max(15),
+        CON: z.number().min(8).max(15),
+        INT: z.number().min(8).max(15),
+        WIS: z.number().min(8).max(15),
+        CHA: z.number().min(8).max(15),
       }),
     }),
 
@@ -27,26 +27,13 @@ export const server = {
         cookies: context.cookies,
       });
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        throw new Error("Not authenticated");
-      }
-
-      const { data, error } = await supabase
-        .from("characters")
-        .insert({
-          user_id: user.id,
-          name: character.name,
-          species: character.species ?? null,
-          class: character.class ?? null,
-          background: character.background ?? null,
-          abilities: character.abilities,
-        })
-        .select()
-        .single();
+      const { data, error } = await supabase.rpc("create_character", {
+        p_name: character.name,
+        p_class_id: character.classId,
+        p_species_id: character.speciesId,
+        p_background_id: character.backgroundId,
+        p_abilities: character.abilities,
+      });
 
       if (error) {
         console.error("Error creating character:", error);
