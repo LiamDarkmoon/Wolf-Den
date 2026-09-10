@@ -26,7 +26,7 @@ const abilityOrder: AbilityCode[] = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];
     <article
       class="flex flex-col items-center justify-center md:w-3/5 h-[75vh] p-5 gap-3 rounded-md scroll text-secondary-bg"
     >
-      <h1 class="h-8 text-3xl font-black uppercase">{character?.name}</h1>
+      <h1 class="h-8 text-3xl font-black uppercase">{character?.name} | lvl: {character?.level}</h1>
       <div class="md:w-1/2 flex flex-col text-center gap-1">
         <span class=""> {character?.background.name}</span>
         <span class="italic"
