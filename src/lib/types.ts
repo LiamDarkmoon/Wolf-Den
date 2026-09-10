@@ -152,3 +152,19 @@ export interface AbilityRecord {
     description: string | null;
     sort_order: number;
 }
+
+export type CharacterAbilityScores = {
+  [key in AbilityCode]: number;
+};
+
+export interface CharacterSheet {
+  id: string;
+  name: string;
+  level: number;
+
+  class: ClassRecord;
+  species: SpeciesRecord;
+  background: BackgroundRecord;
+
+  abilities: Record<AbilityCode, number>;
+}

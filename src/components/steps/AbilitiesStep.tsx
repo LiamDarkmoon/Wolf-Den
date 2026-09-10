@@ -1,5 +1,6 @@
 import { useCharacter } from "../../lib/hooks/useCharacter";
 import type { AbilityCode } from "../../lib/types";
+import { getAbilityModifier } from "../../lib/rules/abilities";
 
 import StepBody from "./step/StepBody";
 import StepHead from "./step/StepHead";
@@ -39,32 +40,37 @@ export default function AbilitiesStep() {
       >
         {currentScore}
       </StepHead>
-      <StepBody>
         <StepBody>
-          {abilities.map((ability) => {
-            const score = character.abilities[ability.code];
+          <div className="flex flex-col gap-3 w-full">
+            {abilities.map((ability) => {
+              const score = character.abilities[ability.code];
 
-            if (!isCompleted && score !== null) {
-              return null;
-            }
+              if (!isCompleted && score !== null) {
+                return null;
+              }
 
-            return (
-              <div
-                key={ability.id}
-                className="flex items-center justify-between w-1/3 h-20 p-2 border-4 rounded-md cursor-pointer border-gray-300 hover:text-primary hover:border-primary"
-                onClick={() => !isCompleted && handleStatSelect(ability.code)}
-              >
-                <span className="w-15 text-2xl font-semibold">
-                  {ability.code}:
-                </span>
+              return (
+                <div
+                  key={ability.id}
+                  className="flex items-center justify-between h-20 p-4 border-4 rounded-md cursor-pointer border-gray-300 hover:text-primary hover:border-primary"
+                  onClick={() => !isCompleted && handleStatSelect(ability.code)}
+                >
+                  <span className="flex gap-3 w-15 text-2xl font-semibold">
+                    <i className="fa-solid fa-paw"></i>
+                    {ability.code}:
+                  </span>
 
-                {isCompleted && (
-                  <span className="w-15 text-2xl font-semibold">{score}</span>
-                )}
-              </div>
-            );
-          })}
-        </StepBody>
+                  {isCompleted && (
+                    <span className="w-15 text-2xl font-semibold">
+                      {score}
+                      ({getAbilityModifier(score) > 0 ? "+" : ""}
+                      {getAbilityModifier(score)})
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
       </StepBody>
     </div>
   );

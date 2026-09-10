@@ -21,7 +21,7 @@ export default function SpecieStep() {
           <div
             key={item.id}
             className={`
-                        md:w-1/4 border-4 rounded-md cursor-pointer flex flex-col items-center
+                        md:w-37.5 border-4 rounded-md cursor-pointer flex flex-col items-center
                         ${
                           character.speciesId === item.id
                             ? "border-primary bg-primary text-main-text"

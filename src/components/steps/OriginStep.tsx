@@ -21,7 +21,7 @@ export default function OriginStep() {
           <div
             key={item.id}
             className={`
-                md:w-1/3 border-4 rounded-md cursor-pointer flex flex-col items-center
+                md:w-62.5 border-4 rounded-md cursor-pointer flex flex-col items-center
                 ${
                   character.backgroundId === item.id
                     ? "border-primary bg-primary text-main-text"
