@@ -3,14 +3,14 @@ import { useCharacter } from "../../lib/hooks/useCharacter";
 import Under from "../Under";
 
 export default function CharacterInfo() {
-    const { character } = useCharacter();
+    const { character, characterClass, characterBackground, characterSpecies } = useCharacter();
 
     return (
         <article className='hidden md:flex flex-col items-center w-2/5 p-5 rounded-md scroll text-secondary-bg'>
             <div className="w-1/2 text-center">
-                <Avatar avatar={ character?.class ? character?.class : 'druid'} />
+                <Avatar avatar={ characterClass ? characterClass.code : 'druid'} />
                 <h2 className="h-8 text-2xl">{character.name}</h2>
-                <span> {character.background} - {character.species} - {character.class} </span>
+                <span> {characterBackground?.name} - {characterSpecies?.name} - {characterClass?.name} </span>
                 <Under/>
             </div>
             <div className="flex flex-wrap justify-center items-center gap-4 p-4">

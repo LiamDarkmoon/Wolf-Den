@@ -17,7 +17,7 @@ export default function Poster({
       }
       onClick={() => SetHover(!hover)}
     >
-        <img src={adventure.poster_url ? adventure.poster_url : "/poster.jpeg"} alt={adventure.title} className={hover ? "" : "h-full"} />
+        <img src={adventure.poster_url ? adventure.poster_url : "/poster.jpeg"} alt={adventure.title} className={hover ? "" : "h-full object-cover"} />
     </div>
   );
 }

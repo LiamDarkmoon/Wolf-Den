@@ -28,6 +28,9 @@ import scribe from "../assets/scribe.png";
 import soldier from "../assets/soldier.png";
 import wayfarer from "../assets/wayfarer.png";
 
+import type { Species } from "./species";
+import type { Character } from "../components/CharacterCreator/CharacterProvider";
+
 export const Classes = {
   barbarian,
   bard,
@@ -60,7 +63,6 @@ export const Backgrounds = {
   sailor,
   scribe,
   soldier,
-  
   wayfarer,
 } as const;
 export type Background = keyof typeof Backgrounds;
@@ -115,4 +117,38 @@ export interface User {
   id: string,
   display_name: string,
   role: string,
+}
+
+export interface ClassRecord {
+    id: string;
+    name: string;
+    code: Class;
+    description: string | null;
+    hit_die: number;
+}
+
+export interface SpeciesRecord {
+    id: string;
+    name: string;
+    code: Species;
+    description: string | null;
+    creature_type: string;
+    size: string | null;
+    speed: number | null;
+}
+
+export interface BackgroundRecord {
+    id: string;
+    name: string;
+    code: Background;
+    description: string | null;
+}
+
+export type AbilityCode = "STR" | "DEX" | "CON" | "INT" | "WIS" | "CHA";
+export interface AbilityRecord {
+    id: string;
+    code: AbilityCode;
+    name: string;
+    description: string | null;
+    sort_order: number;
 }

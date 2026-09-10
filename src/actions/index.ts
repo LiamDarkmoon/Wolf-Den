@@ -12,12 +12,12 @@ export const server = {
       background: z.string().nullable().optional(),
 
       abilities: z.object({
-        str: z.number().nullable(),
-        dex: z.number().nullable(),
-        con: z.number().nullable(),
-        int: z.number().nullable(),
-        wis: z.number().nullable(),
-        cha: z.number().nullable(),
+        STR: z.number().nullable(),
+        DEX: z.number().nullable(),
+        CON: z.number().nullable(),
+        INT: z.number().nullable(),
+        WIS: z.number().nullable(),
+        CHA: z.number().nullable(),
       }),
     }),
 

@@ -1,57 +1,72 @@
 import { useCharacter } from "../../lib/hooks/useCharacter";
-import Under from "../Under";
+import type { AbilityCode } from "../../lib/types";
+
 import StepBody from "./step/StepBody";
 import StepHead from "./step/StepHead";
 
-
 const standardArray = [15, 14, 13, 12, 10, 8] as const;
 
-export default function ClassStep() {
-  const { character, updateCharacter,nextStep } = useCharacter();
+export default function AbilitiesStep() {
+  const { character, abilities, updateCharacter, nextStep } = useCharacter();
 
-  const currentScoreIndex = Object.values(character.abilities)
-    .filter(score => score !== null).length;
+  const currentScoreIndex = Object.values(character.abilities).filter(
+    (score) => score !== null,
+  ).length;
   const currentScore = standardArray[currentScoreIndex];
-  const isCompleted = Object.values(character.abilities)
-    .every(score => score !== null);
-  
+  const isCompleted = Object.values(character.abilities).every(
+    (score) => score !== null,
+  );
 
-  const handleStatSelect = (ability:string) => {
+  const handleStatSelect = (ability: AbilityCode) => {
     if (currentScore == null) return;
 
     updateCharacter({
-        abilities: {
-            ...character.abilities,
-            [ability]: currentScore,
-        },
+      abilities: {
+        ...character.abilities,
+        [ability]: currentScore,
+      },
     });
 
     if (currentScoreIndex === standardArray.length - 1) {
-        nextStep();
-    } 
-  }
+      nextStep();
+    }
+  };
 
   return (
     <div className="flex flex-col items-center">
-        <StepHead title={!isCompleted ? 'Elije tus habiliades' : 'Tus puntuaciones'} >
-          {currentScore}
-        </StepHead>
+      <StepHead
+        title={!isCompleted ? "Elije tus habiliades" : "Tus puntuaciones"}
+      >
+        {currentScore}
+      </StepHead>
+      <StepBody>
         <StepBody>
-            {
-                !isCompleted ?
-                Object.entries(character.abilities).filter(([, score]) => score === null).map(([ability]) => (
-                <div key={ability} className={`flex items-center w-full h-20 p-2 border-4 rounded-md cursor-pointer border-gray-300 hover:text-primary hover:border-primary`} onClick={() => handleStatSelect(ability)}>
-                    <span className="w-15 text-2xl font-semibold">{ability}</span>
-                </div>
-            ))
-            :
-              Object.entries(character.abilities).map(([ability, score]) => (
-                <div key={ability} className={`flex items-center w-full h-20 p-2 border-4 rounded-md cursor-pointer border-gray-300 hover:text-primary hover:border-primary`} onClick={() => handleStatSelect(ability)}>
-                    <span className="w-15 text-2xl font-semibold">{ability}:</span>
-                    <span className="w-15 text-2xl font-semibold"> {score}</span>
-                </div>
-          ))}
+          {abilities.map((ability) => {
+            const score = character.abilities[ability.code];
+            console.log('score', score, character.abilities, ability.code)
+
+            if (!isCompleted && score !== null) {
+              return null;
+            }
+
+            return (
+              <div
+                key={ability.id}
+                className="flex items-center justify-between w-1/3 h-20 p-2 border-4 rounded-md cursor-pointer border-gray-300 hover:text-primary hover:border-primary"
+                onClick={() => !isCompleted && handleStatSelect(ability.code)}
+              >
+                <span className="w-15 text-2xl font-semibold">
+                  {ability.code}:
+                </span>
+
+                {isCompleted && (
+                  <span className="w-15 text-2xl font-semibold">{score}</span>
+                )}
+              </div>
+            );
+          })}
         </StepBody>
+      </StepBody>
     </div>
   );
 }
