@@ -135,6 +135,15 @@ export interface SpeciesRecord {
     creature_type: string;
     size: string | null;
     speed: number | null;
+    variant: SpeciesVariantRecord | null;
+}
+
+export interface SpeciesVariantRecord {
+  id: string;
+  species_id: string;
+  code: string;
+  name: string;
+  description: string | null;
 }
 
 export interface BackgroundRecord {

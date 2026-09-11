@@ -7,8 +7,12 @@ import StepHead from "./step/StepHead";
 export default function SpecieStep() {
   const { character, species, updateCharacter } = useCharacter();
 
+
   const handleSpecieSelect = (speciesId: string) => {
-    updateCharacter({ speciesId });
+    updateCharacter({
+      speciesId,
+      speciesVariantId: undefined,
+    });
   };
 
   return (
@@ -19,17 +23,17 @@ export default function SpecieStep() {
       <StepBody>
         {species.map((item) => (
           <div
-            key={item.id}
-            className={`
+          key={item.id}
+          className={`
                         md:w-37.5 border-4 rounded-md cursor-pointer flex flex-col items-center
                         ${
                           character.speciesId === item.id
-                            ? "border-primary bg-primary text-main-text"
-                            : "border-amber-50 bg-amber-50 text-primary"
+                          ? "border-primary bg-primary text-main-text"
+                          : "border-amber-50 bg-amber-50 text-primary"
                         }
-                    `}
-            onClick={() => handleSpecieSelect(item.id)}
-          >
+                        `}
+                        onClick={() => handleSpecieSelect(item.id)}
+                        >
             <img src={sp[item.code].src} alt={item.name} />
           </div>
         ))}

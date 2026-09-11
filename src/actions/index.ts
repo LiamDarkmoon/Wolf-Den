@@ -8,6 +8,7 @@ export const server = {
     input: z.object({
       name: z.string().min(1),
       speciesId: z.string(),
+      speciesVariantId: z.string(),
       classId: z.string(),
       backgroundId: z.string(),
 
@@ -31,6 +32,7 @@ export const server = {
         p_name: character.name,
         p_class_id: character.classId,
         p_species_id: character.speciesId,
+        p_species_variant_id: character.speciesVariantId,
         p_background_id: character.backgroundId,
         p_abilities: character.abilities,
       });

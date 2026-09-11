@@ -6,11 +6,13 @@ import type {
   ClassRecord,
   SpeciesRecord,
   AbilityRecord,
+  SpeciesVariantRecord,
 } from "../../lib/types";
 import NameStep from "../steps/NameStep";
 import ClassStep from "../steps/ClassStep";
 import OriginStep from "../steps/OriginStep";
 import SpecieStep from "../steps/SpecieStep";
+import VariantStep from "../steps/VariantStep";
 import AbilitiesStep from "../steps/AbilitiesStep";
 import { record } from "astro:schema";
 
@@ -22,6 +24,7 @@ export interface Character {
 
   classId?: string;
   speciesId?: string;
+  speciesVariantId?: string;
   backgroundId?: string;
 
   abilities: {
@@ -51,12 +54,14 @@ interface CharacterContext {
 
   characterClass?: ClassRecord;
   characterSpecies?: SpeciesRecord;
+  characterSpecieVariant?: SpeciesVariantRecord;
   characterBackground?: BackgroundRecord;
 
   classes: ClassRecord[];
   species: SpeciesRecord[];
+  variants: SpeciesVariantRecord[];
   backgrounds: BackgroundRecord[];
-  abilities: AbilityRecord[]
+  abilities: AbilityRecord[];
 
   stepIndex: number;
   CurrentStep: ComponentType | string;
@@ -88,6 +93,10 @@ export const steps = [
     component: SpecieStep,
   },
   {
+    id: "Variant",
+    component: VariantStep,
+  },
+  {
     id: "Abilities",
     component: AbilitiesStep,
   },
@@ -107,6 +116,7 @@ export default function CharacterProvider({
     name: "",
     classId: undefined,
     speciesId: undefined,
+    speciesVariantId: undefined,
     backgroundId: undefined,
     abilities: {
       STR: null,
@@ -120,6 +130,7 @@ export default function CharacterProvider({
 
   const [classes, setClasses] = useState<ClassRecord[]>([]);
   const [species, setSpecies] = useState<SpeciesRecord[]>([]);
+  const [variants, setVariants] = useState<SpeciesVariantRecord[]>([]);
   const [backgrounds, setBackgrounds] = useState<BackgroundRecord[]>([]);
   const [abilities, setAbilities] = useState<AbilityRecord[]>([]);
   const [referencesLoading, setReferencesLoading] = useState(true);
@@ -133,12 +144,13 @@ export default function CharacterProvider({
 
   useEffect(() => {
     const loadReferences = async () => {
-      setReferencesLoading(true)
+      setReferencesLoading(true);
       const references = await getCharacterReferences();
 
       setClasses(references.classes ?? []);
       setSpecies(references.species ?? []);
-      setBackgrounds(references.backgrounds ?? []); 
+      setVariants(references.variants ?? []);
+      setBackgrounds(references.backgrounds ?? []);
       setAbilities(references.abilities ?? []);
 
       setReferencesLoading(false);
@@ -175,11 +187,18 @@ export default function CharacterProvider({
       </p>
     );
   }
+  const hasVariants = variants.some(
+    (variant) => variant.species_id === character.speciesId,
+  );
 
   const characterClass = classes.find((item) => item.id === character.classId);
 
   const characterSpecies = species.find(
     (item) => item.id === character.speciesId,
+  );
+
+  const characterSpecieVariant = variants.find(
+    (item) => item.id === character.speciesVariantId,
   );
 
   const characterBackground = backgrounds.find(
@@ -194,11 +213,27 @@ export default function CharacterProvider({
   };
 
   const nextStep = () => {
-    setStepIndex((i) => Math.min(i + 1, steps.length - 1));
+    setStepIndex((prev) => {
+      let next = prev + 1;
+
+      if (steps[next].id === "Variant" && !hasVariants) {
+        next++;
+      }
+
+      return next;
+    });
   };
 
   const previousStep = () => {
-    setStepIndex((i) => Math.max(i - 1, 0));
+    setStepIndex((prev) => {
+      let previous = prev - 1;
+
+      if (steps[previous].id === "Variant" && !hasVariants) {
+        previous--;
+      }
+
+      return previous;
+    });
   };
 
   const toStep = (stepIndex: number) => {
@@ -211,17 +246,15 @@ export default function CharacterProvider({
   };
 
   const saveCharacter = async (): Promise<CharacterRecord | null> => {
-
     if (
-        !character.speciesId ||
-        !character.classId ||
-        !character.backgroundId ||
-        Object.values(character.abilities).some(
-        (score) => score === null,
-        )
+      !character.speciesId ||
+      !character.speciesVariantId ||
+      !character.classId ||
+      !character.backgroundId ||
+      Object.values(character.abilities).some((score) => score === null)
     ) {
-        console.error("Character is incomplete");
-        return null;
+      console.error("Character is incomplete");
+      return null;
     }
 
     const result = await actions.createCharacter(character);
@@ -243,10 +276,12 @@ export default function CharacterProvider({
 
         characterClass,
         characterSpecies,
+        characterSpecieVariant,
         characterBackground,
 
         classes,
         species,
+        variants,
         backgrounds,
         abilities,
 
