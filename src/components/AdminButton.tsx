@@ -3,9 +3,9 @@ export default function AdminButton({ role } : { role: string | null }){
         (role === 'admin' || role === 'super_admin') && (
             <a
                 href="/admin"
-                className="grid place-items-center text-primary hover:text-primary-hover transition-all duration-300"
+                className="grid place-items-center p-2 rounded-lg text-main-text bg-primary hover:bg-primary-hover transition-all duration-300"
             >
-                <i className="fa-solid fa-users-gear"></i>
+                <i className="fa-solid fa-layer-group"></i>
                 
             </a>
         )

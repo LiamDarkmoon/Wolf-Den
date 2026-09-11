@@ -5,16 +5,17 @@ const user = Astro.locals.user;
 
 const userRole = Astro.locals.userRole;
 ---
-<nav class="py-3 px-6 flex justify-between items-center text-primary z-100  cursor-pointer">
-    <a href="/" class="font-black italic hover:text-primary-hover transition-all duration-300">
+<nav class="py-3 px-6 flex justify-between items-center z-100  cursor-pointer">
+    <a href="/" class="font-black tittle text-primary hover:text-primary-hover hover:scale-110 transition-all duration-500 group">
+        <i class="fa-solid fa-paw -me-1 rotate-45 group-hover:translate-x-28 transition-all duration-500"></i>
         Wolf's Den
     </a>
-    <AdminButton role={userRole} />
     {
-    user ? (
-            <div class="flex justify-end items-center">
+        user ? (
+            <div class="flex justify-end items-center gap-5">
+                <AdminButton role={userRole} /> |
                 <a
-                    class="flex gap-2 items-center font-black italic hover:text-primary-hover transition-all duration-300"
+                    class="flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300"
                     href={`/profile/${user.id}`}
                 >
                     <span class="">
@@ -32,7 +33,7 @@ const userRole = Astro.locals.userRole;
         ) : (
             <a
                 href="/auth/login"
-                class="font-bold ms-auto hover:text-primary-hover transition-all duration-300"
+                class="font-bold ms-auto bg-primary hover:bg-primary-hover transition-all duration-300"
             >
                 LogIn
                 <i class="fa-solid fa-right-to-bracket ms-1"></i>

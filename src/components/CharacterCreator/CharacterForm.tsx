@@ -4,10 +4,10 @@ import Button from '../button';
 import Avatar from '../Avatar';
 
 export default function CharacterForm() {
-  const { stepIndex,CurrentStep, nextStep, previousStep, saveCharacter } = useCharacter();
+  const { stepIndex, CurrentStep, nextStep, previousStep, saveCharacter } = useCharacter();
 
   const handleNextStep = async () => {
-    if(stepIndex === 4){
+    if(stepIndex === 5){
       const char = await saveCharacter()
       if (!char) return
       navigate(`/profile/characters/${char.id}`)

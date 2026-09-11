@@ -9,6 +9,12 @@
   --color-primary-hover: #f59e0b;
   --color-secondary: #3b82f6;
   --color-border: #2a2f38;
+
+  --font-tittle: {
+    font-family: "Cinzel Decorative", serif;
+
+  }
+
 }
 
 body {
@@ -16,6 +22,20 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.tittle {
+  font-family: "Cinzel Decorative", serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.text-body {
+  font-family: "Red Rose", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
 
 .bttn {
   min-width: 100px;

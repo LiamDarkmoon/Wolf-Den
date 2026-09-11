@@ -56,8 +56,11 @@ export default function AbilitiesStep() {
                   onClick={() => !isCompleted && handleStatSelect(ability.code)}
                 >
                   <span className="flex gap-3 w-15 text-2xl font-semibold">
-                    <i className="fa-solid fa-paw"></i>
                     {ability.code}:
+                  </span>
+
+                  <span className="flex gap-3 w-40 text-sm">
+                    {ability.description}:
                   </span>
 
                   {isCompleted && (

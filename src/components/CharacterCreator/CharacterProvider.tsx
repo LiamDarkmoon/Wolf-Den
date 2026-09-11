@@ -246,9 +246,9 @@ export default function CharacterProvider({
   };
 
   const saveCharacter = async (): Promise<CharacterRecord | null> => {
+    console.log(character)
     if (
       !character.speciesId ||
-      !character.speciesVariantId ||
       !character.classId ||
       !character.backgroundId ||
       Object.values(character.abilities).some((score) => score === null)

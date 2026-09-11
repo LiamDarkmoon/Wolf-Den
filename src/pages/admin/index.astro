@@ -1,29 +1,100 @@
 ---
-import Admin from '../../layouts/Admin.astro';
+import Admin from "../../layouts/Admin.astro";
+import { createClient } from "../../db/supabase";
+import { getLastWeek, getLastMonth } from "../../lib/utils/formatAdventureDate";
+import { promise } from "astro:schema";
 
+const supabase = createClient({
+  request: Astro.request,
+  cookies: Astro.cookies,
+});
 
+const now = new Date().toISOString();
+const lastWeek = getLastWeek();
+const lastMonth = getLastMonth();
 
+const [
+  { data: upcomingAdventures, error },
+  { data: recentPlayers, error: playerError },
+  { data: newCharacters },
+] = await Promise.all([
+  supabase
+    .from("adventures")
+    .select("id, title")
+    .gt("adventure_date", now)
+    .limit(5),
+
+  supabase
+    .from("profiles")
+    .select("id, display_name, avatar_url, created_at")
+    .gte("created_at", lastMonth)
+    .order("created_at", { ascending: false })
+    .limit(10),
+
+  supabase
+    .from("characters")
+    .select("name")
+    .gt("created_at", lastWeek)
+    .limit(10),
+]);
 ---
-<Admin>
-    <section class="flex  justify-center gap-4 py-4 w-full">
-        
-        <div class="w-2/5 flex flex-col md:items-center gap-4">
-            <h2 class="text-2xl font-bold text-center border-b border-main-text">Aventuras</h2>
-            <ul class="flex flex-col gap-2 p-2">
-                <li class="text-lg text-center">Aventura 1</li>
-                <li class="text-lg text-center">Aventura 2</li>
-                <li class="text-lg text-center">Aventura 3</li>
-            </ul>
-        </div>
-        
-        <div class="w-2/5 flex flex-col md:items-center gap-4">
-            <h2 class="text-2xl font-bold text-center border-b border-main-text">Jugadores</h2>
-            <ul class="flex flex-col gap-2 p-2">
-                <li class="text-lg text-center">Jugador 1</li>
-                <li class="text-lg text-center">Jugador 2</li>
-                <li class="text-lg text-center">Jugador 3</li>
-            </ul>
-        </div>
 
-    </section>
+<Admin>
+  <section
+    class="flex flex-col md:flex-row justify-center gap-4 py-4 w-full"
+  >
+    <div
+      class="w-full md:w-1/3 flex flex-col gap-4 md:border-e md:border-main-text p-4"
+    >
+      <h2 class="text-2xl font-bold text-center border-b border-main-text">
+        Aventuras actuales
+      </h2>
+      <ul class="flex flex-col gap-2 p-2">
+        {
+          upcomingAdventures?.map((adventure) => (
+            <a
+              href={`/adventures/league/${adventure.id}`}
+              class="p-2 border-b border-border hover:bg-border/70 hover:text-primary"
+            >
+              <li class="text-lg">{adventure.title}</li>
+            </a>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div
+      class="w-full md:w-1/3 flex flex-col gap-4 p-4"
+    >
+      <h2 class="text-2xl font-bold text-center border-b border-main-text">
+        Nuevos Jugadores
+      </h2>
+      <ul class="flex flex-col gap-2 p-2">
+        {
+          recentPlayers?.map((player) => (
+            <a class="p-2 border-b border-border hover:bg-border/70 hover:text-primary">
+              <li class="text-lg">{player.display_name}</li>
+            </a>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div
+      class="w-full md:w-1/3 flex flex-col gap-4 p-4 md:border-s md:border-main-text"
+    >
+      <h2 class="text-2xl font-bold text-center border-b border-main-text">
+        Nuevos Personajes
+      </h2>
+      <ul class="flex flex-col gap-2 p-2">
+        {
+          newCharacters?.map((character) => (
+            <a class="p-2 border-b border-border hover:bg-border/70 hover:text-primary">
+              <li class="text-lg">{character.name}</li>
+            </a>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 </Admin>

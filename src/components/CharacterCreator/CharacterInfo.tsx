@@ -11,7 +11,7 @@ export default function CharacterInfo() {
     <article className="hidden md:flex flex-col items-center w-2/5 p-5 rounded-md scroll text-secondary-bg">
       <div className="w-1/2 text-center">
         <Avatar avatar={characterClass ? characterClass.code : "druid"} />
-        <h2 className="h-8 text-2xl">{character.name}</h2>
+        <h2 className="h-8 text-2xl tittle">{character.name} | lvl 1</h2>
         <span>
           {" "}
           {characterSpecies?.name}({characterSpecieVariant?.name}) - {" "}
@@ -25,8 +25,8 @@ export default function CharacterInfo() {
             key={ability}
             className={`flex items-center justify-between w-1/4 h-12.5 p-2 border-y-4 border-secondary-bg`}
           >
-            <span className="w-10 text-2xl font-semibold">{ability}:</span>
-            <span className="text-2xl font-semibold">
+            <span className="w-10 text-xl font-semibold">{ability}:</span>
+            <span className="text-xl font-semibold">
               {score}
               <span className="text-sm italic">
                 ({getAbilityModifier(score) > 0 ? "+" : ""}

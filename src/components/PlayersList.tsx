@@ -12,7 +12,7 @@ export default function PlayersList({
   role: string | null;
 }) {
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
-  const [playerCharacters, setPlayerCharacters] = useState<CharacterSheet[]>([]);
+  const [playerCharacters, setPlayerCharacters] = useState<any[]>([]);
   const [charactersLoading, setCharactersLoading] = useState(false);
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -66,7 +66,7 @@ export default function PlayersList({
     } else {
     }
   };
-  console.log('pjs...',playerCharacters)
+
 
   return (
     <ul className="flex flex-col gap-2 p-2">
@@ -107,14 +107,14 @@ export default function PlayersList({
                         Cargando personajes...
                       </div>
                     ) : playerCharacters.length > 0 ? (
-                      playerCharacters.map((character: CharacterSheet) => (
+                      playerCharacters.map((character) => (
                         <div
                           key={character.id}
                           className="flex gap-2 p-3 capitalize font-normal border-y border-main-bg hover:border-border hover:bg-secondary-bg hover:text-primary-hover"
                           onClick={() => handleSelectCharacter(character.id)}
                         >
                           <span>{character.name}:</span>
-                          <span>{character.class.name}</span>
+                          <span>{character.class_name}</span>
                           <span className="italic">({character.level})</span>
                         </div>
                       ))
