@@ -125,6 +125,16 @@ export interface ClassRecord {
     code: Class;
     description: string | null;
     hit_die: number;
+    level: number;
+    subclass: SubclassRecord | null;
+}
+
+export interface SubclassRecord {
+  id: string;
+  class_id: string;
+  code: string;
+  name: string;
+  description: string | null;
 }
 
 export interface SpeciesRecord {
@@ -171,7 +181,7 @@ export interface CharacterSheet {
   name: string;
   level: number;
 
-  class: ClassRecord;
+  classes: ClassRecord[];
   species: SpeciesRecord;
   background: BackgroundRecord;
 

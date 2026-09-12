@@ -1,9 +1,12 @@
 ---
 import AdminButton from "./AdminButton";
+import LogtButton from "./LogButton";
 
+const pathname = Astro.url.pathname;
 const user = Astro.locals.user;
-
 const userRole = Astro.locals.userRole;
+
+const isInProfile = pathname.startsWith("/profile")
 ---
 <nav class="py-3 px-6 flex justify-between items-center z-100  cursor-pointer">
     <a href="/" class="font-black tittle text-primary hover:text-primary-hover hover:scale-110 transition-all duration-500 group">
@@ -11,33 +14,35 @@ const userRole = Astro.locals.userRole;
         Wolf's Den
     </a>
     {
-        user ? (
-            <div class="flex justify-end items-center gap-5">
-                <AdminButton role={userRole} /> |
+    user ? (
+        <div class="flex justify-end items-center gap-5">
+
+            <AdminButton role={userRole} />
+
+            {isInProfile ? (
+                <LogtButton isLoged={true} />
+            ) : (
                 <a
                     class="flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300"
                     href={`/profile/${user.id}`}
                 >
-                    <span class="">
-                        {user.user_metadata?.full_name.trim().split(/\s+/)[0]}
+                    <span>
+                        {user.user_metadata?.full_name?.trim().split(/\s+/)[0]}
                     </span>
-                    {
-                        userRole === 'admin'
-                            ? <i class="fa-solid fa-user-gear" />
-                            : userRole === 'super_admin'
-                                ? <i class="fa-solid fa-user-shield" />
-                                : <i class="fa-solid fa-user" />
-                    }
+
+                    {userRole === "admin" ? (
+                        <i class="fa-solid fa-user-gear" />
+                    ) : userRole === "super_admin" ? (
+                        <i class="fa-solid fa-user-shield" />
+                    ) : (
+                        <i class="fa-solid fa-user" />
+                    )}
                 </a>
-            </div>
-        ) : (
-            <a
-                href="/auth/login"
-                class="font-bold ms-auto bg-primary hover:bg-primary-hover transition-all duration-300"
-            >
-                LogIn
-                <i class="fa-solid fa-right-to-bracket ms-1"></i>
-            </a>
-        )
-    }
+            )}
+
+        </div>
+    ) : (
+        <LogtButton isLoged={false} />
+    )
+}
 </nav>
