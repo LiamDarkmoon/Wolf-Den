@@ -65,7 +65,7 @@ export default function CharacterSheet({
   };
 
   return (
-    <article className="relative flex flex-col items-center md:w-1/3 h-[75vh] p-6 gap-3 rounded-md scroll text-secondary-bg">
+    <article className="relative flex flex-col items-center md:w-1/3 h-[75vh] p-6 gap-3 rounded-md scroll text-secondary-bg border-4 border-primary">
       <Frame />
       <h1 className="h-8 text-3xl font-black pb-8 border-b-2 tittle">
         {character?.name} | lvl: {character?.level}{" "}

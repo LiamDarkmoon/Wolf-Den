@@ -35,7 +35,7 @@ const adventures = data?.adventures ?? [];
       <div class="relative flex justify-center items-center">
         <ProfileFrame className="relative size-25 mx-auto text-primary" />
         <img
-          src={user ? user.user_metadata.picture : avatar.src}
+          src={user ? user.user_metadata.picture :null}
           alt="Profile Picture"
           class="absolute w-15 rounded-full"
         />
@@ -53,7 +53,7 @@ const adventures = data?.adventures ?? [];
         {
             !characters || characters?.length > 0 ?
             <CharactersTable characters={characters} client:only="react" />
-            : <a href="/character/creator" class="flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Crea un Personaje</a>
+            : <a href="/characters/creation" class="flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Crea un Personaje</a>
         }
       </section>
       <section class="flex flex-col gap-3">
