@@ -75,8 +75,10 @@ export default function CharacterSheet({
         <span className=""> {character?.background.name}</span>
         {character?.classes.map((characterClass, index) => (
           <div key={characterClass.id} className="flex flex-col items-center">
+            <span className="">
+              {character?.species.name}{(character?.species.variant?.name)}
+            </span>
             <span className="pb-2 border-b">
-              {character?.species.name}({character?.species.variant?.name}) -{" "}
               {characterClass.name}({characterClass.level}) {""}
               {characterClass.subclass ? characterClass.subclass.name : null}
             </span>

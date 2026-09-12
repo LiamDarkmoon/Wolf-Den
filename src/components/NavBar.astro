@@ -6,7 +6,7 @@ const pathname = Astro.url.pathname;
 const user = Astro.locals.user;
 const userRole = Astro.locals.userRole;
 
-const isInProfile = pathname.startsWith("/profile")
+const isInProfile = pathname === `/profile/${user?.id}`
 ---
 <nav class="py-3 px-6 flex justify-between items-center z-100  cursor-pointer">
     <a href="/" class="font-black tittle text-primary hover:text-primary-hover hover:scale-110 transition-all duration-500 group">

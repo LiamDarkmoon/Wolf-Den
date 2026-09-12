@@ -69,7 +69,7 @@ export default function PlayersList({
 
 
   return (
-    <ul className="flex flex-col gap-2 p-2">
+    <ul className="flex flex-col gap-2 p-2 border-e ">
       {players?.map((player: any) => (
         <li
           key={player.id}
@@ -87,19 +87,24 @@ export default function PlayersList({
           <span>
             {selectedPlayer === player.id ? (
               <div className="flex  gap-4 w-5">
-                {player.role === "user" ? (
-                  <i
-                    className="fa-solid fa-user-plus text-emerald-500"
-                    onClick={() => handlePromotePlayer(player)}
-                  ></i>
-                ) : player.role === "admin" ? (
-                  <i
-                    className="fa-solid fa-user-minus text-rose-500"
-                    onClick={() => handleDemotePlayer(player)}
-                  ></i>
-                ) : (
-                  <i className="fa-solid fa-shield-heart text-secondary"></i>
-                )}
+                {
+                  role === 'super_admin' &&
+                <div className="flex  gap-4 w-5">
+                  {player.role === "user" ? (
+                    <i
+                      className="fa-solid fa-user-plus text-emerald-500"
+                      onClick={() => handlePromotePlayer(player)}
+                    ></i>
+                  ) : player.role === "admin" ? (
+                    <i
+                      className="fa-solid fa-user-minus text-rose-500"
+                      onClick={() => handleDemotePlayer(player)}
+                    ></i>
+                  ) : (
+                    <i className="fa-solid fa-shield-heart text-secondary"></i>
+                  )}
+                </div>
+                }
                 {visible && (
                   <div className="bg-main-bg absolute top-6 left-0 z-2 w-full rounded-b-sm">
                     {charactersLoading ? (
