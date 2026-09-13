@@ -1,20 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Join from '../../components/Join.tsx';
-import { createClient } from "../../db/supabase";
-import Delete from '../../components/delete';
 import { getAdventuresWithStatus } from '../../lib/utils/getAdventuresWithStatus';
 import type { adventureWithStatus } from '../../lib/types';
-import Frame from '../../components/Frame';
-import Poster from '../../components/Poster'
+import AdventureCardsList from '../../components/AdventureCardsList';
 
 const role = Astro.locals.userRole;
-
-const supabase = createClient({
-    request: Astro.request,
-    cookies: Astro.cookies,
-});
-
 const adventures:adventureWithStatus[] = await getAdventuresWithStatus({
     request: Astro.request,
     cookies: Astro.cookies
@@ -27,64 +17,6 @@ const adventures:adventureWithStatus[] = await getAdventuresWithStatus({
             TABLERO DE MISIONES
             <i class="fa-solid fa-arrow-down-short-wide"></i>
         </h1>
-        <section class="w-full flex flex-col md:flex-row items-center justify-around gap-10">
-            {adventures.map((adventure: adventureWithStatus) => {
-
-                const isFull =
-                    adventure.currentPlayers >= adventure.max_players;
-
-                return (
-                        <article class="relative w-full md:w-[30%] board border-4 border-primary shadow-border">
-                            <Frame/>
-
-                            <div class="flex items-center justify-center gap-2 mb-4">
-                                <h2 class="text-xl font-bold text-center tittle underline truncate">
-                                    <a href={`/adventures/league/${adventure.id}`}>
-                                        {adventure.title}
-                                    </a>
-                                </h2>
-                                {
-                                    (role === "admin" || role === "super_admin") && (
-                                        <Delete id={adventure.id} client:only="react" />
-                                    )
-                                }
-                            </div>
-
-                            <Poster adventure={adventure} client:only="react"/>
-
-                            <Join
-                                client:only="react"
-                                role={adventure.role}
-                                currentPlayers={adventure.currentPlayers}
-                                currentSubstitutes={adventure.currentSubstitutes}
-                                maxPlayers={adventure.max_players}
-                                isRegistered={adventure.isRegistered}
-                                adventureId={adventure.id}
-                            />
-
-                        </article>
-                );
-            })}   
-        </section>
+        <AdventureCardsList adventures={adventures} role={role} client:only="react"/>
     </div>
 </Layout>
-
-<style>
-    .board {
-        z-index: 1;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        height: 70vh;
-        background: rgba(26, 30, 36, 0.40);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(3.5px);
-        -webkit-backdrop-filter: blur(3.5px);
-        padding: 2rem;
-        gap: 0.5rem;
-        border-radius: 0.5rem;
-        text-align: center;
-    }
-</style>

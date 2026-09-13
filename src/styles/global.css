@@ -50,6 +50,24 @@ body {
   background-repeat: no-repeat;
 }
 
+.board {
+        z-index: 1;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 70vh;
+        background: rgba(26, 30, 36, 0.40);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(3.5px);
+        -webkit-backdrop-filter: blur(3.5px);
+        padding: 2rem;
+        gap: 0.5rem;
+        border-radius: 0.5rem;
+        text-align: center;
+    }
+
 .bg-img {
   z-index: -1;
   position: absolute;

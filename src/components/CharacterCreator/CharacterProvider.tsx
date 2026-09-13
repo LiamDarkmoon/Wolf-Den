@@ -15,6 +15,7 @@ import SpecieStep from "../steps/SpecieStep";
 import VariantStep from "../steps/VariantStep";
 import AbilitiesStep from "../steps/AbilitiesStep";
 import { record } from "astro:schema";
+import { navigate } from "astro:transitions/client";
 
 const DRAFT_KEY = `wolf-den-character-draft`;
 
@@ -213,10 +214,15 @@ export default function CharacterProvider({
   };
 
   const nextStep = () => {
+    if (stepIndex === steps.length - 1) {
+      saveCharacter();
+      return;
+    }
+
     setStepIndex((prev) => {
       let next = prev + 1;
 
-      if (steps[next].id === "Variant" && !hasVariants) {
+      if (steps[next]?.id === "Variant" && !hasVariants) {
         next++;
       }
 
@@ -225,10 +231,15 @@ export default function CharacterProvider({
   };
 
   const previousStep = () => {
+    if (stepIndex === 0) {
+      navigate("/");
+      return;
+    }
+
     setStepIndex((prev) => {
       let previous = prev - 1;
 
-      if (steps[previous].id === "Variant" && !hasVariants) {
+      if (steps[previous]?.id === "Variant" && !hasVariants) {
         previous--;
       }
 
@@ -247,6 +258,7 @@ export default function CharacterProvider({
 
   const saveCharacter = async (): Promise<CharacterRecord | null> => {
     if (
+      !character.name ||
       !character.speciesId ||
       !character.classId ||
       !character.backgroundId ||
@@ -255,8 +267,18 @@ export default function CharacterProvider({
       console.error("Character is incomplete");
       return null;
     }
+    const completeCharacter = {
+      name: character.name,
+      speciesId: character.speciesId,
+      classId: character.classId,
+      backgroundId: character.backgroundId,
+      abilities: character.abilities,
+      ...(character.speciesVariantId && {
+        speciesVariantId: character.speciesVariantId,
+      }),
+    };
 
-    const result = await actions.createCharacter(character);
+    const result = await actions.createCharacter(completeCharacter);
 
     if (result.error) {
       console.error(result.error);
@@ -265,6 +287,7 @@ export default function CharacterProvider({
 
     localStorage.removeItem(DRAFT_KEY);
     resetCharacter();
+    navigate(`/profile/characters/${result.data?.id}`);
     return result.data;
   };
 

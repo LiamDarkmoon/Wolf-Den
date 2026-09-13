@@ -68,16 +68,15 @@ export default function CharacterSheet({
     <article className="relative flex flex-col items-center md:w-1/3 h-[75vh] p-6 gap-3 rounded-md scroll text-secondary-bg border-4 border-primary">
       <Frame />
       <h1 className="h-8 text-3xl font-black pb-8 border-b-2 tittle">
-        {character?.name} | lvl: {character?.level}{" "}
+        {character?.name}
       </h1>
       <div className="flex flex-col items-center gap-1">
         <LvlUpButton setCharacter={setCharacter} character={character} />
-        <span className=""> {character?.background.name}</span>
+
+        <span className=""> {character?.background.name} - {character?.species.name} {"("+ character?.species.variant?.name +")"}</span>
+
         {character?.classes.map((characterClass, index) => (
           <div key={characterClass.id} className="flex flex-col items-center">
-            <span className="">
-              {character?.species.name}{(character?.species.variant?.name)}
-            </span>
             <span className="pb-2 border-b">
               {characterClass.name}({characterClass.level}) {""}
               {characterClass.subclass ? characterClass.subclass.name : null}

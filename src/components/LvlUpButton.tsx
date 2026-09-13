@@ -37,7 +37,7 @@ export default function LvlUpButton({
   return (
     <button
       onClick={() => handleLevelUp()}
-      className="p-2 rounded-xl bg-primary text-body text-sm font-semibold text-main-text cursor-pointer shadow-md shadow-border hover:bg-primary-hover active:shadow-none"
+      className="p-2 rounded-lg bg-primary text-body text-sm font-semibold text-main-text cursor-pointer shadow-md shadow-border hover:bg-primary-hover active:shadow-none"
     >
       ¡LvL UP!
     </button>

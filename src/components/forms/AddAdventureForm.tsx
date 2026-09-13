@@ -2,6 +2,7 @@ import { actions } from "astro:actions";
 import { useState } from "react";
 import Button from "../button";
 import { supabase } from "../../db/supabase-browser";
+import { navigate } from "astro:transitions/client";
 
 export default function AddAdventureForm() {
   const [minLevel, setMinLevel] = useState("1");
@@ -12,7 +13,16 @@ export default function AddAdventureForm() {
     event.preventDefault();
     setLoading(true)
 
-    const formData = new FormData(event.currentTarget);
+    const reset = () => {
+      form.reset();
+    setMinLevel('1');
+    setMaxLevel('2');
+    navigate(`/adventures/league/${adventure.id}`)
+    setLoading(false)
+    }
+
+    const form = event.currentTarget
+    const formData = new FormData(form);
 
     const poster = formData.get("poster");
 
@@ -31,7 +41,7 @@ export default function AddAdventureForm() {
     }
 
     if (!(poster instanceof File) || poster.size === 0) {
-      setLoading(false)
+      reset()
       return;
     }
 
@@ -69,8 +79,7 @@ export default function AddAdventureForm() {
       return;
     }
 
-    
-    setLoading(false)
+    reset()
   };
 
   return (

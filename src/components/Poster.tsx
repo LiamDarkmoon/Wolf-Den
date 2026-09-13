@@ -6,18 +6,13 @@ export default function Poster({
 }: {
   adventure: adventureWithStatus;
 }) {
-  const [hover, SetHover] = useState(false);
-
   return (
-    <div
-      className={
-        hover
-          ? "bg-img"
-          : "h-37.5 overflow-hidden bg-linear-to-b from-transparent to-secondary-bg  group"
-      }
-      onClick={() => SetHover(!hover)}
-    >
-        <img src={adventure.poster_url ? adventure.poster_url : "/poster.jpeg"} alt={adventure.title} className={hover ? "" : "h-full object-cover"} />
+    <div className="bg-img">
+      <img
+        src={adventure.poster_url ? adventure.poster_url : "/poster.jpeg"}
+        alt={adventure.title}
+        className={"object-fill"}
+      />
     </div>
   );
 }

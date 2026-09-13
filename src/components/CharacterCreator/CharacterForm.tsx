@@ -1,37 +1,18 @@
 import { useCharacter } from "../../lib/hooks/useCharacter";
-import { navigate } from "astro/virtual-modules/transitions-router.js";
 import Button from '../button';
-import Avatar from '../Avatar';
+
 
 export default function CharacterForm() {
-  const { stepIndex, CurrentStep, nextStep, previousStep, saveCharacter } = useCharacter();
-
-  const handleNextStep = async () => {
-    if(stepIndex === 5){
-      const char = await saveCharacter()
-      if (!char) return
-      navigate(`/profile/characters/${char.id}`)
-    } else {
-      nextStep();
-    }
-  }
-
-  const handlePrevStep = async () => {
-    if(stepIndex === 0) {
-      navigate("/")
-    } else {
-      previousStep()
-    }
-  }
+  const { CurrentStep, nextStep, previousStep } = useCharacter();
 
   return (
     <form className="md:w-2/5 w-full relative flex flex-col gap-3">
       <CurrentStep />
       <div className="flex justify-around items-center gap-3">
-          <Button secondary size="sm" onClick={handlePrevStep}>
+          <Button secondary size="sm" onClick={()=>previousStep()}>
             Anterior
           </Button>
-          <Button size="sm" onClick={handleNextStep}>
+          <Button size="sm" onClick={()=>nextStep()}>
             Siguiente
           </Button>
       </div>

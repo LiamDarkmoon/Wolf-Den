@@ -2,7 +2,7 @@ export default function LogtButton({ isLoged } : { isLoged: boolean }) {
   return (
     <a
       href={ isLoged ? "/auth/logout" : "/auth/login" }
-      className="flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300"
+      className="flex gap-2 p-2 items-center font-black rounded-lg text-sm bg-primary hover:bg-primary-hover transition-all duration-300"
     >
       { isLoged 
           ? "LogOut"

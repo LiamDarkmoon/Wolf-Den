@@ -25,6 +25,8 @@ export default function CharacterSelector({
     const [visible, setVisible] = useState(false);
     const isOwner = player.user_id === userId;
 
+    const colors = ['text-primary-hover', 'text-gray-500', 'text-amber-900']
+
     // Solo cargamos los personajes del usuario actual
     useEffect(() => {
 
@@ -161,13 +163,13 @@ export default function CharacterSelector({
                     </button>
                 ) :
                     <button
-                        className="size-8 text-2xl grid place-items-center text-secondary cursor-pointer"
+                        className={`size-8 text-2xl grid place-items-center text-primary-hover cursor-pointer`}
                     >
                         {
                             substitute ?
                             <i className={`fa-solid fa-${index}`}></i>
                             :
-                            <i className="fa-solid fa-message"></i>
+                            <i className={ index && index <= 2 ? colors[index] + " fa-brands fa-web-awesome" : "fa-solid fa-message text-main-text"}></i>
                         }
 
                     </button>

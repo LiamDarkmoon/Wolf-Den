@@ -55,12 +55,13 @@ const suplentes = players.filter(
           </h2>
 
           {
-            titulares.map((player: Player) => (
+            titulares.map((player: Player,index:number) => (
             <CharacterSelector
                 userId={user?.id}
                 player={player}
                 adventureId={adventure.id}
                 role={role}
+                index={index}
                 client:only="react"
               />
             ))
