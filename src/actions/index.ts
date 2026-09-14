@@ -48,7 +48,7 @@ export const server = {
 
   deleteCharacter: defineAction({
     input: z.object({
-      id: z.string().uuid(),
+      id: z.uuid(),
     }),
 
     handler: async ({ id }, context) => {
@@ -131,8 +131,8 @@ export const server = {
 
   updateAdventurePoster: defineAction({
     input: z.object({
-      id: z.string().uuid(),
-      poster_url: z.string().url(),
+      id: z.uuid(),
+      poster_url: z.url(),
     }),
 
     handler: async ({ id, poster_url }, context) => {
@@ -170,7 +170,7 @@ export const server = {
 
   deleteAdventure: defineAction({
     input: z.object({
-      id: z.string().uuid(),
+      id: z.uuid(),
     }),
 
     handler: async ({ id }, context) => {
@@ -200,6 +200,93 @@ export const server = {
       }
 
       return data;
+    },
+  }),
+
+  getNotifications: defineAction({
+    
+    handler: async (_, context) => {
+      const supabase = createClient({
+        request: context.request,
+        cookies: context.cookies,
+      });
+
+      const { data: notifications, error } = await supabase
+        .from("notifications")
+        .select("id, type, title, message, read_at, created_at")
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      if (error) {
+        console.error("Error loading notifications:", error);
+        throw new Error("No se pudieron cargar las notificaciones");
+      }
+
+      const { count, error: countError } = await supabase
+        .from("notifications")
+        .select("*", { count: "exact", head: true })
+        .is("read_at", null);
+
+      if (countError) {
+        console.error("Error counting notifications:", countError);
+        throw new Error("No se pudo obtener el contador");
+      }
+
+      return {
+        notifications,
+        unreadCount: count ?? 0,
+      };
+    },
+  }),
+  markNotificationAsRead: defineAction({
+    input: z.object({
+      id: z.uuid(),
+    }),
+
+    handler: async ({ id }, context) => {
+      const supabase = createClient({
+        request: context.request,
+        cookies: context.cookies,
+      });
+
+      const { error } = await supabase
+        .from("notifications")
+        .update({
+          read_at: new Date().toISOString(),
+        })
+        .eq("id", id);
+
+      if (error) {
+        console.error("Error marking notification:", error);
+        throw new Error("No se pudo marcar la notificación");
+      }
+
+      return { success: true };
+    },
+  }),
+
+  markAllNotificationsAsRead: defineAction({
+    input: z.object({}),
+
+    handler: async (_, context) => {
+      const supabase = createClient({
+        request: context.request,
+        cookies: context.cookies,
+      });
+
+      const { error } = await supabase
+        .from("notifications")
+        .update({
+          read_at: new Date().toISOString(),
+        })
+        .is("read_at", null);
+
+      if (error) {
+        console.error("Error marking notifications:", error);
+        throw new Error("No se pudieron marcar las notificaciones");
+      }
+
+      return { success: true };
     },
   }),
 };

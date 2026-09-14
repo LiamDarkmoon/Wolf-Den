@@ -1,46 +1,44 @@
 ---
-import NavBar from '../components/NavBar.astro';
+import NavBar from "../components/NavBar.astro";
 ---
 
-<div id="container" class="text-main-text ">
-	<NavBar />
-	<main class="scrollbar-none">
-		<slot/>
-	</main>
+<div id="container" class="text-main-text">
+  <NavBar />
+  <main class="scrollbar-none">
+    <slot />
+  </main>
 </div>
 
 <style>
-	#container {
-		position: relative;
-		background: url('/cave-bg.jpg') center/cover no-repeat;
-		baground-color: #0f1115;
-		height: 100%;
-		width: 100%;
-		max-width: 100%;
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: 48px 1fr;
-	}
-	#container::before {
-		content: "";
-		position: absolute;
-		inset: 0;
-		background-color: #10141ba7;
-		
-	}
+  #container {
+    position: relative;
+    background: url("/cave-bg.jpg") center/cover no-repeat;
+    baground-color: #0f1115;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 48px 1fr;
+  }
+  #container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #10141ba7;
+  }
 
-	main {
-		grid-column: 1 / -1;
-		grid-row: 2 / -1;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		z-index: 1;
-		height: calc(100vh - 48px);
-		width: 100%;
-		max-width: 100%;
-		padding: 1.25rem;
-		overflow: scroll;
-	}
-
+  main {
+    grid-column: 1 / -1;
+    grid-row: 2 / -1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    height: calc(100vh - 48px);
+    width: 100%;
+    max-width: 100%;
+    padding: 1.25rem;
+    overflow: scroll;
+  }
 </style>

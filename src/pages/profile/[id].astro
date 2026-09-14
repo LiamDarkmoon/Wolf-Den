@@ -6,6 +6,7 @@ import ProfileFrame from "../../components/ProfileFrame";
 import Layout from "../../layouts/Layout.astro";
 import avatar from "../../../public/avatar.jpg";
 import type { registeredAdventure } from "../../lib/types";
+import NotificationButton from "../../components/buttons/NotificationButton";
 
 const { id } = Astro.params;
 const user = Astro.locals.user;
@@ -22,7 +23,6 @@ const { data: characters, error } = await supabase
   .order("created_at", {
     ascending: false,
   });
-  console.log("ch",characters)
 
 const { data, error: ad_error } = await supabase.rpc("get_user_adventures");
 
@@ -40,7 +40,9 @@ const adventures = data?.adventures ?? [];
           class="absolute w-15 rounded-full"
         />
       </div>
-      <h1 class="text-2xl font-bold">{user?.user_metadata?.full_name}</h1>
+      <h1 class="text-2xl font-bold flex gap-1">
+        {user?.user_metadata?.full_name}
+      </h1>
     </div>
 
     <div class="flex flex-col md:flex-row md:justify-around w-full gap-5 p-4">
@@ -53,7 +55,7 @@ const adventures = data?.adventures ?? [];
         {
             !characters || characters?.length > 0 ?
             <CharactersTable characters={characters} client:only="react" />
-            : <a href="/characters/creation" class="w-1/3 flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Crea un Personaje</a>
+            : <a href="/characters/creation" class="mx-auto w-1/2 flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Crea un Personaje</a>
         }
       </section>
       <section class="flex flex-col gap-3">
@@ -63,9 +65,9 @@ const adventures = data?.adventures ?? [];
           Aventuras
         </h2>
         {
-            !adventures || adventures.lenght > 0 ?
+            !adventures || adventures.length > 0 ?
             <AdventureList adventures={adventures} client:only="react" />
-            : <a href="/adventures/league" class="w-1/3 flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Unete a una aventura</a>
+            : <a href="/adventures/league" class="mx-auto w-1/2 flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Unete a una aventura</a>
         }
       </section>
     </div>

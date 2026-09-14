@@ -15,6 +15,7 @@
     "@astrojs/node": "^11.1.2",
     "@astrojs/react": "^5.0.7",
     "@astrojs/vercel": "^11.0.6",
+    "@hiseb/confetti": "^2.2.0",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.112.3",
     "@tailwindcss/vite": "^4.3.0",

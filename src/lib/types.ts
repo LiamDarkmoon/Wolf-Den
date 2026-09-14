@@ -67,6 +67,15 @@ export const Backgrounds = {
 } as const;
 export type Background = keyof typeof Backgrounds;
 
+export type Notification = {
+  id: string;
+  type: string;
+  title: string;
+  message: string | null;
+  read_at: string | null;
+  created_at: string;
+};
+
 export interface Adventure {
   id: string;
   title: string;
@@ -78,55 +87,55 @@ export interface Adventure {
 }
 
 export interface registeredAdventure {
-  adventure_id: string,
+  adventure_id: string;
   title: string;
   description: string;
   poster_url: string;
   adventure_date: Date;
   max_players: number;
   min_lvl: number;
-  max_lvl:number;
-  role: 'titular' | 'suplente',
-  registered_at: Date
+  max_lvl: number;
+  role: "titular" | "suplente";
+  registered_at: Date;
 }
 export interface adventureWithStatus {
-  id: string,
+  id: string;
   title: string;
   description: string;
   poster_url: string;
   adventure_date: string;
   max_players: number;
   min_lvl: number;
-  max_lvl:number;
+  max_lvl: number;
   created_by: string;
-  registered_at: string,
-  currentPlayers: number,
-  currentSubstitutes: number,
-  isRegistered: boolean,
-  role: 'titular' | 'suplente',
+  registered_at: string;
+  currentPlayers: number;
+  currentSubstitutes: number;
+  isRegistered: boolean;
+  role: "titular" | "suplente";
 }
 
 export interface Player {
-  user_id: string,
-  display_name: string,
-  role: string,
-  character_id: string,
-  character_name: string
+  user_id: string;
+  display_name: string;
+  role: string;
+  character_id: string;
+  character_name: string;
 }
 export interface User {
-  id: string,
-  display_name: string,
-  role: string,
+  id: string;
+  display_name: string;
+  role: string;
 }
 
 export interface ClassRecord {
-    id: string;
-    name: string;
-    code: Class;
-    description: string | null;
-    hit_die: number;
-    level: number;
-    subclass: SubclassRecord | null;
+  id: string;
+  name: string;
+  code: Class;
+  description: string | null;
+  hit_die: number;
+  level: number;
+  subclass: SubclassRecord | null;
 }
 
 export interface SubclassRecord {
@@ -138,14 +147,14 @@ export interface SubclassRecord {
 }
 
 export interface SpeciesRecord {
-    id: string;
-    name: string;
-    code: Species;
-    description: string | null;
-    creature_type: string;
-    size: string | null;
-    speed: number | null;
-    variant: SpeciesVariantRecord | null;
+  id: string;
+  name: string;
+  code: Species;
+  description: string | null;
+  creature_type: string;
+  size: string | null;
+  speed: number | null;
+  variant: SpeciesVariantRecord | null;
 }
 
 export interface SpeciesVariantRecord {
@@ -157,19 +166,19 @@ export interface SpeciesVariantRecord {
 }
 
 export interface BackgroundRecord {
-    id: string;
-    name: string;
-    code: Background;
-    description: string | null;
+  id: string;
+  name: string;
+  code: Background;
+  description: string | null;
 }
 
 export type AbilityCode = "STR" | "DEX" | "CON" | "INT" | "WIS" | "CHA";
 export interface AbilityRecord {
-    id: string;
-    code: AbilityCode;
-    name: string;
-    description: string | null;
-    sort_order: number;
+  id: string;
+  code: AbilityCode;
+  name: string;
+  description: string | null;
+  sort_order: number;
 }
 
 export type CharacterAbilityScores = {

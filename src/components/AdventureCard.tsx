@@ -17,13 +17,14 @@ export default function AdventureCard({
     <article className="relative w-full md:w-[30%] board border-4 border-primary shadow-border">
       <Frame />
 
-      <div className="flex items-center justify-center gap-2 mb-4">
+      <div className="flex items-center flex-wrap justify-center mb-4">
         <h2 className="text-xl font-bold text-center tittle underline truncate">
           <a href={`/adventures/league/${adventure.id}`}>{adventure.title}</a>
         </h2>
         {(role === "admin" || role === "super_admin") && (
           <Delete id={adventure.id} onDelete={onDelete} />
         )}
+        <h3 className="w-full italic text-sm"> Niveles : {adventure.min_lvl} a {adventure.max_lvl} </h3>
       </div>
 
       <Poster adventure={adventure} />

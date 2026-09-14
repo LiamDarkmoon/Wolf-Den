@@ -5,6 +5,9 @@ import CharacterSelector from "../../../components/CharacterSelector";
 import type { Player } from "../../../lib/types";
 import Delete from "../../../components/delete";
 import { getAdventurePlayers } from "../../../lib/utils/getAdventurePlayers";
+import { filterByCharacterLvl } from "../../../lib/utils/filter";
+import { undefined } from "astro:schema";
+import { formatAdventureDate } from "../../../lib/utils/formatAdventureDate";
 
 const { id } = Astro.params;
 
@@ -33,6 +36,9 @@ const titulares = players.filter((player: Player) => player.role === "titular");
 const suplentes = players.filter(
   (player: Player) => player.role === "suplente",
 );
+
+const date = formatAdventureDate(adventure.adventure_date)
+
 ---
 
 <Layout>
@@ -44,6 +50,7 @@ const suplentes = players.filter(
       {adventure.title}
       {(id && role !== "user") && <Delete id={id} client:only="react"/>}
     </h1>
+    <p class="text-xs italic text-secondary-text md:w-1/2">{date}</p>
     <p class="my-4 md:w-1/2">{adventure.description}</p>
     <article class="w-full flex flex-col-reverse md:flex-row justify-around">
       <div class="flex flex-col md:w-1/3 p-4 gap-5 text-start">
@@ -56,12 +63,13 @@ const suplentes = players.filter(
 
           {
             titulares.map((player: Player,index:number) => (
+              
             <CharacterSelector
                 userId={user?.id}
                 player={player}
                 adventureId={adventure.id}
                 role={role}
-                index={index}
+                index={index+1}
                 client:only="react"
               />
             ))
