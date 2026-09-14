@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Bttn from "./bttn";
+import Bttn from "./Bttn";
 import { actions } from "astro:actions";
 import type { Notification } from "../../lib/types";
 
