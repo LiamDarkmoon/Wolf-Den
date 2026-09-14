@@ -1,4 +1,4 @@
-import Bttn from "./buttons/bttn";
+import Bttn from "../components/buttons/Bttn";
 
 export default function FeedbackButton() {
   return (
