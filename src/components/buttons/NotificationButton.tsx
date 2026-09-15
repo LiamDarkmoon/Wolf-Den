@@ -60,17 +60,27 @@ export default function NotificationButton() {
 
               if (!previous) return prev;
 
-              if (!previous.read_at && notification.read_at) {
-                setUnreadCount((count) => Math.max(0, count - 1));
-              }
-
-              if (previous.read_at && !notification.read_at) {
-                setUnreadCount((count) => count + 1);
-              }
-
               return prev.map((item) =>
                 item.id === notification.id ? notification : item,
               );
+            });
+
+            setUnreadCount((count) => {
+              const previous = notifications.find(
+                (item) => item.id === notification.id,
+              );
+
+              if (!previous) return count;
+
+              if (!previous.read_at && notification.read_at) {
+                return Math.max(0, count - 1);
+              }
+
+              if (previous.read_at && !notification.read_at) {
+                return count + 1;
+              }
+
+              return count;
             });
           },
         )
@@ -150,6 +160,7 @@ export default function NotificationButton() {
           : item,
       ),
     );
+    setUnreadCount((prev) => Math.max(0, prev - 1));
   };
 
   const handleArchive = async () => {
@@ -216,7 +227,7 @@ export default function NotificationButton() {
               ))}
             </ul>
           )}
-          {notifications.length > 0 && unreadCount <= 0 && (
+          {notifications.length > 0 && (
             <button
               type="button"
               onClick={handleArchive}

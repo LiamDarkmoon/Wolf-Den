@@ -110,6 +110,7 @@ export default function CharacterSelector({
   const handleDelete = async (id: string) => {
     if (role !== "user") {
       try {
+        
         const { data, error } = await supabase.rpc(
           "admin_remove_registration",
           {

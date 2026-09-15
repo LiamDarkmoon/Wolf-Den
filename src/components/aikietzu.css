@@ -1,0 +1,28 @@
+.aikietzu {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 70px;
+  height: 96px;
+  overflow: hidden;
+}
+
+.aikietzu-sprite {
+  width: 70px;
+  height: 96px;
+  background-image: url("/sprites/aikietzu/run.png");
+  background-repeat: no-repeat;
+  background-size: 1200px 120px;
+
+  animation: aikietzu-movement 4s steps(16) infinite;
+}
+
+@keyframes aikietzu-movement {
+  from {
+    background-position-x: 0;
+  }
+
+  to {
+    background-position-x: -815px;
+  }
+}

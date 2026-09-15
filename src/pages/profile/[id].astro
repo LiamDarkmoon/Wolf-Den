@@ -46,7 +46,7 @@ const adventures = data?.adventures ?? [];
     </div>
 
     <div class="flex flex-col md:flex-row md:justify-around w-full gap-5 p-4">
-      <section class="flex flex-col gap-3">
+      <section class="flex flex-col items-center gap-3 md:w-1/3">
         <h2
           class="flex gap-2 items-center text-xl font-bold underline text-center"
         >
@@ -55,10 +55,10 @@ const adventures = data?.adventures ?? [];
         {
             !characters || characters?.length > 0 ?
             <CharactersTable characters={characters} client:only="react" />
-            : <a href="/characters/creation" class="mx-auto w-1/2 flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Crea un Personaje</a>
+            : <a href="/characters/creation" class="mx-auto w-1/2 grid gap-2 p-2 place-items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Crea un Personaje</a>
         }
       </section>
-      <section class="flex flex-col gap-3">
+      <section class="flex flex-col items-center gap-3 md:w-1/3">
         <h2
           class="flex gap-2 items-center text-xl font-bold underline text-center"
         >
@@ -67,7 +67,7 @@ const adventures = data?.adventures ?? [];
         {
             !adventures || adventures.length > 0 ?
             <AdventureList adventures={adventures} client:only="react" />
-            : <a href="/adventures/league" class="mx-auto w-1/2 flex gap-2 p-2 items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Unete a una aventura</a>
+            : <a href="/adventures/league" class="w-1/2 gap-2 p-2 grid place-items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Unete a una aventura</a>
         }
       </section>
     </div>
