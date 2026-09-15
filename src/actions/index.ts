@@ -125,6 +125,20 @@ export const server = {
         throw new Error("Could not add adventure");
       }
 
+      // Notificar a admins
+      const { error: notificationError } = await supabase.rpc("notify_admins", {
+        p_type: "adventure_created",
+        p_title: "Nueva aventura creada",
+        p_message: `Se creó la aventura "${data.title}".`,
+      });
+
+      if (notificationError) {
+        console.error(
+          "Error creating adventure notification:",
+          notificationError,
+        );
+      }
+
       return data;
     },
   }),
@@ -204,7 +218,6 @@ export const server = {
   }),
 
   getNotifications: defineAction({
-    
     handler: async (_, context) => {
       const supabase = createClient({
         request: context.request,
@@ -214,6 +227,7 @@ export const server = {
       const { data: notifications, error } = await supabase
         .from("notifications")
         .select("id, type, title, message, read_at, created_at")
+        .is("archived_at", null)
         .order("created_at", { ascending: false })
         .limit(20);
 
@@ -266,8 +280,6 @@ export const server = {
   }),
 
   markAllNotificationsAsRead: defineAction({
-    input: z.object({}),
-
     handler: async (_, context) => {
       const supabase = createClient({
         request: context.request,
@@ -287,6 +299,45 @@ export const server = {
       }
 
       return { success: true };
+    },
+  }),
+  archiveReadNotifications: defineAction({
+  
+
+    handler: async (_, context) => {
+      const supabase = createClient({
+        request: context.request,
+        cookies: context.cookies,
+      });
+
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        throw new Error("Not authenticated");
+      }
+
+      const { data, error } = await supabase
+        .from("notifications")
+        .update({
+          archived_at: new Date().toISOString(),
+        })
+        .eq("user_id", user.id)
+        .not("read_at", "is", null)
+        .is("archived_at", null)
+        .select("id");
+
+      if (error) {
+        console.error("Error archiving notifications:", error);
+
+        throw new Error("Could not archive notifications");
+      }
+
+      return {
+        success: true,
+      };
     },
   }),
 };

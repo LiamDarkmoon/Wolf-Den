@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "../../db/supabase-browser";
 import Bttn from "./Bttn";
 import { actions } from "astro:actions";
 import type { Notification } from "../../lib/types";
@@ -8,11 +9,87 @@ export default function NotificationButton() {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const handleClick = async () => {
-    console.log("click");
-    setVisible((prev) => !prev);
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
 
-    if (!visible) {
+    const setupRealtime = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      channel = supabase
+        .channel(`notifications-${user.id}`)
+        .on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "notifications",
+            filter: `user_id=eq.${user.id}`,
+          },
+          (payload) => {
+            const notification = payload.new as Notification;
+
+            setNotifications((prev) => {
+              // Evita duplicados
+              if (prev.some((item) => item.id === notification.id)) {
+                return prev;
+              }
+
+              return [notification, ...prev];
+            });
+
+            setUnreadCount((prev) => prev + 1);
+          },
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "notifications",
+            filter: `user_id=eq.${user.id}`,
+          },
+          (payload) => {
+            const notification = payload.new as Notification;
+
+            setNotifications((prev) => {
+              const previous = prev.find((item) => item.id === notification.id);
+
+              if (!previous) return prev;
+
+              if (!previous.read_at && notification.read_at) {
+                setUnreadCount((count) => Math.max(0, count - 1));
+              }
+
+              if (previous.read_at && !notification.read_at) {
+                setUnreadCount((count) => count + 1);
+              }
+
+              return prev.map((item) =>
+                item.id === notification.id ? notification : item,
+              );
+            });
+          },
+        )
+        .subscribe((status) => {
+          console.log("Notifications realtime:", status);
+        });
+    };
+
+    setupRealtime();
+
+    return () => {
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const loadNotifications = async () => {
       const result = await actions.getNotifications();
 
       if (result.error) {
@@ -22,7 +99,33 @@ export default function NotificationButton() {
 
       setNotifications(result.data.notifications);
       setUnreadCount(result.data.unreadCount);
+    };
+
+    loadNotifications();
+  }, []);
+
+  const handleClick = async () => {
+    setVisible((prev) => !prev);
+  };
+
+  const handleMarkAllAsRead = async () => {
+    if (unreadCount === 0) return;
+
+    const result = await actions.markAllNotificationsAsRead();
+
+    if (result.error) {
+      console.error("Error marking notifications:", result.error);
+      return;
     }
+
+    setNotifications((prev) =>
+      prev.map((notification) => ({
+        ...notification,
+        read_at: notification.read_at ?? new Date().toISOString(),
+      })),
+    );
+
+    setUnreadCount(0);
   };
 
   const handleMarkReaded = async (notification: Notification) => {
@@ -47,8 +150,25 @@ export default function NotificationButton() {
           : item,
       ),
     );
+  };
 
-    setUnreadCount((prev) => Math.max(0, prev - 1));
+  const handleArchive = async () => {
+    const hasReadNotifications = notifications.some(
+      (notification) => notification.read_at,
+    );
+
+    if (!hasReadNotifications) return;
+
+    const result = await actions.archiveReadNotifications();
+
+    if (result.error) {
+      console.error("Error archiving notifications:", result.error);
+      return;
+    }
+
+    setNotifications((prev) =>
+      prev.filter((notification) => !notification.read_at),
+    );
   };
 
   return (
@@ -64,11 +184,21 @@ export default function NotificationButton() {
       </Bttn>
 
       {visible && (
-        <div className="absolute right-0 mt-2 w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-50 max-h-100 overflow-y-scroll scrollbar-none">
+          {notifications.length > 0 && unreadCount > 0 && (
+            <button
+              type="button"
+              onClick={handleMarkAllAsRead}
+              className="w-full p-2 text-sm text-primary hover:bg-primary/10 transition cursor-pointer"
+            >
+              Marcar todas como leídas
+              <i className="fa-solid fa-eye ms-2"></i>
+            </button>
+          )}
           {notifications.length === 0 ? (
             <p className="p-4 text-sm text-gray-500">No hay notificaciones.</p>
           ) : (
-            <ul>
+            <ul className="">
               {notifications.map((notification) => (
                 <li
                   key={notification.id}
@@ -85,6 +215,16 @@ export default function NotificationButton() {
                 </li>
               ))}
             </ul>
+          )}
+          {notifications.length > 0 && unreadCount <= 0 && (
+            <button
+              type="button"
+              onClick={handleArchive}
+              className="w-full p-2 text-sm text-primary hover:bg-primary/10 transition cursor-pointer"
+            >
+              Archivar leidas
+              <i className="fa-solid fa-box-archive ms-2"></i>
+            </button>
           )}
         </div>
       )}

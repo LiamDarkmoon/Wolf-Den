@@ -26,6 +26,7 @@ export default function Navigation({
       </a>
       {user ? (
         <div className="flex justify-end items-center gap-5">
+          
           <FeedbackButton />
           <AdminButton inAdmin={isInAdmin} role={role} />
           <NotificationButton />

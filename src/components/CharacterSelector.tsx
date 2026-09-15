@@ -30,9 +30,17 @@ export default function CharacterSelector({
 
   // Solo cargamos los personajes del usuario actual
   useEffect(() => {
-    if (index <= 2 && role=== "titular") {
+    if (index <= 2 && !substitute) {
       confetti({
         position: { x: 0, y: 0 }, // Origin position
+        count: 100, // Number of particles
+        size: 1, // Size of the particles
+        velocity: 200, // Initial particle velocity
+        fade: false, // Particles fall off the screen, or fade out
+        color: ["#d97706", "#f59e0", "#3b82f6"], // Palette the particles are picked from
+      });
+      confetti({
+        position: { x: 1000, y: 0 }, // Origin position
         count: 100, // Number of particles
         size: 1, // Size of the particles
         velocity: 200, // Initial particle velocity
