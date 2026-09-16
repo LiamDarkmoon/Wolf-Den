@@ -13,7 +13,7 @@ export default function OriginStep() {
 
   return (
     <div className="flex flex-col items-center">
-      <StepHead title="Elije el origen">
+      <StepHead title="Elije tu Transfondo">
         {backgrounds.find((item) => item.id === character.backgroundId)?.name}
       </StepHead>
       <StepBody>

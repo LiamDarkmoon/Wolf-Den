@@ -64,20 +64,24 @@ interface CharacterContext {
   backgrounds: BackgroundRecord[];
   abilities: AbilityRecord[];
 
+  steps: typeof steps
+  isLastStep: boolean;
   stepIndex: number;
   CurrentStep: ComponentType | string;
+  progress: number;
 
   nextStep(): void;
 
   previousStep(): void;
-
-  toStep(arg: number): void;
 
   updateCharacter(values: Partial<Character>): void;
 
   resetCharacter(): void;
 
   saveCharacter: () => Promise<CharacterRecord | null>;
+
+  loading: boolean;
+  error: string | null
 }
 
 export const steps = [
@@ -135,6 +139,8 @@ export default function CharacterProvider({
   const [backgrounds, setBackgrounds] = useState<BackgroundRecord[]>([]);
   const [abilities, setAbilities] = useState<AbilityRecord[]>([]);
   const [referencesLoading, setReferencesLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string|null>(null);
 
   const [hydrated, setHydrated] = useState(false);
   const [character, setCharacter] = useState<Character>(initialCharacter);
@@ -231,10 +237,7 @@ export default function CharacterProvider({
   };
 
   const previousStep = () => {
-    if (stepIndex === 0) {
-      navigate("/");
-      return;
-    }
+    if (stepIndex === 0) return
 
     setStepIndex((prev) => {
       let previous = prev - 1;
@@ -247,9 +250,10 @@ export default function CharacterProvider({
     });
   };
 
-  const toStep = (stepIndex: number) => {
-    setStepIndex(stepIndex);
-  };
+  const isLastStep = stepIndex === steps.length - 1;
+
+  const progress = ((stepIndex + 1) / steps.length) * 100;
+
 
   const resetCharacter = () => {
     setCharacter(initialCharacter);
@@ -257,6 +261,7 @@ export default function CharacterProvider({
   };
 
   const saveCharacter = async (): Promise<CharacterRecord | null> => {
+    setLoading(true)
     if (
       !character.name ||
       !character.speciesId ||
@@ -264,7 +269,11 @@ export default function CharacterProvider({
       !character.backgroundId ||
       Object.values(character.abilities).some((score) => score === null)
     ) {
-      console.error("Character is incomplete");
+      const completionError = "Falta completar"
+      console.error(completionError);
+      setError(completionError)
+      setLoading(false)
+
       return null;
     }
     const completeCharacter = {
@@ -282,11 +291,15 @@ export default function CharacterProvider({
 
     if (result.error) {
       console.error(result.error);
+      setError("ups algo salio mal")
+      setLoading(false)
       return null;
     }
 
     localStorage.removeItem(DRAFT_KEY);
     resetCharacter();
+    setError(null)
+    setLoading(false)
     navigate(`/profile/characters/${result.data?.id}`);
     return result.data;
   };
@@ -307,15 +320,19 @@ export default function CharacterProvider({
         backgrounds,
         abilities,
 
+        steps,
+        isLastStep,
         stepIndex,
         CurrentStep,
         nextStep,
         previousStep,
-        toStep,
+        progress,
 
         updateCharacter,
         resetCharacter,
         saveCharacter,
+        loading,
+        error,
       }}
     >
       {children}

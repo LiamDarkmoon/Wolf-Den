@@ -1,6 +1,7 @@
 import { navigate } from "astro:transitions/client";
 
 export default function Button({
+  className,
   onClick,
   children,
   to,
@@ -9,6 +10,7 @@ export default function Button({
   disabled,
   size,
 }: {
+  className?: string;
   onClick?: () => void;
   children: React.ReactNode;
   to?: string;
@@ -28,7 +30,7 @@ export default function Button({
       type={type ?? "button"}
       onClick={onClick || (() => handleNavigate(to))}
       disabled={disabled}
-      className={`group relative flex items-center justify-center ${disabled ? "opacity-70 cursor-not-allowed" : "cursor-pointer "} ${secondary ? "text-main-text" : "text-primary"} `}
+      className={`${className} group relative flex items-center justify-center ${disabled ? "opacity-70 cursor-not-allowed" : "cursor-pointer "} ${secondary ? "text-main-text" : "text-primary"} `}
     >
       {secondary ? (
         <svg
@@ -76,7 +78,7 @@ export default function Button({
         </svg>
       )}    
       <span
-        className={`absolute ${secondary ? "text-main-text group-hover:text-secondary-text group-active:text-main-text group-hover:scale-105 group-active:scale-95" : `text-main-text ${disabled ? "" : " group-hover:scale-105 group-active:scale-95"}`} `}
+        className={` ${size === 'sm' ? "text-sm" : size === 'lg' ? "text-lg" : ""} absolute ${secondary ? "text-main-text group-hover:text-secondary-text group-active:text-main-text group-hover:scale-105 group-active:scale-95" : `text-main-text ${disabled ? "" : " group-hover:scale-105 group-active:scale-95"}`} `}
       >
         {children}
       </span>

@@ -5,9 +5,10 @@ const pathname = Astro.url.pathname;
 const user = Astro.locals.user;
 const userRole = Astro.locals.userRole;
 
+const isInHome = pathname === '/'
 const isInProfile = pathname === `/profile/${user?.id}`
 const isInAdmin = pathname.startsWith('/admin')
 ---
 <header class="p-2 flex items-center w-full">
-    <Navigation user={user} role={userRole} isInAdmin={isInAdmin} isInProfile={isInProfile} client:only="react"/>
+    <Navigation user={user} role={userRole} isInHome={isInHome} isInAdmin={isInAdmin} isInProfile={isInProfile} client:only="react"/>
 </header>

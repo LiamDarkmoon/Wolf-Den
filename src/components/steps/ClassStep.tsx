@@ -22,7 +22,7 @@ export default function ClassStep() {
 
     return (
         <div className="flex flex-col items-center">
-            <StepHead title="Elige tu clase:">
+            <StepHead title="Elije tu clase:">
                 {
                     classes.find(
                         (item) => item.id === character.classId

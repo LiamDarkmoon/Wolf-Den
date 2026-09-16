@@ -4,7 +4,7 @@ export default function Under({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 427.81 37.11"
       fill="currentColor"
-      className={className + " text-primary"}
+      className={className + " text-primary max-w-37.5"}
     >
       <g>
         <g>

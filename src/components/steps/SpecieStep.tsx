@@ -17,7 +17,7 @@ export default function SpecieStep() {
 
   return (
     <div className="flex flex-col items-center">
-      <StepHead title="Elige tu especie">
+      <StepHead title="Elije tu especie">
         {species.find((item) => item.id === character.speciesId)?.name}
       </StepHead>
       <StepBody>

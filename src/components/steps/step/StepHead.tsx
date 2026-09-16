@@ -2,7 +2,7 @@ import Under from "../../Under"
 
 export default  function StepHead({ title, children } : { title: string, children: React.ReactNode}) {
     return (
-        <div className="flex flex-col justify-center text-center mb-4">
+        <div className="flex flex-col items-center justify-center text-center mb-4">
           <h2 className="text-2xl font-semibold">
             {title}
           </h2>

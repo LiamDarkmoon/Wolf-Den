@@ -1,37 +1,38 @@
 ---
+import type { size } from 'astro:schema';
 import Button from './button.tsx';
 ---
 
-<section class="flex flex-col md:flex-row justify-around items-center h-full gap-10">
-    <article class="hero w-full md:w-1/2">
+<section class="flex flex-col md:flex-row justify-around items-center gap-5">
+    <article class="hero w-full md:w-1/2 pt-5">
         <div class="flex flex-col">
-            <span class="text-2xl text-start">Bienvenidos a</span>
+            <span class="text-2xl text-start -mb-2">Bienvenidos a</span>
             <h1 class="text-5xl md:text-6xl text-primary tittle">Wolf's Den</h1>
-            <span class="font-extralight itelic text-xs text-secondary-text text-end">Powered by Los Manijas del Rol</span>
+            <span class="font-extralight itelic text-xs text-secondary-text/80 text-end -mt-3">Powered by Los Manijas del Rol</span>
         </div>
-        <p class="text-lg opacity">Una forma rapida y sencilla de adentrarte en el mundo de D&D.</p>
+        <p class="text-lg opacity w-4/5">Una forma rapida y sencilla de adentrarte en el mundo de D&D. Crea tus personajes y unete a la aventura...</p>
         
-        <div class="flex flex-col md:flex-row-reverse md:flex-wrap justify-center items-center gap-4">
-            <Button client:load  to="/characters/creation">Crea tu personaje</Button>
-            <Button secondary client:load  to="/adventures/league">Liga de Aventureros</Button>
-            <a href="https://chat.whatsapp.com/C4VEVYjHtqI01Z9vVzj0g2" target="_blank" class="underline md:w-full">Unite a la comunidad</a>
+        <div class="flex flex-row-reverse flex-wrap justify-center items-center gap-4">
+            <Button client:load size="sm" to="/characters/creation">Crear Personaje</Button>
+            <Button secondary client:load size="sm" to="/adventures/league">Ver Aventuras</Button>
+            <a href="https://chat.whatsapp.com/C4VEVYjHtqI01Z9vVzj0g2" target="_blank" class="underline w-full">Forma parte de la comunidad</a>
         </div>
     </article>
-    <article class="board w-full md:w-1/2">
-        <img src="/mockup.png" alt="AppFeatures" class="h-full object-fill drop-shadow-xl drop-shadow-border">
+    <article class="glass w-full md:w-1/2">
+        
+        <img src="/mockup.png" alt="AppFeatures" class="object-fill drop-shadow-xl drop-shadow-border">
     </article>
 </section>
 
 <style>
     .hero {
         position: relative;
-        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-items: center;
         justify-content: center;
-        gap: 3rem;
+        gap: 1rem;
         text-align: center;
     }
 </style>

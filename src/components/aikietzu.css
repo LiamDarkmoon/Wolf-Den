@@ -3,16 +3,16 @@
   bottom: 10px;
   left: 10px;
   width: 70px;
-  height: 96px;
+  height: 80px;
   overflow: hidden;
 }
 
 .aikietzu-sprite {
   width: 70px;
-  height: 96px;
-  background-image: url("/sprites/aikietzu/run.png");
+  height: 80px;
+  background-image: url("/sprites/aikietzu/running.png");
   background-repeat: no-repeat;
-  background-size: 1200px 120px;
+  background-size: 1200px 100px;
 
   animation: aikietzu-movement 4s steps(16) infinite;
 }
