@@ -4,7 +4,7 @@ import Bttn from "./Bttn";
 import { actions } from "astro:actions";
 import type { Notification } from "../../lib/types";
 
-export default function NotificationButton() {
+export default function NotificationButton({setUnread} : {setUnread: React.Dispatch<React.SetStateAction<number>>}) {
   const [visible, setVisible] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -42,6 +42,7 @@ export default function NotificationButton() {
             });
 
             setUnreadCount((prev) => prev + 1);
+            setUnread((prev) => prev + 1);
           },
         )
         .on(
@@ -66,6 +67,23 @@ export default function NotificationButton() {
             });
 
             setUnreadCount((count) => {
+              const previous = notifications.find(
+                (item) => item.id === notification.id,
+              );
+
+              if (!previous) return count;
+
+              if (!previous.read_at && notification.read_at) {
+                return Math.max(0, count - 1);
+              }
+
+              if (previous.read_at && !notification.read_at) {
+                return count + 1;
+              }
+
+              return count;
+            });
+            setUnread((count) => {
               const previous = notifications.find(
                 (item) => item.id === notification.id,
               );
@@ -109,6 +127,7 @@ export default function NotificationButton() {
 
       setNotifications(result.data.notifications);
       setUnreadCount(result.data.unreadCount);
+      setUnread(result.data.unreadCount);
     };
 
     loadNotifications();
@@ -136,6 +155,7 @@ export default function NotificationButton() {
     );
 
     setUnreadCount(0);
+    setUnread(0);
   };
 
   const handleMarkReaded = async (notification: Notification) => {
@@ -195,7 +215,7 @@ export default function NotificationButton() {
       </Bttn>
 
       {visible && (
-        <div className="absolute right-0 mt-2 w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-50 max-h-100 overflow-y-scroll scrollbar-none">
+        <div className="fixed md:absolute left-1/2 -translate-x-1/2 mt-2 w-[calc(100vw-2rem)] max-w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-50 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-none">
           {notifications.length > 0 && unreadCount > 0 && (
             <button
               type="button"

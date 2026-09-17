@@ -1,9 +1,81 @@
+import { useState } from "react";
 import Bttn from "../components/buttons/Bttn";
+import { actions } from "astro:actions";
 
 export default function FeedbackButton() {
+  const [visible, setVisible] = useState(false);
+  const [report, setReport] = useState({
+    title: "",
+    message: "",
+  });
+
+  const handleClick = async () => {
+    setVisible((prev) => !prev);
+  };
+
+  const handleReport = async () => {
+    try {
+      await actions.sendReport(report);
+
+      setReport({
+        title: "",
+        message: "",
+      });
+
+      setVisible(false);
+    } catch (error) {
+      console.error("Error al enviar el reporte:", error);
+    }
+  };
+
   return (
-      <Bttn>
+    <div className="relative">
+      <Bttn onClick={handleClick}>
         <i className="fa-solid fa-bug"></i>
       </Bttn>
+
+      {visible && (
+        <div className="fixed md:absolute flex flex-col items-center gap-2 p-2 left-1/2 -translate-x-1/2 mt-2 w-[calc(100vw-2rem)] max-w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-50 max-h-100 overflow-y-scroll scrollbar-none">
+          <div className="flex flex-col gap-1 p-1">
+            <label htmlFor="title">Titulo</label>
+            <input
+              id="title"
+              type="text"
+              name="title"
+              placeholder="¿Encontraste un problema?"
+              onChange={(e) =>
+                setReport((prev) => ({
+                  ...prev,
+                  title: e.target.value,
+                }))
+              }
+              className="ring ring-primary rounded-md p-2"
+            />
+          </div>
+          <div className="flex flex-col gap-1 p-1">
+            <label htmlFor="message">Mensaje</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="!Dejanos tu comentario¡"
+              onChange={(e) =>
+                setReport((prev) => ({
+                  ...prev,
+                  message: e.target.value,
+                }))
+              }
+              className="ring ring-primary rounded-md p-2 w-full"
+            />
+          </div>
+          <button
+            type="button"
+            className="w-fit grid place-items-center p-2 rounded-lg text-main-text text-sm bg-primary hover:bg-primary-hover transition-all duration-300 cursor-pointer"
+            onClick={handleReport}
+          >
+            Enviar Reporte
+          </button>
+        </div>
+      )}
+    </div>
   );
 }

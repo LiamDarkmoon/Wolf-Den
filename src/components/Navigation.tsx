@@ -1,6 +1,6 @@
 import type { User } from "@supabase/supabase-js";
 import AdminButton from "./AdminButton";
-import LogtButton from "./LogButton";
+import LogButton from "./LogButton";
 import FeedbackButton from "./FeedbackButton";
 import NotificationButton from "./buttons/NotificationButton";
 import Hamburger from "./buttons/Hamburguer";
@@ -21,6 +21,7 @@ export default function Navigation({
 }) {
 
   const [visible, setVisible] = useState(false)
+  const [unread, setUnread] = useState(0)
 
   return (
     <nav className="p-3 flex items-center z-100  cursor-pointer w-full">
@@ -39,10 +40,10 @@ export default function Navigation({
 
             <FeedbackButton />
             <AdminButton inAdmin={isInAdmin} role={role} />
-            <NotificationButton />
+            <NotificationButton setUnread={setUnread}/>
 
           {isInProfile ? (
-            <LogtButton isLoged={true} />
+            <LogButton isLoged={true} />
           ) : (
             <a
               className="flex gap-2 p-2 me-3 items-center font-black rounded-lg text-xs bg-primary hover:bg-primary-hover transition-all duration-300"
@@ -63,9 +64,9 @@ export default function Navigation({
           )}
         </div>
       ) : (
-        <LogtButton isLoged={false} />
+        <LogButton isLoged={false} />
       ) : null}
-      <Hamburger onClick={()=>setVisible(!visible)} />
+      <Hamburger onClick={()=>setVisible(!visible)} unreadCount={unread}/>
     </nav>
   );
 }

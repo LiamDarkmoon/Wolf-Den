@@ -14,7 +14,7 @@ export default function AdventureCard({
   onDelete: (id: string) => void;
 }) {
   return (
-    <article className="relative w-full md:w-[30%] board border-4 border-primary shadow-border">
+    <article className="relative w-full md:w-[30%] max-w-75 board border-4 border-primary shadow-border hover:scale-110">
       <Frame />
 
       <div className="flex items-center flex-wrap justify-center mb-4">

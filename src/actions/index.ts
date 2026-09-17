@@ -3,6 +3,8 @@ import { z } from "astro/zod";
 import { createClient } from "../db/supabase";
 import { getNextAdventureDate } from "../lib/utils/getAdventureDate";
 
+const PROJECT_ID = import.meta.env.PROJECT_ID;
+
 export const server = {
   createCharacter: defineAction({
     input: z.object({
@@ -302,8 +304,6 @@ export const server = {
     },
   }),
   archiveReadNotifications: defineAction({
-  
-
     handler: async (_, context) => {
       const supabase = createClient({
         request: context.request,
@@ -340,24 +340,51 @@ export const server = {
       };
     },
   }),
-};
 
-/* const { data, error } = await supabase
-  .from("characters")
-  .insert({
-    name: "Ravel Reed",
-    species: "Halfling",
-    class: "Warlock",
-    background: "Acolyte",
+  sendReport: defineAction({
+    input: z.object({
+      title: z.string(),
+      message: z.string(),
+    }),
 
-    abilities: {
-      str: 8,
-      dex: 14,
-      con: 13,
-      int: 12,
-      wis: 10,
-      cha: 16,
+    handler: async (report, context) => {
+      const supabase = createClient({
+        request: context.request,
+        cookies: context.cookies,
+      });
+
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        throw new Error("Not authenticated");
+      }
+
+      const formData = new FormData();
+
+      formData.append("payload", JSON.stringify(report));
+
+      const response = await fetch(
+        `https://plane-intake-middleware.proteus-projects.com/v1/projects/${PROJECT_ID}/tickets`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      if (!response.ok) {
+        const error = await response.text();
+
+        console.error("Plane API error:", response.status, error);
+
+        throw new Error(
+          `No se pudo enviar el reporte (${response.status}): ${error}`,
+        );
+      }
+
+      return response.json();
     },
-  })
-  .select()
-  .single(); */
+  }),
+};

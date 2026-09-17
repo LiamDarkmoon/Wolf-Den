@@ -7,6 +7,7 @@ import Under from "../components/Under";
 import Frame from "../components/Frame";
 import { useState } from "react";
 import { getSubClasses, chooseSubclass } from "../lib/utils/getSubClasses";
+import { getArmorClass, getHealth } from "../lib/utils/rules";
 
 const abilityOrder: AbilityCode[] = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];
 
@@ -71,9 +72,31 @@ export default function CharacterSheet({
         {character?.name}
       </h1>
       <div className="flex flex-col items-center gap-1">
+        <div className="flex gap-2 items-center">
+          <span>
+            <i className="fa-solid fa-stairs me-1"></i>LVL: {character?.level} |
+          </span>
+          <span>
+            <i className="fa-solid fa-heart me-1"></i>HP:{" "}
+            {getHealth(
+              character?.classes[0]?.hit_die || 1,
+              character?.level || 1,
+              character?.abilities["CON"] || 10,
+            )}{" "}
+            |
+          </span>
+          <span>
+            <i className="fa-solid fa-shield me-1"></i>AC:{" "}
+            {getArmorClass(character?.abilities["DEX"] || 10)}
+          </span>
+        </div>
         <LvlUpButton setCharacter={setCharacter} character={character} />
 
-        <span className=""> {character?.background.name} - {character?.species.name} {"("+ character?.species.variant?.name +")"}</span>
+        <span className="">
+          {" "}
+          {character?.background.name} - {character?.species.name} (
+          {character?.species.variant?.name})
+        </span>
 
         {character?.classes.map((characterClass, index) => (
           <div key={characterClass.id} className="flex flex-col items-center">
