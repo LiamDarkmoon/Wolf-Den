@@ -181,6 +181,7 @@ export default function NotificationButton({setUnread} : {setUnread: React.Dispa
       ),
     );
     setUnreadCount((prev) => Math.max(0, prev - 1));
+    setUnread((prev) => Math.max(0, prev - 1));
   };
 
   const handleArchive = async () => {

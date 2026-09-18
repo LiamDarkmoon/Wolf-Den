@@ -4,9 +4,6 @@ import AdventureList from "../../components/AdventuresList";
 import { createClient } from "../../db/supabase";
 import ProfileFrame from "../../components/ProfileFrame";
 import Layout from "../../layouts/Layout.astro";
-import avatar from "../../../public/avatar.jpg";
-import type { registeredAdventure } from "../../lib/types";
-import NotificationButton from "../../components/buttons/NotificationButton";
 
 const { id } = Astro.params;
 const user = Astro.locals.user;
@@ -17,12 +14,9 @@ const supabase = createClient({
   cookies: Astro.cookies,
 });
 
-const { data: characters, error } = await supabase
-  .from("characters")
-  .select("*")
-  .order("created_at", {
-    ascending: false,
-  });
+const { data: characters, error } = await supabase.rpc("get_user_characters", {
+  p_user_id: id,
+});
 
 const { data, error: ad_error } = await supabase.rpc("get_user_adventures");
 
@@ -35,12 +29,12 @@ const adventures = data?.adventures ?? [];
       <div class="relative flex justify-center items-center">
         <ProfileFrame className="relative size-25 mx-auto text-primary" />
         <img
-          src={user ? user.user_metadata.picture :null}
+          src={user ? user.user_metadata.picture : null}
           alt="Profile Picture"
           class="absolute w-15 rounded-full"
         />
       </div>
-      <h1 class="text-2xl font-bold flex gap-1">
+      <h1 class="text-3xl font-bold flex">
         {user?.user_metadata?.full_name}
       </h1>
     </div>
@@ -48,26 +42,39 @@ const adventures = data?.adventures ?? [];
     <div class="flex flex-col md:flex-row md:justify-around w-full gap-5 p-4">
       <section class="flex flex-col items-center gap-3 md:w-1/3">
         <h2
-          class="flex gap-2 items-center text-xl font-bold underline text-center"
+          class="w-full flex gap-2 items-center text-2xl text font-bold text-center pb-2 border-b-2 border-primary"
         >
           Personajes
         </h2>
-        {
-            !characters || characters?.length > 0 ?
-            <CharactersTable characters={characters} client:only="react" />
-            : <a href="/characters/creation" class="mx-auto w-1/2 grid gap-2 p-2 place-items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Crea un Personaje</a>
-        }
+
+        <CharactersTable characters={characters} client:only="react" />
+        <a
+          href="/characters/creation"
+          class="w-1/2 flex gap-2 px-2 py-4 justify-center items-center font-black rounded-lg text-sm bg-primary hover:bg-primary-hover transition-all duration-300"
+          >
+          <i class="fa-solid fa-plus pe-3 border-e border-main-text"></i>
+          Crear Personaje
+        </a>
       </section>
       <section class="flex flex-col items-center gap-3 md:w-1/3">
         <h2
-          class="flex gap-2 items-center text-xl font-bold underline text-center"
+          class="w-full flex gap-2 items-center text-2xl text font-bold text-center pb-2 border-b-2 border-primary"
         >
           Aventuras
         </h2>
+        <p class="text-secondary-text italic">Tu aventura comienza aqui, preparate o elige una</p>
         {
-            !adventures || adventures.length > 0 ?
+          !adventures || adventures.length > 0 ? (
             <AdventureList adventures={adventures} client:only="react" />
-            : <a href="/adventures/league" class="w-1/2 gap-2 p-2 grid place-items-center font-black rounded-xl text-sm bg-primary hover:bg-primary-hover transition-all duration-300">Unete a una aventura</a>
+          ) : (
+            <a
+              href="/adventures/league"
+              class="w-1/2 gap-2 px-2 py-4 flex justify-center items-center font-black rounded-lg text-sm bg-primary hover:bg-primary-hover transition-all duration-300"
+            >
+              <i class="fa-solid fa-eye pe-3 border-e border-main-text"></i>
+              Ver aventuras
+            </a>
+          )
         }
       </section>
     </div>

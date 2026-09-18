@@ -125,9 +125,6 @@ export default function CharacterSheet({
                 </button>
               </div>
             ) : null}
-            <p className="w-4/5 text-center italic">
-              {characterClass.description}
-            </p>
           </div>
         ))}
         <Under className="w-1/2" />

@@ -8,12 +8,12 @@ export default function Hamburger({
   onClick: () => void;
   unreadCount: number;
 }) {
-    const [closed, setClosed] = useState(true)
+  const [closed, setClosed] = useState(true);
 
-    const handleOpen = () => {
-        onClick()
-        setClosed(!closed)
-    }
+  const handleOpen = () => {
+    onClick();
+    setClosed(!closed);
+  };
 
   return (
     <div className="relative">
@@ -40,7 +40,7 @@ export default function Hamburger({
   leading-none
 "
         >
-          !
+          {unreadCount > 9 ? "9+" : unreadCount}
         </span>
       )}
     </div>

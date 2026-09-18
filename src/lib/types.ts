@@ -196,3 +196,20 @@ export interface CharacterSheet {
 
   abilities: Record<AbilityCode, number>;
 }
+
+export type CharacterListItem = {
+  id: string;
+  user_id: string;
+  name: string;
+  level: number;
+  created_at: string;
+
+  class_code: string | null;
+  class_name: string | null;
+
+  species_code: string | null;
+  species_name: string | null;
+
+  species_variant_code: string | null;
+  species_variant_name: string | null;
+};

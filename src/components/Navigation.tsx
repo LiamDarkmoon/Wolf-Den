@@ -4,7 +4,8 @@ import LogButton from "./LogButton";
 import FeedbackButton from "./FeedbackButton";
 import NotificationButton from "./buttons/NotificationButton";
 import Hamburger from "./buttons/Hamburguer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { actions } from "astro:actions";
 
 export default function Navigation({
   isInAdmin,
@@ -22,6 +23,21 @@ export default function Navigation({
 
   const [visible, setVisible] = useState(false)
   const [unread, setUnread] = useState(0)
+
+  useEffect(() => {
+  const loadUnread = async () => {
+    const result = await actions.getNotifications();
+
+    if (result.error) {
+      console.error("Error loading notifications:", result.error);
+      return;
+    }
+
+    setUnread(result.data.unreadCount);
+  };
+
+  loadUnread();
+}, []);
 
   return (
     <nav className="p-3 flex items-center z-100  cursor-pointer w-full">
@@ -49,10 +65,6 @@ export default function Navigation({
               className="flex gap-2 p-2 me-3 items-center font-black rounded-lg text-xs bg-primary hover:bg-primary-hover transition-all duration-300"
               href={`/profile/${user.id}`}
             >
-              <span className="hidden md:block">
-                {user.user_metadata?.full_name?.trim().split(/\s+/)[0]}
-              </span>
-
               {role === "admin" ? (
                 <i className="fa-solid fa-user-gear" />
               ) : role === "super_admin" ? (

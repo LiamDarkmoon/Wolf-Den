@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import CharacterRow from "./CharacterRow";
 import { supabase } from "../db/supabase-browser";
-import type { CharacterRecord } from "./CharacterCreator/CharacterProvider";
-import type { registeredAdventure } from "../lib/types";
+import type { CharacterListItem, registeredAdventure } from "../lib/types";
 
 export default function CharactersTable({
   characters,
 }: {
-  characters: CharacterRecord[] | null;
+  characters: CharacterListItem[] | null;
 }) {
   const [charactersList, setCharactersList] = useState(characters ?? []);
   const [status, setStatus] = useState<any>()
