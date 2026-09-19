@@ -10,7 +10,7 @@ const isInProfile = pathname === `/profile/${user?.id}`;
 const isInAdmin = pathname.startsWith("/admin");
 ---
 
-<header class="p-2 flex items-center w-full">
+<header class="p-2 flex items-center">
   <Navigation
     user={user}
     role={userRole}
