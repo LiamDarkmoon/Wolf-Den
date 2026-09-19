@@ -92,3 +92,22 @@ body {
   width: 100%;
   height: 100%;
 }
+
+
+
+
+html {
+  background: blue !important;
+}
+
+body {
+  background: red !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#container {
+  background: lime !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
