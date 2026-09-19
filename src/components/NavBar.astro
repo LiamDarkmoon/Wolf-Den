@@ -1,14 +1,36 @@
 ---
-import Navigation from '../components/Navigation' 
+import Navigation from "../components/Navigation";
 
 const pathname = Astro.url.pathname;
 const user = Astro.locals.user;
 const userRole = Astro.locals.userRole;
 
-const isInHome = pathname === '/'
-const isInProfile = pathname === `/profile/${user?.id}`
-const isInAdmin = pathname.startsWith('/admin')
+const isInHome = pathname === "/";
+const isInProfile = pathname === `/profile/${user?.id}`;
+const isInAdmin = pathname.startsWith("/admin");
 ---
+
 <header class="p-2 flex items-center w-full">
-    <Navigation user={user} role={userRole} isInHome={isInHome} isInAdmin={isInAdmin} isInProfile={isInProfile} client:only="react"/>
+  <Navigation
+    user={user}
+    role={userRole}
+    isInHome={isInHome}
+    isInAdmin={isInAdmin}
+    isInProfile={isInProfile}
+    client:only="react"
+  />
 </header>
+
+<style>
+  header {
+    grid-column: 1 / -1;
+    grid-row: 1;
+
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+</style>
