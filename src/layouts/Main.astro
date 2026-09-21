@@ -11,16 +11,17 @@ import NavBar from "../components/NavBar.astro";
 
 <style>
   #container {
-    position: relative;
-    background: url("/cave-bg.jpg") center / cover no-repeat;
-
+    position: fixed;
+    inset: 0;
+    
     width: 100%;
-    height: 100%;
-    max-height: 100%;
-
+    height: 100dvh;
+    
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 54px minmax(0, 1fr);
+    
+    background: url("/cave-bg.jpg") center / cover no-repeat;
 
     overflow: hidden;
   }
@@ -37,12 +38,10 @@ import NavBar from "../components/NavBar.astro";
     grid-row: 2;
 
     position: relative;
-    z-index: 1;
 
     display: flex;
     flex-direction: column;
 
-    /* width: 100%;*/
     min-width: 0;
     min-height: 0;
 
