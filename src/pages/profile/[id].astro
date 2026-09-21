@@ -4,6 +4,7 @@ import AdventureList from "../../components/AdventuresList";
 import { createClient } from "../../db/supabase";
 import ProfileFrame from "../../components/ProfileFrame";
 import Layout from "../../layouts/Layout.astro";
+import type { registeredAdventure } from "../../lib/types";
 
 const { id } = Astro.params;
 const user = Astro.locals.user;
@@ -20,7 +21,7 @@ const { data: characters, error } = await supabase.rpc("get_user_characters", {
 
 const { data, error: ad_error } = await supabase.rpc("get_user_adventures");
 
-const adventures = data?.adventures ?? [];
+const adventures: registeredAdventure[] = data?.adventures ?? [];
 ---
 
 <Layout>
@@ -64,17 +65,15 @@ const adventures = data?.adventures ?? [];
         </h2>
         <p class="text-secondary-text italic">Tu aventura comienza aqui, preparate o elige una</p>
         {
-          !adventures || adventures.length > 0 ? (
             <AdventureList adventures={adventures} client:only="react" />
-          ) : (
+          
             <a
               href="/adventures/league"
               class="w-1/2 gap-2 px-2 py-4 flex justify-center items-center font-black rounded-lg text-sm bg-primary hover:bg-primary-hover transition-all duration-300"
             >
               <i class="fa-solid fa-eye pe-3 border-e border-main-text"></i>
-              Ver aventuras
+              {adventures?.length > 0 ? 'Mas aventuras' : 'Ver aventuras'}
             </a>
-          )
         }
       </section>
     </div>
