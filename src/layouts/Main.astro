@@ -7,9 +7,6 @@ import NavBar from "../components/NavBar.astro";
   <main class="scrollbar-none">
     <slot />
   </main>
-  <div id="viewport-debug">
-    <span id="debug-text"></span>
-  </div>
 </div>
 
 <style>
@@ -59,43 +56,51 @@ import NavBar from "../components/NavBar.astro";
 
 <script>
   const updateDebug = () => {
-    const container = document.querySelector("#container");
-    const main = document.querySelector("main");
-    const debug = document.querySelector("#debug-text");
+    document.querySelectorAll("#container *").forEach((el) => {
+      const r = el.getBoundingClientRect();
 
-    if (!container || !main || !debug) return;
+      if (r.bottom > window.innerHeight || r.height > window.innerHeight) {
+        console.log(el.tagName, el.id, el.className, {
+          top: r.top,
+          bottom: r.bottom,
+          height: r.height,
+          overflow: getComputedStyle(el).overflow,
+          position: getComputedStyle(el).position,
+        });
+      }
+    });
 
-    const c = container.getBoundingClientRect();
-    const m = main.getBoundingClientRect();
+    const c = document.querySelector("#container");
+    const m = document.querySelector("main");
+    if (!c || !m) return;
 
-    debug.textContent = `
-innerHeight: ${window.innerHeight}
-visualHeight: ${window.visualViewport?.height}
-clientHeight: ${document.documentElement.clientHeight}
+    const debug = {
+      viewport: window.innerHeight,
 
-document.scrollHeight: ${document.documentElement.scrollHeight}
-body.scrollHeight: ${document.body.scrollHeight}
+      container: {
+        rect: c.getBoundingClientRect().height,
+        cssHeight: getComputedStyle(c).height,
+        minHeight: getComputedStyle(c).minHeight,
+        maxHeight: getComputedStyle(c).maxHeight,
+        overflow: getComputedStyle(c).overflow,
+        display: getComputedStyle(c).display,
+      },
 
-container:
-  height: ${c.height}
-  top: ${c.top}
-  bottom: ${c.bottom}
+      main: {
+        rect: m.getBoundingClientRect().height,
+        cssHeight: getComputedStyle(m).height,
+        minHeight: getComputedStyle(m).minHeight,
+        maxHeight: getComputedStyle(m).maxHeight,
+        overflow: getComputedStyle(m).overflow,
+        display: getComputedStyle(m).display,
+      },
+    };
 
-main:
-  height: ${m.height}
-  top: ${m.top}
-  bottom: ${m.bottom}
+    console.log(debug);
 
-container clientHeight: ${container.clientHeight}
-container scrollHeight: ${container.scrollHeight}
+    updateDebug();
 
-main clientHeight: ${main.clientHeight}
-main scrollHeight: ${main.scrollHeight}
-    `;
+    window.addEventListener("resize", updateDebug);
+    window.visualViewport?.addEventListener("resize", updateDebug);
   };
-
-  updateDebug();
-
-  window.addEventListener("resize", updateDebug);
-  window.visualViewport?.addEventListener("resize", updateDebug);
 </script>
