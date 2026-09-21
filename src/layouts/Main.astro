@@ -7,20 +7,24 @@ import NavBar from "../components/NavBar.astro";
   <main class="scrollbar-none">
     <slot />
   </main>
+  <div id="viewport-debug">
+    <span id="debug-text"></span>
+  </div>
 </div>
 
 <style>
   #container {
     position: fixed;
     inset: 0;
-    
+
     width: 100%;
     height: 100vh;
-    
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 54px minmax(0, 1fr);
-    
+
+    display: flex;
+    flex-direction: column;
+    /* grid-template-columns: 1fr;
+    grid-template-rows: 54px minmax(0, 1fr); */
+
     background: url("/cave-bg.jpg") center / cover no-repeat;
 
     overflow: hidden;
@@ -44,6 +48,7 @@ import NavBar from "../components/NavBar.astro";
 
     min-width: 0;
     min-height: 0;
+    height: calc(100dvh - 54px);
 
     padding: 1.25rem;
 
@@ -51,3 +56,46 @@ import NavBar from "../components/NavBar.astro";
     overflow-x: hidden;
   }
 </style>
+
+<script>
+  const updateDebug = () => {
+    const container = document.querySelector("#container");
+    const main = document.querySelector("main");
+    const debug = document.querySelector("#debug-text");
+
+    if (!container || !main || !debug) return;
+
+    const c = container.getBoundingClientRect();
+    const m = main.getBoundingClientRect();
+
+    debug.textContent = `
+innerHeight: ${window.innerHeight}
+visualHeight: ${window.visualViewport?.height}
+clientHeight: ${document.documentElement.clientHeight}
+
+document.scrollHeight: ${document.documentElement.scrollHeight}
+body.scrollHeight: ${document.body.scrollHeight}
+
+container:
+  height: ${c.height}
+  top: ${c.top}
+  bottom: ${c.bottom}
+
+main:
+  height: ${m.height}
+  top: ${m.top}
+  bottom: ${m.bottom}
+
+container clientHeight: ${container.clientHeight}
+container scrollHeight: ${container.scrollHeight}
+
+main clientHeight: ${main.clientHeight}
+main scrollHeight: ${main.scrollHeight}
+    `;
+  };
+
+  updateDebug();
+
+  window.addEventListener("resize", updateDebug);
+  window.visualViewport?.addEventListener("resize", updateDebug);
+</script>
