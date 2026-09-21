@@ -9,10 +9,6 @@
   --color-primary-hover: #f59e0b;
   --color-secondary: #3b82f6;
   --color-border: #2a2f38;
-
-  --font-tittle: {
-    font-family: "Cinzel Decorative", serif;
-  };
 }
 
 .tittle {
@@ -57,7 +53,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 70vh;
+  height: 60vh;
+  max-height: 600px;
   background: rgba(26, 30, 36, 0.4);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3.5px);
