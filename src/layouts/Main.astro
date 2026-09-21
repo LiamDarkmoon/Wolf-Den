@@ -45,7 +45,8 @@ import NavBar from "../components/NavBar.astro";
 
     min-width: 0;
     min-height: 0;
-    height: 100%
+    height: 100%;
+    max-height: 100vh;
 
     padding: 1.25rem;
 
@@ -53,54 +54,3 @@ import NavBar from "../components/NavBar.astro";
     overflow-x: hidden;
   }
 </style>
-
-<script>
-  const updateDebug = () => {
-    document.querySelectorAll("#container *").forEach((el) => {
-      const r = el.getBoundingClientRect();
-
-      if (r.bottom > window.innerHeight || r.height > window.innerHeight) {
-        console.log(el.tagName, el.id, el.className, {
-          top: r.top,
-          bottom: r.bottom,
-          height: r.height,
-          overflow: getComputedStyle(el).overflow,
-          position: getComputedStyle(el).position,
-        });
-      }
-    });
-
-    const c = document.querySelector("#container");
-    const m = document.querySelector("main");
-    if (!c || !m) return;
-
-    const debug = {
-      viewport: window.innerHeight,
-
-      container: {
-        rect: c.getBoundingClientRect().height,
-        cssHeight: getComputedStyle(c).height,
-        minHeight: getComputedStyle(c).minHeight,
-        maxHeight: getComputedStyle(c).maxHeight,
-        overflow: getComputedStyle(c).overflow,
-        display: getComputedStyle(c).display,
-      },
-
-      main: {
-        rect: m.getBoundingClientRect().height,
-        cssHeight: getComputedStyle(m).height,
-        minHeight: getComputedStyle(m).minHeight,
-        maxHeight: getComputedStyle(m).maxHeight,
-        overflow: getComputedStyle(m).overflow,
-        display: getComputedStyle(m).display,
-      },
-    };
-
-    console.log(debug);
-
-    updateDebug();
-
-    window.addEventListener("resize", updateDebug);
-    window.visualViewport?.addEventListener("resize", updateDebug);
-  };
-</script>
