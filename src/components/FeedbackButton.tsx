@@ -35,7 +35,7 @@ export default function FeedbackButton() {
       </Bttn>
 
       {visible && (
-        <div className="fixed md:absolute flex flex-col items-center gap-2 p-2 left-1/2 -translate-x-1/2 mt-2 w-[calc(100vw-2rem)] max-w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-50 max-h-100 overflow-y-scroll scrollbar-none">
+        <div className="fixed md:absolute flex flex-col items-center gap-2 p-2 left-1/2 -translate-x-1/2 mt-2 w-[calc(100vw-2rem)] max-w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-2 max-h-100 overflow-y-scroll scrollbar-none">
           <div className="flex flex-col gap-1 p-1">
             <label htmlFor="title">Titulo</label>
             <input

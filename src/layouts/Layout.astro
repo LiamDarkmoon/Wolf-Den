@@ -1,16 +1,19 @@
 ---
 import "../styles/global.css";
 import Main from "../layouts/Main.astro";
-import { ClientRouter } from "astro:transitions"; 
+import { ClientRouter } from "astro:transitions";
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <meta name="theme-color" content="#1a1e24" />
-    <ClientRouter /> 
+    <ClientRouter />
     <link rel="icon" type="image/svg+xml" href="/favico.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,13 +22,15 @@ import { ClientRouter } from "astro:transitions";
       rel="stylesheet"
     />
     <script
+      is:inline
+      data-astro-rerun
       src="https://kit.fontawesome.com/76e9aa395c.js"
       crossorigin="anonymous"></script>
     <meta name="generator" content={Astro.generator} />
     <title>Wolf's Den</title>
   </head>
   <body class="text-body">
-    <Main>
+    <Main transition:persist>
       <slot />
     </Main>
   </body>
@@ -33,7 +38,7 @@ import { ClientRouter } from "astro:transitions";
 
 <style>
   html {
-  color-scheme: dark;
+    color-scheme: dark;
     background-color: var(--color-primary);
   }
 

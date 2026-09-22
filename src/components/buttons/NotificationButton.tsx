@@ -216,7 +216,7 @@ export default function NotificationButton({setUnread} : {setUnread: React.Dispa
       </Bttn>
 
       {visible && (
-        <div className="fixed md:absolute left-1/2 -translate-x-1/2 mt-2 w-[calc(100vw-2rem)] max-w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-50 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-none">
+        <div className="fixed md:absolute left-1/2 -translate-x-1/2 mt-2 w-[calc(100vw-2rem)] max-w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-2 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-none">
           {notifications.length > 0 && unreadCount > 0 && (
             <button
               type="button"

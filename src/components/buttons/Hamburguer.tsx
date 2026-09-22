@@ -4,9 +4,11 @@ import Bttn from "./Bttn";
 export default function Hamburger({
   onClick,
   unreadCount,
+  className,
 }: {
   onClick: () => void;
   unreadCount: number;
+  className: string;
 }) {
   const [closed, setClosed] = useState(true);
 
@@ -16,7 +18,7 @@ export default function Hamburger({
   };
 
   return (
-    <div className="relative">
+    <div className={className}>
       <Bttn onClick={handleOpen}>
         <i className="fa-solid fa-burger"></i>
       </Bttn>

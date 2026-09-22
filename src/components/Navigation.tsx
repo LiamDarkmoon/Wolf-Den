@@ -45,14 +45,12 @@ export default function Navigation({
         href="/"
         className="font-black me-auto tittle text-primary hover:text-primary-hover hover:scale-110 transition-all duration-500 group"
       >
-        <i className={isInHome ? "fa-solid fa-paw -me-1 rotate-45 group-hover:translate-x-28 transition-all duration-500" : "fa-solid fa-paw -me-1 rotate-45" }></i>
-        {
-          isInHome && "Wolf's Den"
-        }
+        <i className="fa-solid fa-paw -me-1 rotate-45 group-hover:translate-x-28 transition-all duration-500"></i>
+          "Wolf's Den"
       </a>
       {visible ?
         user ? (
-        <div className="flex justify-end items-center gap-3 ms-auto">
+        <div className="fixed bottom-3 left-1/2 -translate-x-1/2 md:left-auto md:bottom-auto md:translate-0 md:relative rounded-xl bg-border/80 md:bg-none flex justify-end items-center gap-3 p-3 md:p-0 ms-auto">
 
             <FeedbackButton />
             <AdminButton inAdmin={isInAdmin} role={role} />
@@ -78,7 +76,7 @@ export default function Navigation({
       ) : (
         <LogButton isLoged={false} />
       ) : null}
-      <Hamburger onClick={()=>setVisible(!visible)} unreadCount={unread}/>
+      <Hamburger className="relative" onClick={()=>setVisible(!visible)} unreadCount={unread}/>
     </nav>
   );
 }
