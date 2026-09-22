@@ -29,17 +29,20 @@ import Main from "../layouts/Main.astro";
 </html>
 
 <style>
-  html,
-  body {
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: var(--color-secondary-bg);
-  background: url("/cave-bg.jpg") center / cover no-repeat;
+  html {
+    background-color: var(--color-secondary-bg);
   }
 
-  *,  
+  html,
+  body {
+    height: 100dvh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: url("/cave-bg.jpg") center / cover no-repeat;
+  }
+
+  *,
   *::before,
   *::after {
     box-sizing: border-box;
