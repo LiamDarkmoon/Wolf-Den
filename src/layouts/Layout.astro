@@ -7,7 +7,8 @@ import Main from "../layouts/Main.astro";
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- <meta name="theme-color" content="#1a1e24" /> -->
     <link rel="icon" type="image/svg+xml" href="/favico.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,14 +31,15 @@ import Main from "../layouts/Main.astro";
 
 <style>
   html {
-    background-color: var(--color-secondary-bg);
+    background-color: var(--color-primary);
   }
 
   html,
   body {
+    min-height: -webkit-fill-available;
     height: 100dvh;
     margin: 0;
-    padding: 0;
+    padding-bottom: env(safe-area-inset-bottom);
     overflow: hidden;
     background: url("/cave-bg.jpg") center / cover no-repeat;
   }
