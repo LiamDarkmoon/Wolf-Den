@@ -17,7 +17,7 @@ export default function SpecieStep() {
 
   return (
     <div className="flex flex-col items-center">
-      <StepHead title="Elije tu especie">
+      <StepHead title="Elige tu especie">
         {species.find((item) => item.id === character.speciesId)?.name}
       </StepHead>
       <StepBody>
@@ -25,7 +25,7 @@ export default function SpecieStep() {
           <div
           key={item.id}
           className={`
-                        md:w-37.5 border-4 rounded-md cursor-pointer flex flex-col items-center
+                        max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex flex-col items-center
                         ${
                           character.speciesId === item.id
                           ? "border-primary bg-primary text-main-text"
@@ -35,6 +35,9 @@ export default function SpecieStep() {
                         onClick={() => handleSpecieSelect(item.id)}
                         >
             <img src={sp[item.code].src} alt={item.name} />
+            <div className="p-4 flex flex-col items-center justify-center">
+              <h3 className="font-semibold text-xl">{item.name}</h3>
+            </div>
           </div>
         ))}
       </StepBody>

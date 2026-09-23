@@ -40,18 +40,18 @@ const adventures: registeredAdventure[] = data?.adventures ?? [];
       </h1>
     </div>
 
-    <div class="flex flex-col md:flex-row md:justify-around w-full gap-5 p-4 overflow-y-auto scrollbar-none ">
+    <div class="flex flex-col md:flex-row md:justify-around w-full gap-3 p-4 overflow-y-auto scrollbar-none ">
       <section class="flex flex-col items-center gap-3 md:w-1/3">
         <h2
           class="w-full flex gap-2 items-center text-2xl text font-bold text-center pb-2 border-b-2 border-primary"
         >
           Personajes
         </h2>
-        <p class="text-secondary-text italic">Encuentra aqui a tus personajes</p>
+        <p class="text-secondary-text italic">Tus héroes, listos para la aventura.</p>
         <CharactersTable characters={characters} client:only="react" />
         <a
           href="/characters/creation"
-          class="w-1/2 flex gap-2 px-2 py-4 justify-center items-center font-black rounded-lg text-sm bg-primary hover:bg-primary-hover transition-all duration-300"
+          class="w-1/2 flex gap-2 px-2 py-4 justify-center items-center font-black rounded-lg text-sm text-primary bg-main-text hover:bg-secondary-text transition-all duration-300"
           >
           <i class="fa-solid fa-plus pe-3 border-e border-main-text"></i>
           Crear Personaje
@@ -63,7 +63,7 @@ const adventures: registeredAdventure[] = data?.adventures ?? [];
         >
           Aventuras
         </h2>
-        <p class="text-secondary-text italic">Tu aventura comienza aqui, preparate o elije una</p>
+        <p class="text-secondary-text italic">Prepárate para la aventura o encuentra una nueva.</p>
         {
             <AdventureList adventures={adventures} client:only="react" />
           
@@ -72,7 +72,7 @@ const adventures: registeredAdventure[] = data?.adventures ?? [];
               class="w-1/2 gap-2 px-2 py-4 flex justify-center items-center font-black rounded-lg text-sm bg-primary hover:bg-primary-hover transition-all duration-300"
             >
               <i class="fa-solid fa-eye pe-3 border-e border-main-text"></i>
-              {adventures?.length > 0 ? 'Mas aventuras' : 'Ver aventuras'}
+              {adventures?.length > 0 ? 'Más aventuras' : 'Ver aventuras'}
             </a>
         }
       </section>

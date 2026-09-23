@@ -9,9 +9,9 @@ import Avatar from "../Avatar";
 import StepHead from "./step/StepHead";
 
 export default function NameStep() {
-  const { character, updateCharacter } = useCharacter();
+  const { character, updateCharacter, characterClass } = useCharacter();
 
-  const [name, setName] = useState(character.name);
+  const [name, setName] = useState(character?.name || "");
 
   const debouncedName = useDebounce(name, 500);
 
@@ -30,7 +30,8 @@ export default function NameStep() {
       </StepHead>
 
       <StepBody>
-        <Avatar avatar={character.class ?? "druid"} />
+        <div className='flex flex-col mx-auto'>
+        <Avatar avatar={characterClass?.code ?? "druid"} />
 
         <InputField
           label="Nombre"
@@ -38,6 +39,7 @@ export default function NameStep() {
           onChange={setName}
           id="name"
         />
+        </div>
       </StepBody>
     </div>
   );

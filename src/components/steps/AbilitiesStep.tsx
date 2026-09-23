@@ -36,7 +36,7 @@ export default function AbilitiesStep() {
   return (
     <div className="flex flex-col items-center">
       <StepHead
-        title={!isCompleted ? "Elije tus habiliades" : "Tus puntuaciones"}
+        title={!isCompleted ? "Elige tus habiliades" : "Tus puntuaciones"}
       >
         {currentScore}
       </StepHead>

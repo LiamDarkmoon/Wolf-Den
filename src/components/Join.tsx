@@ -157,10 +157,10 @@ export default function Join({
             if (data.success) {
 
                 if (data.role === "titular") {
-                    setMisionState("Te has registrado como titular.");
+                    setMisionState("Te has registrado titular.");
                     navigate(`/adventures/league/${adventureId}`)
                 } else {
-                    setMisionState("Te has registrado como suplente.");
+                    setMisionState("Te has registrado suplente.");
                     navigate(`/adventures/league/${adventureId}`)
                 }
                 return;
@@ -229,19 +229,19 @@ export default function Join({
     return(
         <div className="flex flex-col items-center gap-2">
             
-            <p className="font-semibold underline">
+            <p className="font-semibold w-37.5">
                 <i className="fa-solid fa-users me-1 text-primary"></i>
                 Titulares: 
                 <span className={isFull ? "text-primary" : ""}>
                     {" "}{playerCount}
                 </span>
-                {" "}de{" "}
+                {" "}/{" "}
                 <span className="text-primary">
                     {maxPlayers}
                 </span>
             </p>
 
-            <p className="font-semibold underline">
+            <p className="font-semibold w-37.5">
                 <i className="fa-solid fa-hourglass-half me-1 text-primary"></i>
                 Suplentes: 
                 <span className="mb-2"> 
@@ -252,7 +252,7 @@ export default function Join({
             {
                 role === "titular" ? (
                     <a href={adventureUrl ? adventureUrl : "#"} target="_blank" rel="noopener noreferrer" className="underline cursor-pointer">
-                        Agregar a Google Calendar
+                        Agendala la fecha
                         <i className="fa-solid fa-calendar ms-2"></i>
                     </a>)
                 :
@@ -286,7 +286,7 @@ export default function Join({
                         size="md"
                         secondary
                     >
-                        Cancelar inscripción
+                        Estoy fuera
                     </Button>
                 }
             </div>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { adventureWithStatus } from "../lib/types";
 
 export default function Poster({

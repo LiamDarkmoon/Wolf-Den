@@ -1,37 +1,57 @@
 ---
-import Button from './button.tsx';
+import Button from "./button.tsx";
 ---
 
-<section class="flex flex-col md:flex-row justify-around items-center gap-5 h-full">
-    <article class="hero w-full md:w-1/2 pt-5">
-        <div class="flex flex-col">
-            <span class="text-2xl text-start -mb-2">Bienvenidos a</span>
-            <h1 class="text-5xl md:text-6xl text-primary tittle">Wolf's Den</h1>
-            <span class="font-extralight itelic text-xs text-secondary-text/80 text-end -mt-3">Powered by Los Manijas del Rol</span>
-        </div>
-        <p class="text-lg opacity w-4/5">Una forma rapida y sencilla de adentrarte en el mundo de D&D. Crea tus personajes y unete a la aventura...</p>
-        
-        <div class="flex flex-row-reverse flex-wrap justify-center items-center gap-4">
-            <Button client:load size="sm" to="/characters/creation">Crear Personaje</Button>
-            <Button secondary client:load size="sm" to="/adventures/league">Ver Aventuras</Button>
-            <a href="https://chat.whatsapp.com/C4VEVYjHtqI01Z9vVzj0g2" target="_blank" class="underline w-full">Forma parte de la comunidad</a>
-        </div>
-    </article>
-    <article class="glass w-full md:w-1/2">
-        
-        <img src="/mockup.png" alt="AppFeatures" class="object-fill drop-shadow-xl drop-shadow-border">
-    </article>
+<section
+  class="flex flex-col md:flex-row items-center gap-3 h-full"
+>
+  <article class="hero w-full md:w-1/2 pt-5">
+    <div class="flex flex-col">
+      <span class="text-2xl text-start -mb-2">Bienvenidos a</span>
+      <h1 class="text-5xl md:text-6xl text-primary tittle">Wolf's Den</h1>
+      <span
+        class="font-extralight itelic text-xs text-secondary-text/80 text-end -mt-3"
+        >Powered by Los Manijas del Rol</span
+      >
+    </div>
+    <p class="text-lg opacity-75 italic w-4/5">
+      Tu próxima aventura comienza acá.
+    </p>
+
+    <div
+      class="flex flex-row-reverse flex-wrap justify-center items-center gap-4"
+    >
+      <Button client:load size="sm" to="/characters/creation"
+        >Crear Personaje</Button
+      >
+      <Button secondary client:load size="sm" to="/adventures/league"
+        >Ver Aventuras</Button
+      >
+      <a
+        href="https://chat.whatsapp.com/C4VEVYjHtqI01Z9vVzj0g2"
+        target="_blank"
+        class="underline w-full">Forma parte de la comunidad</a
+      >
+    </div>
+  </article>
+  <article class="glass grid place-items-center w-full h-full md:w-1/2">
+    <img
+      src="/mockup.png"
+      alt="AppFeatures"
+      class="h-full drop-shadow-xl drop-shadow-border"
+    />
+  </article>
 </section>
 
 <style>
-    .hero {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-items: center;
-        justify-content: center;
-        gap: 1rem;
-        text-align: center;
-    }
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
+  }
 </style>

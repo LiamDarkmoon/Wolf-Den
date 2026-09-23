@@ -26,7 +26,7 @@ export default function VariantStep() {
 
   return (
     <div className="flex flex-col items-center">
-      <StepHead title="Elije tu variante">
+      <StepHead title="Elige tu variante">
         {
           selectedVariants.find(
             (variant: SpeciesVariantRecord) => variant.id === character.speciesVariantId,
@@ -39,8 +39,7 @@ export default function VariantStep() {
           <div
             key={variant.id}
             className={`
-                  md:w-37.5 border-4 rounded-md cursor-pointer
-                  flex flex-col items-center p-3
+                  max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex flex-col items-center
                   ${
                     character.speciesVariantId === variant.id
                       ? "border-primary bg-primary text-main-text"
@@ -49,7 +48,7 @@ export default function VariantStep() {
                 `}
             onClick={() => handleVariantSelect(variant.id)}
           >
-            <span className="font-bold">{variant.name}</span>
+            <span className="font-bold text-xl">{variant.name}</span>
             {variant.description && (
               <p className="text-sm text-center mt-2">{variant.description}</p>
             )}

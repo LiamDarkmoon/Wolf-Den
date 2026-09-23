@@ -3,10 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import { createClient } from "../../../db/supabase";
 import CharacterSelector from "../../../components/CharacterSelector";
 import type { Player } from "../../../lib/types";
-import Delete from "../../../components/delete";
 import { getAdventurePlayers } from "../../../lib/utils/getAdventurePlayers";
-import { filterByCharacterLvl } from "../../../lib/utils/filter";
-import { undefined } from "astro:schema";
 import { formatAdventureDate } from "../../../lib/utils/formatAdventureDate";
 
 const { id } = Astro.params;
@@ -43,12 +40,11 @@ const date = formatAdventureDate(adventure.adventure_date)
 
 <Layout>
   <section class="w-full flex flex-col items-center text-center">
-    <h1 class="flex gap-4 items-center text-2xl text-primary font-extrabold underline">
+    <h1 class="flex gap-4 items-center text-2xl text-primary font-extrabold">
       <a href="/adventures/league" class="text-secondary"
         ><i class="fa-solid fa-arrow-left"></i></a
       >
       {adventure.title}
-      {(id && role !== "user") && <Delete id={id} client:only="react"/>}
     </h1>
     <p class="text-xs italic text-secondary-text md:w-1/2">{date}</p>
     <p class="my-4 md:w-1/2">{adventure.description}</p>
@@ -60,7 +56,10 @@ const date = formatAdventureDate(adventure.adventure_date)
           >
             Titulares
           </h2>
-
+          {
+             titulares.length === 0  ? <p class="text-secondary-text italic p-1">Aun no hay aventureros asignados...</p> :
+             <p class="text-secondary-text italic p-1">Lista oficial de aventureros elegidos...</p>
+          }
           {
             titulares.map((player: Player,index:number) => (
               
@@ -81,6 +80,10 @@ const date = formatAdventureDate(adventure.adventure_date)
           >
             Suplentes
           </h2>
+          {
+             suplentes.length  === 0 ? <p class="text-secondary-text italic p-1">Aun no hay aventureros a la espera...</p> :
+             <p class="text-secondary-text italic p-1">Lista de espera de aventureros...</p>
+          }
           {
             suplentes.map((player: Player, index: number) => (  
             <CharacterSelector
