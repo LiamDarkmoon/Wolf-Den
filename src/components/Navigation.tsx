@@ -67,7 +67,7 @@ export default function Navigation({
                 <LogButton isLoged={true} />
               ) : (
                 <a
-                  className="flex gap-2 p-2 md:me-3 items-center font-black rounded-lg text-xs bg-primary hover:bg-primary-hover transition-all duration-300"
+                  className="size-8 flex gap-2 p-2 md:me-3 items-center font-black rounded-lg text-xs bg-primary hover:bg-primary-hover transition-all duration-300"
                   href={`/profile/${user.id}`}
                 >
                   {role === "admin" ? (

@@ -26,7 +26,7 @@ export default function VariantStep() {
 
   return (
     <div className="flex flex-col items-center">
-      <StepHead title="Elige tu variante">
+      <StepHead title="Elije tu variante">
         {
           selectedVariants.find(
             (variant: SpeciesVariantRecord) => variant.id === character.speciesVariantId,
