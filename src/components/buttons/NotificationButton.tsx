@@ -2,10 +2,18 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../db/supabase-browser";
 import Bttn from "./Bttn";
 import { actions } from "astro:actions";
-import type { Notification } from "../../lib/types";
+import type { Notification, Popup } from "../../lib/types";
 
-export default function NotificationButton({setUnread} : {setUnread: React.Dispatch<React.SetStateAction<number>>}) {
-  const [visible, setVisible] = useState(false);
+export default function NotificationButton({
+  setUnread,
+  popup,
+  setPopup,
+}: {
+  setUnread: React.Dispatch<React.SetStateAction<number>>;
+  popup: Popup;
+  setPopup: React.Dispatch<React.SetStateAction<"feedback" | "notifications" | null>>;
+}) {
+  const visible = popup === "notifications"
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -134,7 +142,9 @@ export default function NotificationButton({setUnread} : {setUnread: React.Dispa
   }, []);
 
   const handleClick = async () => {
-    setVisible((prev) => !prev);
+    setPopup((current) =>
+      current === "notifications" ? null : "notifications",
+    );
   };
 
   const handleMarkAllAsRead = async () => {
@@ -205,7 +215,7 @@ export default function NotificationButton({setUnread} : {setUnread: React.Dispa
 
   return (
     <div className="relative">
-      <Bttn onClick={handleClick}>
+      <Bttn onClick={handleClick} active={visible}>
         <i className="fa-solid fa-bell"></i>
 
         {unreadCount > 0 && (
@@ -216,7 +226,7 @@ export default function NotificationButton({setUnread} : {setUnread: React.Dispa
       </Bttn>
 
       {visible && (
-        <div className="fixed md:absolute left-1/2 -translate-x-1/2 mt-2 w-[calc(100vw-2rem)] max-w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-2 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-none">
+        <div className="fixed bottom-16 md:bottom-auto md:absolute left-1/2 -translate-x-1/2 mt-2 w-[calc(100vw-2rem)] max-w-80 bg-main-bg border border-primary/20 rounded-md shadow-lg z-2 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-none">
           {notifications.length > 0 && unreadCount > 0 && (
             <button
               type="button"

@@ -41,6 +41,7 @@ export default function WizardProgress({
         <span className="md:hidden">
           {stepList.map((item, i) => (
             <i
+            key={i}
               className={
                 "fa-solid fa-circle-dot text-sm mx-1 " +
                 (stepIndex === i

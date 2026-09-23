@@ -36,11 +36,11 @@ export default function ClassStep() {
                         <div
                             key={item.id}
                             className={`
-                                border-4 rounded-md cursor-pointer flex flex-col items-center
+                                max-w-75 border-4 rounded-md cursor-pointer flex flex-col items-center
                                 ${
                                     character.classId === item.id
-                                        ? "border-primary bg-primary text-main-text"
-                                        : "border-amber-50 bg-amber-50 text-primary"
+                                        ? "glass border-primary bg-primary text-primary"
+                                        : "glass border-main-text bg-main-text text-main-text"
                                 }
                             `}
                             onClick={() => handleClassSelect(item.id)}

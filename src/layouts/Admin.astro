@@ -10,9 +10,9 @@ const path = Astro.url.pathname;
         <i class="fa-solid fa-layer-group me-1"></i>
         Panel de administracion
     </h1>
-    <section class="h-full flex flex-col md:flex-row gap-4">
+    <section class="h-full flex flex-col md:flex-row gap-4 overflow-y-auto scrollbar-none">
        
-        <div class="md:w-1/4 flex md:flex-col gap-4 py-4 md:border-e-2 border-primary ">
+        <div class="md:w-1/4 flex md:flex-col gap-4 py-4 md:border-e-2 border-primary">
             <a 
                 class={path === "/admin/adventures" ? "w-full text-center md:text-start mb-2 p-2 rounded-sm border-b border-primary/40 bg-primary/20" : "w-full text-center md:text-start mb-2 p-2 rounded-sm border-b group border-primary/40"}
                 href="/admin/adventures"
@@ -39,7 +39,9 @@ const path = Astro.url.pathname;
                 )
             }
         </div>
-        <slot/>
+        <div class="overflow-y-auto scrollbar-none">
+            <slot/>
+        </div>
 
     </section>
 </Layout>

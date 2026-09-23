@@ -29,7 +29,8 @@ import soldier from "../assets/soldier.png";
 import wayfarer from "../assets/wayfarer.png";
 
 import type { Species } from "./species";
-import type { Character } from "../components/CharacterCreator/CharacterProvider";
+
+export type Popup = "feedback" | "notifications" | "admin" | null;
 
 export const Classes = {
   barbarian,
