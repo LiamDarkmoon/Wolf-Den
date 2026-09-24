@@ -1,11 +1,11 @@
 import { useState } from "react";
 import AdventureRow from "./AdventureRow";
-import type { registeredAdventure } from "../lib/types";
+import type { adventureWithStatus } from "../lib/types";
 
 export default function AdventuresList({
   adventures,
 }: {
-  adventures: registeredAdventure[] | null;
+  adventures: adventureWithStatus[] | null;
 }) {
   const [adventuresList, setAdventuresList] = useState(adventures ?? []);
 
@@ -17,8 +17,8 @@ export default function AdventuresList({
  */
   return (
     <ul className="flex flex-col gap-2 min-w-75 md:max-w-fit">
-      {adventuresList.map((adventure: registeredAdventure) => {
-        return <AdventureRow key={adventure.adventure_id} adventure={adventure} />;
+      {adventuresList.map((adventure: adventureWithStatus) => {
+        return <AdventureRow key={adventure.id} adventure={adventure} />;
       })}
     </ul>
   );

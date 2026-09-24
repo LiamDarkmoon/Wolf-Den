@@ -92,12 +92,12 @@ export interface registeredAdventure {
   title: string;
   description: string;
   poster_url: string;
-  adventure_date: Date;
+  adventure_date: string;
   max_players: number;
   min_lvl: number;
   max_lvl: number;
   role: "titular" | "suplente";
-  registered_at: Date;
+  registered_at: string;
 }
 export interface adventureWithStatus {
   id: string;

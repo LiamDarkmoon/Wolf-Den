@@ -5,6 +5,8 @@ import { createClient } from "../../db/supabase";
 import ProfileFrame from "../../components/ProfileFrame";
 import Layout from "../../layouts/Layout.astro";
 import type { registeredAdventure } from "../../lib/types";
+import { getAdventuresWithStatus } from "../../lib/utils/getAdventuresWithStatus";
+import type { adventureWithStatus } from "../../lib/types";
 
 const { id } = Astro.params;
 const user = Astro.locals.user;
@@ -20,8 +22,19 @@ const { data: characters, error } = await supabase.rpc("get_user_characters", {
 });
 
 const { data, error: ad_error } = await supabase.rpc("get_user_adventures");
+const adv = await getAdventuresWithStatus({
+  request: Astro.request,
+  cookies: Astro.cookies
+})
+const registeredAdventures = adv
+  .filter((adventure) => adventure.isRegistered) ?? []
 
-const adventures: registeredAdventure[] = data?.adventures ?? [];
+const registeredCharacterIds = adv
+  .filter((adventure) => adventure.isRegistered)
+  .map((adventure) => adventure.character)
+  .filter(Boolean);
+
+const adventures: adventureWithStatus[] = registeredAdventures;
 ---
 
 <Layout>
@@ -48,7 +61,7 @@ const adventures: registeredAdventure[] = data?.adventures ?? [];
           Personajes
         </h2>
         <p class="text-secondary-text italic">Tus héroes, listos para la aventura.</p>
-        <CharactersTable characters={characters} client:only="react" />
+        <CharactersTable registered={registeredCharacterIds} characters={characters} client:only="react" />
         <a
           href="/characters/creation"
           class="w-1/2 flex gap-2 px-2 py-4 justify-center items-center font-black rounded-lg text-sm text-primary bg-main-text hover:bg-secondary-text transition-all duration-300"

@@ -1,16 +1,19 @@
 import { actions } from "astro:actions";
 import type { CharacterListItem } from "../lib/types";
 import { useState } from "react";
+import { navigate } from "astro:transitions/client";
 
 interface CharacterRowProps {
   character: CharacterListItem;
   selected?: boolean;
+  isRegistered?: boolean;
   onDelete: (id: string) => void;
 }
 
 export default function CharacterRow({
   character,
   onDelete,
+  isRegistered,
 }: CharacterRowProps) {
   const [selected, setSelected] = useState(false);
 
@@ -28,22 +31,24 @@ export default function CharacterRow({
   };
 
   const handleSelect = () => {
+    if (selected) navigate(`/profile/characters/${character.id}`);
     setSelected(!selected);
   };
 
   return (
     <li
-      className="grid grid-cols-[50px_1fr_50px] grid-rows-2 items-center justify-center hover:text-primary hover:bg-primary/30 p-2 rounded-sm group"
+      className={`${isRegistered ? "bg-primary/30 p-2 rounded-sm text-primary" : ""} grid grid-cols-[50px_1fr_50px] grid-rows-2 items-center justify-center hover:text-primary hover:bg-primary/30 p-2 rounded-sm cursor-pointer group`}
       onClick={handleSelect}
     >
-      {selected ? (
-        <i className="col-start-1 row-span-2 fa-solid fa-square-check text-emerald-500"></i>
+      {isRegistered ? (
+        <i className="col-start-1 row-span-2 fa-solid fa-dungeon text-emerald-500"></i>
       ) : (
-        <i className="col-start-1 row-span-2 fa-solid fa-feather"></i>
+        <i className="col-start-1 row-span-2 fa-brands fa-fort-awesome"></i>
       )}
       <div className="col-start-2 row-start-1 flex justify-center items-center w-full border-b border-main-text group-hover:border-primary">
         <span>
           {character.name}: Nivel {character.level}
+          {selected && <i className="fa-solid fa-link text-secondary text-xs ms-1"></i>}
         </span>
       </div>
       {selected && (
@@ -56,7 +61,7 @@ export default function CharacterRow({
       )}
       <div className=" col-start-2 row-start-2 flex justify-center items-center w-full">
         <span>
-          {character.species_name} |{character.class_name}
+          {character.species_name} | {character.class_name}
         </span>
       </div>
     </li>

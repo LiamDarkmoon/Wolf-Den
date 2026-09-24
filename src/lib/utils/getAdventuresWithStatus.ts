@@ -50,6 +50,7 @@ export async function getAdventuresWithStatus({
         currentSubstitutes: status?.current_substitutes ?? 0,
         isRegistered: status?.is_registered ?? false,
         role: status?.role ?? null,
+        character: status.character_id ?? null
       };
     }),
   );
