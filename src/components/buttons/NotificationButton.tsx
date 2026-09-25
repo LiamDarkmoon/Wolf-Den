@@ -111,7 +111,6 @@ export default function NotificationButton({
           },
         )
         .subscribe((status) => {
-          console.log("Notifications realtime:", status);
         });
     };
 
@@ -215,7 +214,7 @@ export default function NotificationButton({
 
   return (
     <div className="relative">
-      <Bttn onClick={handleClick} active={visible}>
+      <Bttn tooltip="Notificaciones" onClick={handleClick} active={visible}>
         <i className="fa-solid fa-bell"></i>
 
         {unreadCount > 0 && (

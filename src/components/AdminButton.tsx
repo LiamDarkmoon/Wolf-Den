@@ -1,3 +1,5 @@
+import Bttn from "./buttons/Bttn";
+
 export default function AdminButton({
   role,
   inAdmin,
@@ -7,16 +9,16 @@ export default function AdminButton({
 }) {
   return (
     (role === "admin" || role === "super_admin") && (
-      <a
-        href={inAdmin ? "/" : "/admin"}
-        className="grid place-items-center p-2 rounded-lg text-main-text bg-primary hover:bg-primary-hover transition-all duration-300"
+      <Bttn
+      tooltip="Administracion"
+        to={inAdmin ? "/" : "/admin"}
       >
         {inAdmin ? (
           <i className="fa-solid fa-house"></i>
         ) : (
           <i className="fa-solid fa-layer-group"></i>
         )}
-      </a>
+      </Bttn>
     )
   );
 }

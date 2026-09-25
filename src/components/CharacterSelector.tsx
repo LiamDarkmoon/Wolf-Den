@@ -65,7 +65,6 @@ export default function CharacterSelector({
 
   // Abrir/cerrar selector
   const handleDropdown = () => {
-    console.log("click", characters);
 
     // Solo el dueño del registro puede abrirlo
     if (!isOwner) {

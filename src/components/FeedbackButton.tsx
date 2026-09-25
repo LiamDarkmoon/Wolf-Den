@@ -17,7 +17,6 @@ export default function FeedbackButton({
   });
 
   const handleClick = async () => {
-    console.log(visible)
     setPopup((current) => (current === "feedback" ? null : "feedback"));
   };
 
@@ -37,7 +36,7 @@ export default function FeedbackButton({
 
   return (
     <div className="relative">
-      <Bttn onClick={handleClick} active={visible}>
+      <Bttn tooltip="Feedback" onClick={handleClick} active={visible}>
         <i className="fa-solid fa-bug"></i>
       </Bttn>
 

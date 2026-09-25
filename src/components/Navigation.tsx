@@ -6,6 +6,7 @@ import NotificationButton from "./buttons/NotificationButton";
 import Hamburger from "./buttons/Hamburguer";
 import { useState, useEffect } from "react";
 import { actions } from "astro:actions";
+import ProfileButton from "./buttons/ProfileButton";
 
 export default function Navigation({
   isInAdmin,
@@ -66,18 +67,7 @@ export default function Navigation({
               {isInProfile ? (
                 <LogButton isLoged={true} />
               ) : (
-                <a
-                  className="size-8 flex gap-2 p-2 md:me-3 items-center font-black rounded-lg text-xs bg-primary hover:bg-primary-hover transition-all duration-300"
-                  href={`/profile/${user.id}`}
-                >
-                  {role === "admin" ? (
-                    <i className="fa-solid fa-user-gear" />
-                  ) : role === "super_admin" ? (
-                    <i className="fa-solid fa-user-shield" />
-                  ) : (
-                    <i className="fa-solid fa-user" />
-                  )}
-                </a>
+                <ProfileButton role={role ?? 'user'} id={user.id} />
               )}
             </div>
           )}
