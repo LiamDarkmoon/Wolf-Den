@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import Tooltip from "../Tooltip";
 
 export default function Bttn({
@@ -6,7 +6,7 @@ export default function Bttn({
   active,
   children,
   to,
-  className,
+  className = "",
   onClick,
 }: {
   tooltip?: string;
@@ -16,13 +16,14 @@ export default function Bttn({
   className?: string;
   onClick?: () => void | Promise<void>;
 }) {
+  const Component = to ? "a" : "button";
+
   const [tt, setTt] = useState(false);
 
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const longPressed = useRef(false);
 
-  const startLongPress = (e: React.PointerEvent<HTMLAnchorElement>) => {
-    // Mouse y stylus con hover no necesitan long press
+  const startLongPress = (e: React.PointerEvent<HTMLElement>) => {
     if (e.pointerType !== "touch") return;
 
     longPressed.current = false;
@@ -40,9 +41,7 @@ export default function Bttn({
     }
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Si el usuario hizo long press, evitamos que el toque
-    // termine ejecutando accidentalmente la navegación.
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     if (longPressed.current) {
       e.preventDefault();
       longPressed.current = false;
@@ -53,10 +52,21 @@ export default function Bttn({
   };
 
   return (
-    <a
-      href={to}
-      className={`${active ? "bg-primary-hover shadow-md shadow-primary-hover" : "bg-primary"} ${className} relative size-8 grid place-items-center p-2 rounded-lg text-main-text text-sm bg-primary hover:bg-primary-hover transition-all duration-300 cursor-pointer`}
-      onClick={onClick}
+    <Component
+      {...(to ? { href: to } : { type: "button" })}
+      className={`
+        ${
+          active
+            ? "bg-primary-hover shadow-md shadow-primary-hover"
+            : "bg-primary"
+        }
+        ${className}
+        relative size-8 grid place-items-center p-2
+        rounded-lg text-main-text text-sm
+        bg-primary hover:bg-primary-hover
+        transition-all duration-300 cursor-pointer
+      `}
+      onClick={handleClick}
       onPointerEnter={(e) => {
         if (e.pointerType === "mouse") {
           setTt(true);
@@ -78,7 +88,8 @@ export default function Bttn({
       aria-label={tooltip}
     >
       {tt && tooltip && <Tooltip>{tooltip}</Tooltip>}
+
       {children}
-    </a>
+    </Component>
   );
 }

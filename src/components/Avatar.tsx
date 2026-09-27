@@ -11,19 +11,20 @@ interface AvatarProps {
 
 
 export default function Avatar({ avatar }: AvatarProps) {
-    const { character } = useCharacter();
 
     return (
         <div className="flex flex-col justify-center items-center">
             <div className="relative group grid place-items-center">
-                <ProfileFrame className="w-40 text-primary group-hover:text-primary-hover transition-all duration-300" />
+                <ProfileFrame className="w-37.5 text-primary group-hover:text-primary-hover transition-all duration-300" />
                 {
                     avatar && 
-                    <img
-                        src={avatar ? Classes[avatar].src : species['human'].src}
-                        alt={avatar}
-                        className="absolute w-25 rounded-full"
-                    />
+                    <span className="absolute grid place-items-center w-25 bg-main-text rounded-full">
+                        <img
+                            src={avatar ? Classes[avatar].src : species['human'].src}
+                            alt={avatar}
+                            className=" h-25 rounded-full"
+                        />
+                    </span>
                 }
             </div>
         </div>
