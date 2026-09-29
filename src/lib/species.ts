@@ -3,6 +3,7 @@ import dragonborn from "../assets/dragonborn.png";
 import dwarf from "../assets/dwarf.png";
 import elf from "../assets/elf.png";
 import gnome from "../assets/gnome.png";
+import goliath from "../assets/gnome.png";
 import halfling from "../assets/halfling.png";
 import human from "../assets/human.png";
 import orc from "../assets/orc.png";
@@ -15,7 +16,7 @@ export const species = {
   dwarf,
   elf,
   gnome,
-  /* goliath, */
+  goliath,
   halfling,
   human,
   orc,

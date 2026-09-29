@@ -36,7 +36,7 @@ export default function OriginStep() {
               className=""
             />
             <div className="p-4 flex items-center justify-center">
-              <p className="text-sm ms-1 italic">({item.description})</p>
+              <p className="text-sm ms-1 italic">{item.description}</p>
             </div>
           </div>
         ))}

@@ -50,7 +50,7 @@ export default function ClassStep() {
                 <p className="text-sm ms-1">(d{item.hit_die})</p>
               </div>
               <div className="flex items-center justify-center">
-                <p className="text-xs ms-1 italic text-pretty">({item.description})</p>
+                <p className="text-xs ms-1 italic text-pretty">{item.description}</p>
               </div>
             </div>
           </div>
