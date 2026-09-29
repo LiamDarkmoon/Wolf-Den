@@ -16,7 +16,6 @@ export default function ClassStep() {
 
   return (
     <div className="flex flex-col items-center">
-      <Avatar avatar={characterClass?.code ?? "druid"} />
       <StepHead title="Elige tu clase:">
         {classes.find((item) => item.id === character.classId)?.name}
       </StepHead>
@@ -26,7 +25,7 @@ export default function ClassStep() {
           <div
             key={item.id}
             className={`
-                max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex items-center gap-1.5
+                h-50 max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex items-center gap-1.5
                 ${
                   character.classId === item.id
                     ? " border-primary bg-primary text-main-text"
@@ -38,14 +37,14 @@ export default function ClassStep() {
             <img
               src={Classes[item.code].src}
               alt={item.name}
-              className="h-full"
+              className="h-48 w-32"
             />
-            <div className="flex flex-col justify-around items-start h-full">
+            <div className="flex flex-col items-start h-full">
               <div className={`flex items-center justify-center pb-1 border-b ${
                   character.classId === item.id
                     ? " border-main-text"
                     : " border-primary"
-                } w-full`}>
+                } w-full my-3`}>
                 <h3 className="text-sm font-bold">{item.name}</h3>
                 <p className="text-sm ms-1">(d{item.hit_die})</p>
               </div>

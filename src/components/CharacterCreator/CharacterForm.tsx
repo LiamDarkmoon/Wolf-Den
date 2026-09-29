@@ -17,7 +17,7 @@ export default function CharacterForm() {
   const hasCreationError = error !== null && isLastStep;
 
   return (
-    <form className="relative md:w-2/5 w-full h-full flex flex-col gap-3">
+    <form className="relative md:w-2/5 w-full h-full flex flex-col gap-2">
       <WizardProgress stepList={steps} stepIndex={stepIndex}/>
       <CurrentStep />
       <div className="flex flex-wrap justify-around items-center">

@@ -8,7 +8,7 @@ export default function WizardProgress({
   stepIndex: number;
 }) {
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex items-center justify-center gap-1">
       {stepList.map((item: Step, i) => (
         <div
           key={item.id}

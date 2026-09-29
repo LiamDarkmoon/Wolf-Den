@@ -1,23 +1,18 @@
-import { useEffect } from "react";
 import type { SpeciesVariantRecord } from "../../lib/types";
+import { species as sp } from "../../lib/species";
 import { useCharacter } from "../../lib/hooks/useCharacter";
 
 import StepBody from "./step/StepBody";
 import StepHead from "./step/StepHead";
 
 export default function VariantStep() {
-  const { character, variants, nextStep, updateCharacter } = useCharacter();
+  const { character, variants, characterSpecies, updateCharacter } = useCharacter();
 
   const selectedVariants: SpeciesVariantRecord[] = variants.filter(
-    (variant:SpeciesVariantRecord) => variant.species_id === character.speciesId,
+    (variant: SpeciesVariantRecord) =>
+      variant.species_id === character.speciesId,
   );
 
-  /* useEffect(() => {
-    if (selectedVariants.length === 0) {
-      nextStep();
-    }
-  }, [selectedVariants.length, nextStep]);
- */
   const handleVariantSelect = (speciesVariantId: string) => {
     updateCharacter({
       speciesVariantId,
@@ -29,7 +24,8 @@ export default function VariantStep() {
       <StepHead title="Elige tu variante">
         {
           selectedVariants.find(
-            (variant: SpeciesVariantRecord) => variant.id === character.speciesVariantId,
+            (variant: SpeciesVariantRecord) =>
+              variant.id === character.speciesVariantId,
           )?.name
         }
       </StepHead>
@@ -39,7 +35,7 @@ export default function VariantStep() {
           <div
             key={variant.id}
             className={`
-                  max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex flex-col items-center
+                  max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex items-center gap-1.5
                   ${
                     character.speciesVariantId === variant.id
                       ? "border-primary bg-primary text-main-text"
@@ -48,10 +44,23 @@ export default function VariantStep() {
                 `}
             onClick={() => handleVariantSelect(variant.id)}
           >
-            <span className="font-bold text-xl">{variant.name}</span>
-            {variant.description && (
-              <p className="text-sm text-center mt-2">{variant.description}</p>
-            )}
+            <img src={sp[characterSpecies ? characterSpecies.code : 'human'].src} alt={variant.name} className="w-32" />
+            <div className="fle flex-col items-start h-full">
+              <div
+                className={`flex items-center justify-center pb-1 border-b ${
+                  character.speciesVariantId === variant.id
+                    ? " border-main-text"
+                    : " border-primary"
+                } w-full my-3`}
+              >
+                <h3 className="text-sm font-bold">{variant.name}</h3>
+              </div>
+              {variant.description && (
+                <div className="flex items-center justify-center">
+                <p className="text-[10px] ms-1 text-pretty">{variant.description}</p>
+              </div>
+              )}
+            </div>
           </div>
         ))}
       </StepBody>
