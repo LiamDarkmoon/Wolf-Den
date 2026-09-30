@@ -45,7 +45,7 @@ import scribeBg from "../assets/background/scribe-bg.png";
 import soldierBg from "../assets/background/soldier-bg.png";
 import wayfarerBg from "../assets/background/wayfarer-bg.png";
 
-import type { Species } from "./species";
+import type { Species, Variants } from "./species";
 
 export type Popup = "feedback" | "notifications" | "admin" | null;
 
@@ -198,7 +198,7 @@ export interface SpeciesRecord {
 export interface SpeciesVariantRecord {
   id: string;
   species_id: string;
-  code: string;
+  code: Variants;
   name: string;
   description: string | null;
 }

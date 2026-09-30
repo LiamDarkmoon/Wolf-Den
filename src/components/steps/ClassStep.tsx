@@ -13,7 +13,6 @@ export default function ClassStep() {
       classId,
     });
   };
-  console.log('bg',bg)
 
   return (
     <div className="flex flex-col items-center">
@@ -35,7 +34,7 @@ export default function ClassStep() {
             `}
             onClick={() => handleClassSelect(item.id)}
           >
-            <img className="absolute h-full inset-0 z-0" src={`${bg}`} />
+            {character.classId === item.id && <img className="absolute h-full inset-0 -z-1" src={`${bg}`} />}
             <img
               src={Classes[item.code].src}
               alt={item.name}

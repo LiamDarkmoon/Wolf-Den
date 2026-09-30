@@ -1,12 +1,12 @@
 import type { SpeciesVariantRecord } from "../../lib/types";
-import { species as sp } from "../../lib/species";
+import { variants as v } from "../../lib/species";
 import { useCharacter } from "../../lib/hooks/useCharacter";
 
 import StepBody from "./step/StepBody";
 import StepHead from "./step/StepHead";
 
 export default function VariantStep() {
-  const { character, variants, characterSpecies, updateCharacter } = useCharacter();
+  const { character, variants, bg, updateCharacter } = useCharacter();
 
   const selectedVariants: SpeciesVariantRecord[] = variants.filter(
     (variant: SpeciesVariantRecord) =>
@@ -18,6 +18,7 @@ export default function VariantStep() {
       speciesVariantId,
     });
   };
+  console.log('variants',selectedVariants)
 
   return (
     <div className="flex flex-col items-center">
@@ -35,17 +36,18 @@ export default function VariantStep() {
           <div
             key={variant.id}
             className={`
-                  max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex items-center gap-1.5
+                  relative max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex flex-col items-center gap-1.5 bg-linear-to-b from-transparent to-border
                   ${
                     character.speciesVariantId === variant.id
-                      ? "border-primary bg-primary text-main-text"
-                      : "border-amber-50 bg-amber-50 text-primary"
+                      ? "border-primary text-main-text"
+                      : "border-amber-50 text-primary"
                   }
                 `}
             onClick={() => handleVariantSelect(variant.id)}
           >
-            <img src={sp[characterSpecies ? characterSpecies.code : 'human'].src} alt={variant.name} className="w-32" />
-            <div className="fle flex-col items-start h-full">
+            {character.speciesVariantId === variant.id && <img className="absolute h-full inset-0 -z-1" src={`${bg}`} />}
+            <img src={variant ? v[variant.code].src : ''} alt={variant.name} className="w-32 z-1" />
+            <div className="absolute bottom-4 flex flex-col items-start h-full z-1">
               <div
                 className={`flex items-center justify-center pb-1 border-b ${
                   character.speciesVariantId === variant.id
@@ -57,7 +59,7 @@ export default function VariantStep() {
               </div>
               {variant.description && (
                 <div className="flex items-center justify-center">
-                <p className="text-[10px] ms-1 text-pretty">{variant.description}</p>
+                  <p className="text-[10px] ms-1 text-pretty">{variant.description}</p>
               </div>
               )}
             </div>
