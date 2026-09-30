@@ -1,12 +1,14 @@
 import { createContext, useState, useEffect, type ComponentType } from "react";
 import { actions } from "astro:actions";
 import { getCharacterReferences } from "../../db/character-references";
-import type {
-  BackgroundRecord,
-  ClassRecord,
-  SpeciesRecord,
-  AbilityRecord,
-  SpeciesVariantRecord,
+import {
+  type BackgroundRecord,
+  type ClassRecord,
+  type SpeciesRecord,
+  type AbilityRecord,
+  type SpeciesVariantRecord,
+  type Bgs,
+  Bg,
 } from "../../lib/types";
 import NameStep from "../steps/NameStep";
 import ClassStep from "../steps/ClassStep";
@@ -14,7 +16,7 @@ import OriginStep from "../steps/OriginStep";
 import SpecieStep from "../steps/SpecieStep";
 import VariantStep from "../steps/VariantStep";
 import AbilitiesStep from "../steps/AbilitiesStep";
-import { record } from "astro:schema";
+import { keyof, record } from "astro:schema";
 import { navigate } from "astro:transitions/client";
 
 const DRAFT_KEY = `wolf-den-character-draft`;
@@ -57,6 +59,7 @@ interface CharacterContext {
   characterSpecies?: SpeciesRecord;
   characterSpecieVariant?: SpeciesVariantRecord;
   characterBackground?: BackgroundRecord;
+  bg?: string | null;
 
   classes: ClassRecord[];
   species: SpeciesRecord[];
@@ -212,6 +215,8 @@ export default function CharacterProvider({
     (item) => item.id === character.backgroundId,
   );
 
+  const bg = characterBackground ? Bg[`${characterBackground?.code}Bg`].src : null
+
   const updateCharacter = (values: Partial<Character>) => {
     setCharacter((prev) => ({
       ...prev,
@@ -313,6 +318,7 @@ export default function CharacterProvider({
         characterSpecies,
         characterSpecieVariant,
         characterBackground,
+        bg,
 
         classes,
         species,

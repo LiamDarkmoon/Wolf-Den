@@ -1,32 +1,49 @@
-import barbarian from "../../public/illustrations/barbarian.png";
-import bard from "../../public/illustrations/bard.png";
-import cleric from "../../public/illustrations/cleric.png";
-import druid from "../../public/illustrations/druid.png";
-import fighter from "../../public/illustrations/fighter.png";
-import monk from "../../public/illustrations/monk.png";
-import paladin from "../../public/illustrations/paladin.png";
-import ranger from "../../public/illustrations/ranger.png";
-import rogue from "../../public/illustrations/rogue.png";
-import sorcerer from "../../public/illustrations/sorcerer.png";
-import warlock from "../../public/illustrations/warlock.png";
-import wizard from "../../public/illustrations/wizard.png";
+import barbarian from "../assets/classes/barbarian.png";
+import bard from "../assets/classes/bard.png";
+import cleric from "../assets/classes/cleric.png";
+import druid from "../assets/classes/druid.png";
+import fighter from "../assets/classes/fighter.png";
+import monk from "../assets/classes/monk.png";
+import paladin from "../assets/classes/paladin.png";
+import ranger from "../assets/classes/ranger.png";
+import rogue from "../assets/classes/rogue.png";
+import sorcerer from "../assets/classes/sorcerer.png";
+import warlock from "../assets/classes/warlock.png";
+import wizard from "../assets/classes/wizard.png";
 
-import acolyte from "../assets/acolyte.png";
-import artisan from "../assets/artisan.png";
-import charlatan from "../assets/charlatan.png";
-import criminal from "../assets/criminal.png";
-import entertainer from "../assets/entertainer.png";
-import farmer from "../assets/farmer.png";
-import guard from "../assets/guard.png";
-import guide from "../assets/guide.png";
-import hermit from "../assets/hermit.png";
-import merchant from "../assets/merchant.png";
-import noble from "../assets/noble.png";
-import sage from "../assets/sage.png";
-import sailor from "../assets/sailor.png";
-import scribe from "../assets/scribe.png";
-import soldier from "../assets/soldier.png";
-import wayfarer from "../assets/wayfarer.png";
+import acolyte from "../assets/background/acolyte.png";
+import artisan from "../assets/background/artisan.png";
+import charlatan from "../assets/background/charlatan.png";
+import criminal from "../assets/background/criminal.png";
+import entertainer from "../assets/background/entertainer.png";
+import farmer from "../assets/background/farmer.png";
+import guard from "../assets/background/guard.png";
+import guide from "../assets/background/guide.png";
+import hermit from "../assets/background/hermit.png";
+import merchant from "../assets/background/merchant.png";
+import noble from "../assets/background/noble.png";
+import sage from "../assets/background/sage.png";
+import sailor from "../assets/background/sailor.png";
+import scribe from "../assets/background/scribe.png";
+import soldier from "../assets/background/soldier.png";
+import wayfarer from "../assets/background/wayfarer.png";
+
+import acolyteBg from "../assets/background/acolyte-bg.png";
+import artisanBg from "../assets/background/artisan-bg.png";
+import charlatanBg from "../assets/background/charlatan-bg.png";
+import criminalBg from "../assets/background/criminal-bg.png";
+import entertainerBg from "../assets/background/entertainer-bg.png";
+import farmerBg from "../assets/background/farmer-bg.png";
+import guardBg from "../assets/background/guard-bg.png";
+import guideBg from "../assets/background/guide-bg.png";
+import hermitBg from "../assets/background/hermit-bg.png";
+import merchantBg from "../assets/background/merchant-bg.png";
+import nobleBg from "../assets/background/noble-bg.png";
+import sageBg from "../assets/background/sage-bg.png";
+import sailorBg from "../assets/background/sailor-bg.png";
+import scribeBg from "../assets/background/scribe-bg.png";
+import soldierBg from "../assets/background/soldier-bg.png";
+import wayfarerBg from "../assets/background/wayfarer-bg.png";
 
 import type { Species } from "./species";
 
@@ -67,6 +84,26 @@ export const Backgrounds = {
   wayfarer,
 } as const;
 export type Background = keyof typeof Backgrounds;
+
+export const Bg = {
+  acolyteBg,
+  artisanBg,
+  charlatanBg,
+  criminalBg,
+  entertainerBg,
+  farmerBg,
+  guardBg,
+  guideBg,
+  hermitBg,
+  merchantBg,
+  nobleBg,
+  sageBg,
+  sailorBg,
+  scribeBg,
+  soldierBg,
+  wayfarerBg,
+} as const;
+export type Bgs = keyof typeof Bg;
 
 export type Notification = {
   id: string;

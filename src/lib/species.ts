@@ -1,13 +1,13 @@
-import aasimar from "../assets/aasimar.png";
-import dragonborn from "../assets/dragonborn.png";
-import dwarf from "../assets/dwarf.png";
-import elf from "../assets/elf.png";
-import gnome from "../assets/gnome.png";
-import goliath from "../assets/gnome.png";
-import halfling from "../assets/halfling.png";
-import human from "../assets/human.png";
-import orc from "../assets/orc.png";
-import tiefling from "../assets/tiefling.png";
+import aasimar from "../assets/species/aasimar.png";
+import dragonborn from "../assets/species/dragonborn.png";
+import dwarf from "../assets/species/dwarf.png";
+import elf from "../assets/species/elf.png";
+import gnome from "../assets/species/gnome.png";
+import goliath from "../assets/species/gnome.png";
+import halfling from "../assets/species/halfling.png";
+import human from "../assets/species/human.png";
+import orc from "../assets/species/orc.png";
+import tiefling from "../assets/species/tiefling.png";
 
 
 export const species = {
