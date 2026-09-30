@@ -29,8 +29,8 @@ export default function ClassStep() {
                 relative h-50 max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex items-center gap-1.5
                 ${
                   character.classId === item.id
-                    ? " border-main-text"
-                    : " border-primary"
+                    ? " border-primary"
+                    : " border-main-text"
                 }
             `}
             onClick={() => handleClassSelect(item.id)}
@@ -42,10 +42,10 @@ export default function ClassStep() {
               className="h-48 w-32 z-1"
             />
             <div className="flex flex-col items-start h-full z-1">
-              <div className={`flex items-center justify-center pb-1 border-b ${
+              <div className={`flex items-center justify-center pb-1 border-b-2 ${
                   character.classId === item.id
-                    ? " border-main-text"
-                    : " border-primary"
+                    ? " border-primary"
+                    : " border-main-text"
                 } w-full my-3`}>
                 <h3 className="text-sm font-bold">{item.name}</h3>
                 <p className="text-sm ms-1">(d{item.hit_die})</p>

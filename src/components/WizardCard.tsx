@@ -21,8 +21,8 @@ export default function WizarCard({
                         relative h-50 max-w-75 shrink-0 border-4 rounded-md cursor-pointer flex items-center gap-1.5
                         ${
                           character.classId === item.id
-                            ? " border-main-text"
-                            : " border-primary"
+                            ? " border-primary"
+                            : " border-main-text"
                         }
                     `}
       onClick={() => handleSelect(item.id)}
@@ -31,10 +31,10 @@ export default function WizarCard({
       <img src={source.src} alt={item.name} className="h-48 w-32" />
       <div className="flex flex-col items-start h-full">
         <div
-          className={`flex items-center justify-center pb-1 border-b ${
+          className={`flex items-center justify-center pb-1 border-b-2 ${
             character.classId === item.id
-              ? " border-main-text"
-              : " border-primary"
+              ? " border-primary"
+              : " border-main-text"
           } w-full my-3`}
         >
           <h3 className="text-sm font-bold">{item.name}</h3>
