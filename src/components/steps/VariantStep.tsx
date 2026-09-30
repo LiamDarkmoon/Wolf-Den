@@ -36,7 +36,7 @@ export default function VariantStep() {
           <div
             key={variant.id}
             className={`
-                  relative max-w-60 shrink-0 border-4 rounded-md cursor-pointer flex flex-col items-center gap-1.5 bg-linear-to-b from-transparent to-border
+                  relative max-w-60 h-87.5 shrink-0 border-4 rounded-md cursor-pointer flex flex-col items-center p-2.5 bg-linear-to-b from-transparent to-border
                   ${
                     character.speciesVariantId === variant.id
                       ? "border-primary text-main-text"
