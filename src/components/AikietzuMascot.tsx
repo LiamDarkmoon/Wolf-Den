@@ -20,7 +20,7 @@ export default function Aikietzu() {
 
   return (
     <div className="aikietzu">
-      <div className="aikietzu-sprite" />
+      <img src="/ai.png" alt="Aikietzu Mascot" />
     </div>
   );
 }

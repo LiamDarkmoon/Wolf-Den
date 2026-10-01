@@ -1,9 +1,10 @@
 .aikietzu {
+  z-index: 1000;
   position: absolute;
   bottom: 10px;
   left: 10px;
   width: 70px;
-  height: 80px;
+  height: 100px;
   overflow: hidden;
 }
 

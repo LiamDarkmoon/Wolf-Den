@@ -1,4 +1,4 @@
-import { Bg, type AbilityCode, type BackgroundRecord } from "../lib/types";
+import type { AbilityCode} from "../lib/types";
 import type { Character } from "./CharacterCreator/CharacterProvider";
 
 type SelectionKey =
@@ -26,6 +26,7 @@ export default function WizarCard({
 }) {
   const id = `${step}Id` as SelectionKey;
   const selected = character[id] === item.id;
+  const isClassStep = step === "class";
 
   return (
     <div
@@ -40,17 +41,24 @@ export default function WizarCard({
       `}
       onClick={() => handleSelect(item.id)}
     >
-      {selected && (
+      {selected && !isClassStep ? (
         <div className="absolute inset-0 -z-2">
           <img
-            className="object-cover object-bottom w-full h-full"
+            className="object-fill object-center w-full h-full"
             src={`${bg}`}
           />
         </div>
+      ) : (
+        <div className="absolute inset-0 -z-2">
+          <img
+            className="object-fill object-center w-full h-full"
+            src={'/league-bg.png'}
+          />
+        </div>
       )}
-      <span className="absolute inset-0 bg-linear-to-b from-transparent to-black z-1" />
-      <img src={source.src} alt={item.name} className="h-full -z-1" />
-      <div className="absolute bottom-4 flex flex-col text-center items-center justify-center h-25 w-4/5 z-1">
+      <span className="absolute inset-0 bg-linear-to-b from-transparent via-70% via-border/60 to-black z-1" />
+      <img src={source.src} alt={item.name} className={`h-full -z-1  ${selected ? "drop-shadow-lg drop-shadow-primary-hover scale-110 pb-4" : ""}`} />
+      <div className="absolute bottom-4 flex flex-col text-center items-center h-40 w-4/5 z-1">
         <div
           className={`flex text-center items-center justify-center pb-1 border-b-2 ${
             selected ? " border-primary-hover" : " border-main-text"
