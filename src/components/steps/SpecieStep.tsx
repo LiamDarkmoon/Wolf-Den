@@ -22,7 +22,7 @@ export default function SpecieStep() {
       </StepHead>
       <StepBody>
         {species.map((item) => (
-          <WizarCard key={item.id} character={character} item={item} bg={bg} source={sp[item.code]} handleSelect={handleSpecieSelect} />
+          <WizarCard key={item.id} step="species" character={character} item={item} bg={bg} source={sp[item.code]} handleSelect={handleSpecieSelect} />
         ))}
       </StepBody>
     </div>

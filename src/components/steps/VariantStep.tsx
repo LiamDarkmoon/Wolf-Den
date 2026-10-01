@@ -18,7 +18,6 @@ export default function VariantStep() {
       speciesVariantId,
     });
   };
-  console.log('variants',selectedVariants)
 
   return (
     <div className="flex flex-col items-center">
@@ -32,39 +31,53 @@ export default function VariantStep() {
       </StepHead>
 
       <StepBody>
-        {selectedVariants.map((variant: SpeciesVariantRecord) => (
-          <div
-            key={variant.id}
-            className={`
-                  relative max-w-60 h-87.5 shrink-0 border-4 rounded-md cursor-pointer flex flex-col items-center p-2.5 bg-linear-to-b from-transparent to-border
+        {selectedVariants.map((variant: SpeciesVariantRecord) => {
+          const selected = character.speciesVariantId === variant.id;
+          return (
+            <div
+              key={variant.id}
+              className={`
+                  relative max-w-75 h-full shrink-0 border-4 rounded-md cursor-pointer flex flex-col items-center p-2.5 
                   ${
-                    character.speciesVariantId === variant.id
-                      ? "border-primary text-main-text"
-                      : "border-amber-50 text-primary"
+                    selected
+                      ? "border-primary-hover text-primary-hover shadow-md shadow-primary-hover scale-102"
+                      : "border-amber-50 text-main-text"
                   }
                 `}
-            onClick={() => handleVariantSelect(variant.id)}
-          >
-            {character.speciesVariantId === variant.id && <img className="absolute h-full inset-0 -z-1" src={`${bg}`} />}
-            <img src={variant ? v[variant.code].src : ''} alt={variant.name} className="w-32 z-1" />
-            <div className="absolute bottom-4 flex flex-col items-start h-full z-1">
-              <div
-                className={`flex items-center justify-center pb-1 border-b ${
-                  character.speciesVariantId === variant.id
-                    ? " border-main-text"
-                    : " border-primary"
-                } w-full my-3`}
-              >
-                <h3 className="text-sm font-bold">{variant.name}</h3>
-              </div>
-              {variant.description && (
-                <div className="flex items-center justify-center">
-                  <p className="text-[10px] ms-1 text-pretty">{variant.description}</p>
-              </div>
+              onClick={() => handleVariantSelect(variant.id)}
+            >
+              {selected && (
+                <div className="absolute inset-0 -z-2">
+                  <img className="object-cover object-bottom w-full h-full" src={`${bg}`} />
+                </div>
               )}
+              <span className="absolute inset-0 bg-linear-to-b from-transparent to-black z-1" />
+              <img
+                src={variant ? v[variant.code].src : ""}
+                alt={variant.name}
+                className="h-full -z-1"
+              />
+              <div className="absolute bottom-4 flex flex-col text-center items-center justify-center h-25 w-4/5 z-1">
+                <div
+                  className={`flex text-center items-center justify-center pb-1 border-b ${
+                    selected
+                      ? " border-primary-hover"
+                      : " border-main-text"
+                  } w-full my-2`}
+                >
+                  <h3 className="text-lg font-bold">{variant.name}</h3>
+                </div>
+                {variant.description && (
+                  <div className="flex items-center justify-center">
+                    <p className="text-xs">
+                      {variant.description}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </StepBody>
     </div>
   );

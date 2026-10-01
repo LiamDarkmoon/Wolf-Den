@@ -19,7 +19,7 @@ export default function OriginStep() {
       </StepHead>
       <StepBody>
         {backgrounds.map((item) => (
-          <WizarCard key={item.id} character={character} item={item} bg={bg} source={Backgrounds[item.code]} handleSelect={handleOriginSelect} />
+          <WizarCard key={item.id} step="background" character={character} item={item} bg={bg} source={Backgrounds[item.code]} handleSelect={handleOriginSelect} />
         ))}
       </StepBody>
     </div>
