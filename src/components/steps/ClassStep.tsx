@@ -3,7 +3,7 @@ import { useCharacter } from "../../lib/hooks/useCharacter";
 import StepBody from "./step/StepBody";
 import StepHead from "./step/StepHead";
 import { Classes } from "../../lib/types";
-import WizarCard from "../WizardCard";
+import WizardCard from "../WizardCard";
 
 
 export default function ClassStep() {
@@ -23,7 +23,7 @@ export default function ClassStep() {
 
       <StepBody>
         {classes.map((item) => (
-          <WizarCard key={item.id} step="class" character={character} item={item} bg={bg} source={Classes[item.code]} handleSelect={handleClassSelect} />
+          <WizardCard key={item.id} step="class" character={character} item={item} bg={bg} source={Classes[item.code]} handleSelect={handleClassSelect} />
         ))}
       </StepBody>
     </div>

@@ -9,7 +9,7 @@ type SelectionKey =
 
 type WizardStep = SelectionKey extends `${infer T}Id` ? T : never;
 
-export default function WizarCard({
+export default function WizardCard({
   step,
   character,
   item,
@@ -35,7 +35,7 @@ export default function WizarCard({
                   relative max-w-75 h-full shrink-0 border-4 rounded-md cursor-pointer flex flex-col items-center p-2.5
                   ${
                     selected
-                      ? "border-primary-hover text-primary-hover shadow-md shadow-primary-hover scale-102"
+                      ? "border-primary-hover text-primary-hover shadow-md shadow-primary-hover"
                       : "border-amber-50 text-main-text"
                   }
       `}

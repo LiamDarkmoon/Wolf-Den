@@ -4,7 +4,7 @@ import { useCharacter } from "../../lib/hooks/useCharacter";
 
 import StepBody from "./step/StepBody";
 import StepHead from "./step/StepHead";
-import WizarCard from "../WizardCard";
+import WizardCard from "../WizardCard";
 
 export default function VariantStep() {
   const { character, variants, bg, updateCharacter } = useCharacter();
@@ -33,7 +33,7 @@ export default function VariantStep() {
 
       <StepBody>
         {selectedVariants.map((item: SpeciesVariantRecord) => (
-          <WizarCard key={item.id} step="speciesVariant" character={character} item={item} bg={bg} source={v[item.code]} handleSelect={handleVariantSelect} />
+          <WizardCard key={item.id} step="speciesVariant" character={character} item={item} bg={bg} source={v[item.code]} handleSelect={handleVariantSelect} />
           )
         )}
       </StepBody>

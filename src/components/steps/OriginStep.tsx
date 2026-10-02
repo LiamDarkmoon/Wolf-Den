@@ -1,6 +1,6 @@
 import { useCharacter } from "../../lib/hooks/useCharacter";
 import { Backgrounds } from "../../lib/types";
-import WizarCard from "../WizardCard";
+import WizardCard from "../WizardCard";
 
 import StepBody from "./step/StepBody";
 import StepHead from "./step/StepHead";
@@ -19,7 +19,7 @@ export default function OriginStep() {
       </StepHead>
       <StepBody>
         {backgrounds.map((item) => (
-          <WizarCard key={item.id} step="background" character={character} item={item} bg={bg} source={Backgrounds[item.code]} handleSelect={handleOriginSelect} />
+          <WizardCard key={item.id} step="background" character={character} item={item} bg={bg} source={Backgrounds[item.code]} handleSelect={handleOriginSelect} />
         ))}
       </StepBody>
     </div>
