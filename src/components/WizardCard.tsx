@@ -58,7 +58,7 @@ export default function WizarCard({
       )}
       <span className="absolute inset-0 bg-linear-to-b from-transparent via-70% via-border/60 to-black z-1" />
       <img src={source.src} alt={item.name} className={`h-full -z-1  ${selected ? "drop-shadow-lg drop-shadow-primary-hover scale-110 pb-4" : ""}`} />
-      <div className="absolute bottom-4 flex flex-col text-center items-center h-40 w-4/5 z-1">
+      <div className="absolute bottom-4 flex flex-col text-center items-center justify-center h-40 w-4/5 z-1">
         <div
           className={`flex text-center items-center justify-center pb-1 border-b-2 ${
             selected ? " border-primary-hover" : " border-main-text"

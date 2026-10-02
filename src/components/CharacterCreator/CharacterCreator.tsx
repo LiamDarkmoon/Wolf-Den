@@ -5,7 +5,7 @@ import CharacterProvider from './CharacterProvider.tsx';
 export default function CharacterCreator() {
   return (
     <CharacterProvider>
-      <section className='w-full flex justify-around'>
+      <section className='h-full w-full flex justify-around'>
         <CharacterForm />
         <CharacterInfo/>
       </section>
