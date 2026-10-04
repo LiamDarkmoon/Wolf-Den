@@ -94,7 +94,7 @@ export default function AbilitiesStep() {
                 key={ability.id}
                 className={`
                   flex items-center justify-between
-                  w-full p-2.5 border-4 rounded-md cursor-pointer
+                  w-full h-15 p-2.5 border-4 rounded-md cursor-pointer
                   ${
                     score !== null
                       ? "border-primary-hover text-primary-hover"
@@ -107,7 +107,7 @@ export default function AbilitiesStep() {
                   {ability.code}:
                 </span>
 
-                <span className="flex w-40 text-xs">{ability.description}</span>
+                <span className="flex w-45 text-xs">{ability.description}</span>
 
                 <span className="w-15 text-lg font-semibold">
                   {score !== null ? (

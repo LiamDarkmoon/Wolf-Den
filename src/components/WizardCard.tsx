@@ -56,13 +56,13 @@ export default function WizardCard({
           />
         </div>
       )}
-      <span className="absolute inset-0 bg-linear-to-b from-transparent via-70% via-border/60 to-black z-1" />
-      <img src={source.src} alt={item.name} className={`h-full -z-1  ${selected ? "drop-shadow-lg drop-shadow-primary-hover scale-110 pb-4" : ""}`} />
-      <div className="absolute bottom-4 flex flex-col text-center items-center justify-center h-40 w-4/5 z-1">
+      <span className={`absolute inset-0 bg-linear-to-b from-transparent via-70% via-border/60 to-black z-1 ${selected ? " z-60" : ""} `} />
+      <img src={source.src} alt={item.name} className={`h-full -z-1  ${selected ? " z-50 drop-shadow-lg drop-shadow-primary-hover scale-120 pb-4" : ""}`} />
+      <div className={`absolute bottom-4 flex flex-col text-center items-center justify-center h-40 w-4/5 -z-1  ${selected ? " z-60" : ""}`}>
         <div
           className={`flex text-center items-center justify-center pb-1 border-b-2 ${
             selected ? " border-primary-hover" : " border-main-text"
-          } w-full my-3`}
+          } w-full my-4`}
         >
           <h3 className="text-lg font-bold">{item.name}</h3>
           {item.hit_die && <p className="text-sm ms-1">(d{item.hit_die})</p>}

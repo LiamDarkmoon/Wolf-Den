@@ -16,7 +16,7 @@ export default function AdventureCardsList({
   };
 
   return (
-    <section className="h-full w-full flex flex-col md:flex-row items-center justify-around gap-10 p-5 overflow-auto scrollbar-none">
+    <section className="h-full w-full flex items-center gap-10 px-4 overflow-y-hidden overflow-x-scroll scrollbar-none">
       {
         adv.length <= 0 ? <p className="text-center w-2/3 text-primary italic"> Espera que la liga asigne nuevas misiones... estamos ocupados con una orda infernal</p>
         : adv.map((adventure: adventureWithStatus) => (
